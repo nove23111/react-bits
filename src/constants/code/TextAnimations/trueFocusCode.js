@@ -3,6 +3,7 @@ import { generateCliCommands } from '@/utils/utils';
 import code from '@content/TextAnimations/TrueFocus/TrueFocus.jsx?raw';
 import css from '@content/TextAnimations/TrueFocus/TrueFocus.css?raw';
 import tailwind from '@tailwind/TextAnimations/TrueFocus/TrueFocus.jsx?raw';
+import tsCode from '@ts-default/TextAnimations/TrueFocus/TrueFocus.tsx?raw';
 
 export const trueFocus = {
   ...(generateCliCommands('TextAnimations/TrueFocus', ['default', 'tailwind'])),
@@ -19,5 +20,6 @@ pauseBetweenAnimations={1}
 />`,
   code,
   css,
-  tailwind
+  tailwind,
+  tsCode
 }
