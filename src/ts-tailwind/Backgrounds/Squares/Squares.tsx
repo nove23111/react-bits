@@ -5,6 +5,7 @@ type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern;
 interface GridOffset {
   x: number;
   y: number;
+  hoverColor: CanvasStrokeStyle;
 }
 
 interface SquaresProps {
@@ -12,7 +13,7 @@ interface SquaresProps {
   speed?: number;
   borderColor?: CanvasStrokeStyle;
   squareSize?: number;
-  hoverFillColor?: CanvasStrokeStyle;
+  hoverFillColor?: CanvasStrokeStyle[];
 }
 
 const Squares: React.FC<SquaresProps> = ({
@@ -20,13 +21,17 @@ const Squares: React.FC<SquaresProps> = ({
   speed = 1,
   borderColor = "#999",
   squareSize = 40,
-  hoverFillColor = "#222",
+  hoverFillColor = ["#222"],
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number | null>(null);
   const numSquaresX = useRef<number>(0);
   const numSquaresY = useRef<number>(0);
-  const gridOffset = useRef<GridOffset>({ x: 0, y: 0 });
+  const gridOffset = useRef<GridOffset>({
+    x: 0,
+    y: 0,
+    hoverColor: hoverFillColor[0],
+  });
   const hoveredSquareRef = useRef<GridOffset | null>(null);
 
   useEffect(() => {
@@ -63,7 +68,9 @@ const Squares: React.FC<SquaresProps> = ({
               hoveredSquareRef.current.x &&
             Math.floor((y - startY) / squareSize) === hoveredSquareRef.current.y
           ) {
-            ctx.fillStyle = hoverFillColor;
+            ctx.fillStyle = hoveredSquareRef.current.hoverColor
+              ? hoveredSquareRef.current.hoverColor
+              : hoverFillColor[0];
             ctx.fillRect(squareX, squareY, squareSize, squareSize);
           }
 
@@ -141,7 +148,12 @@ const Squares: React.FC<SquaresProps> = ({
         hoveredSquareRef.current.x !== hoveredSquareX ||
         hoveredSquareRef.current.y !== hoveredSquareY
       ) {
-        hoveredSquareRef.current = { x: hoveredSquareX, y: hoveredSquareY };
+        hoveredSquareRef.current = {
+          x: hoveredSquareX,
+          y: hoveredSquareY,
+          hoverColor:
+            hoverFillColor[Math.floor(Math.random() * hoverFillColor.length)],
+        };
       }
     };
 

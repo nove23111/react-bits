@@ -5,13 +5,17 @@ const Squares = ({
   speed = 1,
   borderColor = "#999",
   squareSize = 40,
-  hoverFillColor = "#222",
+  hoverFillColor = ["#222"],
 }) => {
   const canvasRef = useRef(null);
   const requestRef = useRef(null);
   const numSquaresX = useRef(0);
   const numSquaresY = useRef(0);
-  const gridOffset = useRef({ x: 0, y: 0 });
+  const gridOffset = useRef({
+    x: 0,
+    y: 0,
+    hoverColor: hoverFillColor[0],
+  });
   const hoveredSquareRef = useRef(null);
 
   useEffect(() => {
@@ -45,10 +49,12 @@ const Squares = ({
           if (
             hoveredSquareRef.current &&
             Math.floor((x - startX) / squareSize) ===
-            hoveredSquareRef.current.x &&
+              hoveredSquareRef.current.x &&
             Math.floor((y - startY) / squareSize) === hoveredSquareRef.current.y
           ) {
-            ctx.fillStyle = hoverFillColor;
+            ctx.fillStyle = hoveredSquareRef.current.hoverColor
+              ? hoveredSquareRef.current.hoverColor
+              : hoverFillColor[0];
             ctx.fillRect(squareX, squareY, squareSize, squareSize);
           }
 
@@ -125,7 +131,12 @@ const Squares = ({
         hoveredSquareRef.current.x !== hoveredSquareX ||
         hoveredSquareRef.current.y !== hoveredSquareY
       ) {
-        hoveredSquareRef.current = { x: hoveredSquareX, y: hoveredSquareY };
+        hoveredSquareRef.current = {
+          x: hoveredSquareX,
+          y: hoveredSquareY,
+          hoverColor:
+            hoverFillColor[Math.floor(Math.random() * hoverFillColor.length)],
+        };
       }
     };
 
