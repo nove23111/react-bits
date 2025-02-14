@@ -108,6 +108,7 @@ const Squares = ({
 
       const hoveredSquareX = Math.floor((mouseX + gridOffset.current.x - startX) / squareSize);
       const hoveredSquareY = Math.floor((mouseY + gridOffset.current.y - startY) / squareSize);
+      
       if(hoveredSquareX !== hoveredSquare?.x || hoveredSquareY !== hoveredSquare?.y){
         setHoveredSquare({ x: hoveredSquareX, y: hoveredSquareY });
       }
