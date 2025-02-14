@@ -95,7 +95,7 @@ const Squares: React.FC<SquaresProps> = ({
     };
 
     const updateAnimation = () => {
-      const effectiveSpeed = Math.max(speed, 0.1);
+      const effectiveSpeed = speed || 0.1;
       switch (direction) {
         case "right":
           gridOffset.current.x =

@@ -19,6 +19,7 @@ const Squares = ({
     hoverColor: hoverFillColor[0],
   });
   const hoveredSquare = useRef(null);
+  console.log(hoverFillColor);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -50,8 +51,8 @@ const Squares = ({
             Math.floor((x - startX) / squareSize) === hoveredSquare.current.x &&
             Math.floor((y - startY) / squareSize) === hoveredSquare.current.y
           ) {
-            ctx.fillStyle = hoveredSquareRef.current.hoverColor
-              ? hoveredSquareRef.current.hoverColor
+            ctx.fillStyle = hoveredSquare.current.hoverColor
+              ? hoveredSquare.current.hoverColor
               : hoverFillColor[0];
             ctx.fillRect(squareX, squareY, squareSize, squareSize);
           }
@@ -77,7 +78,7 @@ const Squares = ({
     };
 
     const updateAnimation = () => {
-      const effectiveSpeed = Math.max(speed, 0.1);
+      const effectiveSpeed = speed || 0.1;
       switch (direction) {
         case "right":
           gridOffset.current.x =
@@ -129,7 +130,7 @@ const Squares = ({
         hoveredSquare.current.x !== hoveredSquareX ||
         hoveredSquare.current.y !== hoveredSquareY
       ) {
-        hoveredSquareRef.current = {
+        hoveredSquare.current = {
           x: hoveredSquareX,
           y: hoveredSquareY,
           hoverColor:
