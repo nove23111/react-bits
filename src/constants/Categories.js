@@ -68,7 +68,8 @@ export const CATEGORIES = [
       'Infinite Menu',
       'Rolling Gallery',
       'Stepper',
-      'Bounce Cards'
+      'Bounce Cards',
+      'Liquid Button'
     ],
   },
   {
