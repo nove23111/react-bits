@@ -57,6 +57,7 @@ const components = {
   'counter': () => import("../demo/Components/CounterDemo"),
   'lanyard': () => import("../demo/Components/LanyardDemo"),
   'glass-icons': () => import("../demo/Components/GlassIconsDemo"),
+  'liquid-button': () => import("../demo/Components/LiquidButtonDemo"),
 };
 
 const backgrounds = {
