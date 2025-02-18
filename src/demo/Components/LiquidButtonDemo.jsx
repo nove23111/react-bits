@@ -15,90 +15,105 @@ import { liquidButton } from "../../constants/code/Components/liquidButtonCode";
 import LiquidButton from "../../ts-default/Components/LiquidButton/LiquidButton";
 
 const TiltedCardDemo = () => {
-  const [rotateAmplitude, setRotateAmplitude] = useState(12);
-  const [scaleOnHover, setScaleOnHover] = useState(1.05);
-  const [showTooltip, setShowTooltip] = useState(true);
-  const [displayOverlayContent, setDisplayOverlayContent] = useState(true);
-
   const propData = [
     {
-      name: "imageSrc",
-      type: "string",
-      default: "N/A",
-      description: "The source URL of the image."
+      name: 'className',
+      value: '',
+      type: 'string',
+      default: '',
+      description: 'Custom CSS class name for the button.',
     },
     {
-      name: "altText",
-      type: "string",
-      default: "Tilted card image",
-      description: "Alternative text for the image."
+      name: 'width',
+      value: '200',
+      type: 'number',
+      default: '200',
+      description: 'Button width.',
     },
     {
-      name: "captionText",
-      type: "string",
-      default: "",
-      description: "Text for the tooltip caption."
+      name: 'height',
+      value: '50',
+      type: 'number',
+      default: '50',
+      description: 'Button height.',
     },
     {
-      name: "containerHeight",
-      type: "string",
-      default: "600px",
-      description: "Height of the overall card container."
+      name: 'label',
+      value: 'Hover me!',
+      type: 'string',
+      default: 'Hover me!',
+      description: 'The label of the button.',
     },
     {
-      name: "containerWidth",
-      type: "string",
-      default: "100%",
-      description: "Width of the overall card container."
+      name: 'backgroundColor',
+      value: '#ff6cb1',
+      type: 'string',
+      default: '#ff6cb1',
+      description: 'Background color of the button.',
     },
     {
-      name: "imageHeight",
-      type: "string",
-      default: "300px",
-      description: "Height of the inner image."
+      name: 'primaryColor',
+      value: '#00d9ff',
+      type: 'string',
+      default: '#00d9ff',
+      description: 'Primary color for the liquid effect.',
     },
     {
-      name: "imageWidth",
-      type: "string",
-      default: "300px",
-      description: "Width of the inner image."
+      name: 'secondaryColor',
+      value: '#ff9034',
+      type: 'string',
+      default: '#ff9034',
+      description: 'Secondary color for the liquid effect.',
     },
     {
-      name: "scaleOnHover",
-      type: "number",
-      default: "1.1",
-      description: "Scaling factor applied on hover."
+      name: 'forceFactor',
+      value: "0.1",
+      type: 'number',
+      default: "0.1",
+      description: 'Controls the overall force applied to the liquid effect.',
     },
     {
-      name: "rotateAmplitude",
-      type: "number",
-      default: "14",
-      description: "Controls how much the card tilts with mouse movement."
+      name: 'layerOneViscosity',
+      value: "0.5",
+      type: 'number',
+      default: "0.5",
+      description: 'Viscosity of the first liquid layer.',
     },
     {
-      name: "showMobileWarning",
-      type: "boolean",
-      default: "true",
-      description: "Whether to show a small alert about mobile usage."
+      name: 'layerTwoViscosity',
+      value: "0.4",
+      type: 'number',
+      default: "0.4",
+      description: 'Viscosity of the second liquid layer.',
     },
     {
-      name: "showTooltip",
-      type: "boolean",
-      default: "true",
-      description: "Toggles the visibility of the tooltip (figcaption)."
+      name: 'layerOneMouseForce',
+      value: "400",
+      type: 'number',
+      default: "400",
+      description: 'Mouse force applied to the first liquid layer.',
     },
     {
-      name: "displayOverlayContent",
-      type: "boolean",
-      default: "false",
-      description: "Whether to display any overlayContent on top of the image."
+      name: 'layerTwoMouseForce',
+      value: "500",
+      type: 'number',
+      default: "500",
+      description: 'Mouse force applied to the second liquid layer.',
     },
     {
-      name: "overlayContent",
-      type: "ReactNode",
-      default: "null",
-      description: "A React node to display as an overlay on the card."
-    }
+      name: 'layerOneForceLimit',
+      value: "1",
+      type: 'number',
+      default: "1",
+      description: 'Force limit for the first liquid layer.',
+    },
+    {
+      name: 'layerTwoForceLimit',
+      value: "2",
+      type: 'number',
+      default: "2",
+      description: 'Force limit for the second liquid layer.',
+    },
   ];
 
   return (
@@ -114,38 +129,14 @@ const TiltedCardDemo = () => {
             height={50}
             width={200}
             forceFactor={0.1}
-            layerOneViscosity={0.5}
-            layerTwoViscosity={0.4}
+            layerOneViscosity={0.4}
+            layerTwoViscosity={0.5}
             layerOneMouseForce={400}
             layerTwoMouseForce={500}
             layerOneForceLimit={1}
             layerTwoForceLimit={2}
           />
         </Box>
-
-        <Customize className="preview-options">
-          <PreviewSlider
-            title="Rotate Amplitude"
-            min={0}
-            max={30}
-            step={1}
-            value={rotateAmplitude}
-            onChange={setRotateAmplitude}
-          />
-
-          <PreviewSlider
-            title="Scale on Hover"
-            min={1}
-            max={1.5}
-            step={0.05}
-            value={scaleOnHover}
-            onChange={setScaleOnHover}
-            displayValue={(val) => val.toFixed(2)}
-          />
-
-          <PreviewSwitch title="Show Tooltip" isChecked={showTooltip} onChange={(e) => { setShowTooltip(e.target.checked); }} />
-          <PreviewSwitch title="Show Overlay Content" isChecked={displayOverlayContent} onChange={(e) => { setDisplayOverlayContent(e.target.checked); }} />
-        </Customize>
 
         <PropTable data={propData} />
       </PreviewTab>

@@ -396,10 +396,10 @@ const LiquidButton: React.FC<LiquidButtonProps> = ({
   className = '',
   width = 200,
   height = 50,
-  label = "Liquid Button",
-  backgroundColor = "black",
-  primaryColor = "#1e88e5",
-  secondaryColor = "yellow",
+  label = "Hover me!",
+  backgroundColor = "#ff6cb1",
+  primaryColor = "#00d9ff",
+  secondaryColor = "#ff9034",
   forceFactor = 0.1,
   layerOneViscosity = 0.5,
   layerTwoViscosity = 0.4,
@@ -415,7 +415,7 @@ const LiquidButton: React.FC<LiquidButtonProps> = ({
     const svgElementCopy = svgRef.current;
 
     const button = new LiquidButtonClass(svgRef.current);
-
+    
     return () => {
       if (button) {
         document.body.removeEventListener("touchstart", button.touchHandler);
