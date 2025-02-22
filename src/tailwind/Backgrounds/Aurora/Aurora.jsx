@@ -102,13 +102,19 @@ void main() {
     height = exp(height);
     height = (uv.y * 2.0 - height + 0.2);
 
-    fragColor.rgb = 0.6 * height * rampColor;
-    fragColor.a = 1.0;
+    // Calculate the aurora effect
+    float intensity = smoothstep(-0.2, 0.8, height);
+    fragColor.rgb = rampColor * intensity;
+    fragColor.a = intensity * 0.7; // Adjust this value to control overall transparency
 }
 `;
 
 export default function Aurora(props) {
-  const { colorStops = ["#00d8ff", "#7cff67", "#00d8ff"], amplitude = 1.0 } = props;
+  const { 
+    colorStops = ["#00d8ff", "#7cff67", "#00d8ff"], 
+    amplitude = 1.0,
+    enableTransparency = false 
+  } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
 
@@ -118,9 +124,15 @@ export default function Aurora(props) {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const renderer = new Renderer();
+    const renderer = new Renderer({ 
+      alpha: true,
+      premultipliedAlpha: false,
+      antialias: true 
+    });
     const gl = renderer.gl;
-    gl.clearColor(1, 1, 1, 1);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
 
     let program;
 
@@ -187,5 +199,5 @@ export default function Aurora(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
 
-  return <div ref={ctnDom} className="w-full h-full" />;
+  return <div ref={ctnDom} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />;
 }
