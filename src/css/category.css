@@ -62,6 +62,9 @@
   right: 0;
   padding: 8em 0 6em 1em;
   min-height: 100vh;
+  transition: opacity 0.3s ease-in-out;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .category-page .main-category {
@@ -106,6 +109,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 300px;
+  transition: all 0.3s ease-in-out;
 }
 
 div:has(> .props-table) {
@@ -357,4 +362,14 @@ div:has(> .props-table) {
 .custom-spotlight-card {
   width: 350px;
   height: 300px;
+}
+
+/* 组件容器样式 - 防止布局抖动 */
+.component-container {
+  position: relative; 
+  width: 100%;
+  will-change: transform; /* 提示浏览器这个元素将会变化 */
+  transform: translateZ(0); /* 启用GPU加速 */
+  overflow: hidden; /* 防止内容溢出 */
+  transition: height 0.3s ease-out; /* 平滑高度变化 */
 }

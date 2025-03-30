@@ -94,7 +94,7 @@
   padding: 0.25em 0.25em 0.25em 0;
   color: #fff;
   position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .active-sidebar-item:hover {
@@ -103,7 +103,7 @@
 
 .active-sidebar-item::before {
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .github-button {

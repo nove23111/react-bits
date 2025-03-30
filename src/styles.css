@@ -24,6 +24,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 防止FOUC (Flash of Unstyled Content) */
+html.loading * {
+  transition: none !important;
+}
+
+/* 强制GPU加速，防止抖动 */
+.app-container,
+.category-wrapper,
+.sidebar,
+.category-page {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
 input[type="color"] {
   border: 2px solid #999;
   border-radius: 15px;

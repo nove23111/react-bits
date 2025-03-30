@@ -21,7 +21,12 @@ import { useRef, useState } from 'react';
 import { CATEGORIES, NEW, UPDATED } from '../../constants/Categories';
 import { useSearch } from '../context/SearchContext/useSearch';
 
-const scrollToTop = () => window.scrollTo(0, 0);
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
 
 const Sidebar = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
