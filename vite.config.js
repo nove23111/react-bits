@@ -13,7 +13,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    hmr: true
+    hmr: true,
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Access-Control-Allow-Origin': '*',
+      'Cross-Origin-Resource-Policy': 'cross-origin',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+    },
+    cors: {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204
+    }
   },
   resolve: {
     alias: {
@@ -30,5 +43,17 @@ export default defineConfig({
       parser: safeParser
     }
   },
-  assetsInclude: ['**/*.glb']
+  assetsInclude: ['**/*.glb', '**/*.wasm'],
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util', '@ffmpeg/core'],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          ffmpeg: ['@ffmpeg/ffmpeg'],
+        },
+      },
+    },
+  },
 })

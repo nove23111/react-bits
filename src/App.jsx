@@ -7,6 +7,7 @@ import { toastStyles } from './utils/customTheme';
 
 import Header from './components/navs/Header';
 import Sidebar from './components/navs/Sidebar';
+import VideoExportDecorator from './components/VideoExportDecorator';
 
 import LandingPage from './pages/LandingPage'
 import CategoryPage from './pages/CategoryPage'
@@ -46,6 +47,7 @@ export default function App() {
 
   return (
     <Router>
+      <VideoExportDecorator />
       <Routes>
         <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/showcase" element={<ShowcasePage />} />
