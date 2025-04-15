@@ -27,6 +27,8 @@ const ShinyText: React.FC<ShinyTextProps> = ({ text, disabled = false, speed = 5
 
 export default ShinyText;
 
+
+// if TailwindCss Version is < v4.0.0
 // tailwind.config.js
 // module.exports = {
 //   theme: {
@@ -44,3 +46,16 @@ export default ShinyText;
 //   },
 //   plugins: [],
 // };
+
+// if TailwindCss version is > v4, add the shine and its keyframes to the theme under global.css
+// @theme {
+//     --animate-shine: shine 5s linear infinite;
+//     @keyframes shine {
+//         0% {
+//             background-position: 100%;
+//         }
+//         100% {
+//             background-position: -100%;
+//         }
+//     }
+// }
