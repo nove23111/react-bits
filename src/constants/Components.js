@@ -64,6 +64,7 @@ const components = {
   'animated-list': () => import("../demo/Components/AnimatedListDemo"),
   'folder': () => import("../demo/Components/FolderDemo"),
   'gooey-nav': () => import("../demo/Components/GooeyNavDemo"),
+  'cpu-architecture': () => import("../demo/Components/CpuArchitectureDemo"),
 };
 
 const backgrounds = {

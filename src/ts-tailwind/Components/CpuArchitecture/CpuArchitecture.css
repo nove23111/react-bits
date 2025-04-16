@@ -1,0 +1,96 @@
+/* CpuArchitecture.css */
+
+/* Animation for each light */
+.cpu-architecture {
+  animation-duration: 8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.cpu-line-1 {
+  animation-name: moveBlueLine;
+}
+
+.cpu-line-2 {
+  animation-name: moveYellowLine;
+  animation-delay: 0.5s;
+}
+
+.cpu-line-3 {
+  animation-name: movePinkishLine;
+  animation-delay: 1s;
+}
+
+.cpu-line-4 {
+  animation-name: moveWhiteLine;
+  animation-delay: 1.5s;
+}
+
+.cpu-line-5 {
+  animation-name: moveGreenLine;
+  animation-delay: 2s;
+}
+
+.cpu-line-6 {
+  animation-name: moveOrangeLine;
+  animation-delay: 2.5s;
+}
+
+.cpu-line-7 {
+  animation-name: moveCyanLine;
+  animation-delay: 3s;
+}
+
+.cpu-line-8 {
+  animation-name: moveRoseLine;
+  animation-delay: 3.5s;
+}
+
+/* Path animations */
+@keyframes moveBlueLine {
+  0% { transform: translate(10px, 20px); }
+  50% { transform: translate(90px, 55px); }
+  100% { transform: translate(10px, 20px); }
+}
+
+@keyframes moveYellowLine {
+  0% { transform: translate(180px, 10px); }
+  50% { transform: translate(105px, 45px); }
+  100% { transform: translate(180px, 10px); }
+}
+
+@keyframes movePinkishLine {
+  0% { transform: translate(130px, 20px); }
+  50% { transform: translate(115px, 45px); }
+  100% { transform: translate(130px, 20px); }
+}
+
+@keyframes moveWhiteLine {
+  0% { transform: translate(170px, 80px); }
+  50% { transform: translate(115px, 50px); }
+  100% { transform: translate(170px, 80px); }
+}
+
+@keyframes moveGreenLine {
+  0% { transform: translate(135px, 65px); }
+  50% { transform: translate(95px, 60px); }
+  100% { transform: translate(135px, 65px); }
+}
+
+@keyframes moveOrangeLine {
+  0% { transform: translate(94.8px, 95px); }
+  50% { transform: translate(94.8px, 55px); }
+  100% { transform: translate(94.8px, 95px); }
+}
+
+@keyframes moveCyanLine {
+  0% { transform: translate(88px, 88px); }
+  50% { transform: translate(75px, 55px); }
+  100% { transform: translate(88px, 88px); }
+}
+
+@keyframes moveRoseLine {
+  0% { transform: translate(30px, 30px); }
+  50% { transform: translate(70px, 45px); }
+  100% { transform: translate(30px, 30px); }
+} 

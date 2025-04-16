@@ -1,5 +1,5 @@
 // Highlighted sidebar items
-export const NEW = ['Dither', 'Animated List', 'Gooey Nav', 'Threads', 'Lightning', 'Folder', 'Text Cursor'];
+export const NEW = ['Dither', 'Animated List', 'Gooey Nav', 'Threads', 'Lightning', 'Folder', 'Text Cursor', 'Cpu Architecture'];
 export const UPDATED = [];
 
 // Used for main sidebar navigation
@@ -75,7 +75,8 @@ export const CATEGORIES = [
       'Infinite Menu',
       'Rolling Gallery',
       'Stepper',
-      'Bounce Cards'
+      'Bounce Cards',
+      'Cpu Architecture'
     ],
   },
   {
