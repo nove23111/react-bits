@@ -84,6 +84,7 @@ const backgrounds = {
   'threads': () => import("../demo/Backgrounds/ThreadsDemo"),
   'dither': () => import("../demo/Backgrounds/DitherDemo"),
   'lightning': () => import("../demo/Backgrounds/LightningDemo"),
+  'matrix-code':() => import("../demo/Backgrounds/MatrixCodeDemo")
 };
 
 export const componentMap = {
