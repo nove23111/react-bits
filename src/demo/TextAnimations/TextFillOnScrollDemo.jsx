@@ -1,6 +1,6 @@
-import FillTextOnScroll from "../../content/TextAnimations/TextFillOnScroll/TextFillOnScroll";
+import TextFillOnScroll from "../../content/TextAnimations/TextFillOnScroll/TextFillOnScroll";
 
-const FillTextOnScrollDemo = () => {
+const TextFillOnScrollDemo = () => {
   return (
     <div className="min-h-screen">
       <ScrollTextReveal
@@ -16,4 +16,4 @@ const FillTextOnScrollDemo = () => {
   );
 };
 
-export default FillTextOnScrollDemo;
+export default TextFillOnScrollDemo;
