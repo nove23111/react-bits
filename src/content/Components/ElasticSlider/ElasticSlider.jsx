@@ -99,8 +99,15 @@ function Slider({
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e) => {
     animate(overflow, 0, { type: "spring", bounce: 0.5 });
+
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if (el) {
+      el.addEventListener("click", (e_) => e_.stopPropagation(), {
+        once: true,
+      });
+    }
   };
 
   const getRangePercentage = () => {

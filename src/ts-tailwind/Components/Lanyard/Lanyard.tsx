@@ -252,6 +252,13 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
             onPointerUp={(e: any) => {
               e.target.releasePointerCapture(e.pointerId);
               drag(false);
+              
+              const el = document.elementFromPoint(e.clientX, e.clientY);
+              if (el) {
+                el.addEventListener("click", (e_: any) => e_.stopPropagation(), {
+                  once: true,
+                });
+              }
             }}
             onPointerDown={(e: any) => {
               e.target.setPointerCapture(e.pointerId);
