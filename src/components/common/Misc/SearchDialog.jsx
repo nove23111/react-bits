@@ -28,7 +28,20 @@ const levenshtein = (a, b) => {
   }
   return dp[m][n];
 };
+function highlightText(text, searchValue) {
+  if (!searchValue) return text;
 
+  const regex = new RegExp(`(${searchValue})`, 'i'); 
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    regex.test(part) ? (
+      <span key={index} style={{ color: 'white' }}>{part}</span>
+    ) : (
+      <span key={index}>{part}</span>
+    )
+  );
+}
 const fuzzyMatch = (candidate, query) => {
   const lowerCandidate = candidate.toLowerCase();
   const lowerQuery = query.toLowerCase();
@@ -291,8 +304,8 @@ const SearchDialog = ({ isOpen, onClose }) => {
                                   <IconComp size={24} color="#B19EEF" />
                                 </Box>
                                 <Box flex="1">
-                                  <Text fontWeight="bold" fontSize="16px" color="white">
-                                    {r.componentName}
+                                  <Text fontWeight="bold" fontSize="16px" color="gray.400">
+                                    {highlightText(r.componentName, searchValue)}
                                   </Text>
                                   <Text fontSize="sm" color="#B19EEF">
                                     in {r.categoryName}
