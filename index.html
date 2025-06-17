@@ -1,108 +1,80 @@
-<!doctype html>
-<html lang="en" style="background: #060010;">
+import { useEffect, useMemo, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1GF5NXTV27"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-1GF5NXTV27');
-  </script>
+import './ScrollFloat.css';
 
-  <!-- Basic Meta Tags -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#060010" />
-  <meta name="author" content="David Haz">
-  <meta name="description"
-    content="An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces." />
-  <meta name="keywords"
-    content="React, React tutorials, React tips, React best practices, React development, React guides, React articles, React ecosystem, JavaScript, frontend development, ReactJS, UI Library, Component Library, React Components, React Animations" />
+gsap.registerPlugin(ScrollTrigger);
 
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-    rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:ital,wght@0,300..900;1,300..900&family=Figtree:wght@200..800&display=swap"
-    rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+const ScrollFloat = ({
+  children,
+  scrollContainerRef,
+  containerClassName = "",
+  textClassName = "",
+  animationDuration = 1,
+  ease = 'back.inOut(2)',
+  scrollStart = 'center bottom+=50%',
+  scrollEnd = 'bottom bottom-=40%',
+  stagger = 0.03
+}) => {
+  const containerRef = useRef(null);
 
-  <!-- Icons -->
-  <link rel="icon" type="image/svg+xml" sizes="16x16 32x32" href="favicon.ico" />
-  <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
-  <link rel="shortcut icon" href="favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="React Bits" />
-  <link rel="manifest" href="/site.webmanifest" />
+  const splitText = useMemo(() => {
+    const text = typeof children === 'string' ? children : '';
+    return text.split("").map((char, index) => (
+      <span className="char" key={index}>
+        {char === " " ? "\u00A0" : char}
+      </span>
+    ));
+  }, [children]);
 
-  <!-- Open Graph (OG) - Facebook, LinkedIn, etc. -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="React Bits">
-  <meta property="og:description"
-    content="An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.">
-  <meta property="og:image" content="https://reactbits.dev/og-pic.jpg">
-  <meta property="og:image:alt" content="The React Bits landing page design, showcasing the logo and a subtitle!">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://reactbits.dev">
-  <meta property="og:site_name" content="React Bits">
-  <meta property="og:locale" content="en_US">
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  <!-- Twitter Card - Twitter Sharing -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="React Bits">
-  <meta name="twitter:description"
-    content="An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.">
-  <meta name="twitter:image" content="https://reactbits.dev/og-pic.jpg">
-  <meta name="twitter:image:alt" content="The React Bits landing page design, showcasing the logo and a subtitle!">
+    const scroller =
+      scrollContainerRef && scrollContainerRef.current
+        ? scrollContainerRef.current
+        : window;
 
-  <!-- Favicon & Apple Touch Icons -->
-  <link rel="icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
+    const charElements = el.querySelectorAll('.char');
 
-  <!-- Canonical & Robots Meta Tags -->
-  <link rel="canonical" href="https://reactbits.dev">
-  <meta name="robots" content="index, follow">
-
-  <!-- Structured Data (JSON-LD for SEO) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "React Bits",
-    "url": "https://reactbits.dev",
-    "description": "An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.",
-    "image": "https://reactbits.dev/og-pic.jpg",
-    "author": {
-      "@type": "Person",
-      "name": "David Haz"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "David Haz",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://davidhaz.com"
+    gsap.fromTo(
+      charElements,
+      {
+        willChange: 'opacity, transform',
+        opacity: 0,
+        yPercent: 120,
+        scaleY: 2.3,
+        scaleX: 0.7,
+        transformOrigin: '50% 0%'
+      },
+      {
+        duration: animationDuration,
+        ease: ease,
+        opacity: 1,
+        yPercent: 0,
+        scaleY: 1,
+        scaleX: 1,
+        stagger: stagger,
+        scrollTrigger: {
+          trigger: el,
+          scroller,
+          start: scrollStart,
+          end: scrollEnd,
+          scrub: true
+        }
       }
-    }
-  }
-  </script>
-  <title>React Bits - Animated UI Components For React</title>
-</head>
+    );
+  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-</body>
+  return (
+    <h2 ref={containerRef} className={`scroll-float ${containerClassName}`}>
+      <span className={`scroll-float-text ${textClassName}`}>
+        {splitText}
+      </span>
+    </h2>
+  );
+};
 
-</html>
+export default ScrollFloat;
