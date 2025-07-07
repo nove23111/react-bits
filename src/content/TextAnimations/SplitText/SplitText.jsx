@@ -23,8 +23,10 @@ const SplitText = ({
   const animationCompletedRef = useRef(false);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !ref.current || !text) return;
+
     const el = ref.current;
-    if (!el || animationCompletedRef.current) return;
+    if (animationCompletedRef.current) return;
 
     const absoluteLines = splitType === "lines";
     if (absoluteLines) el.style.position = "relative";
@@ -55,10 +57,7 @@ const SplitText = ({
     });
 
     const startPct = (1 - threshold) * 100;
-    const m = /^(-?\d+)px$/.exec(rootMargin);
-    const raw = m ? parseInt(m[1], 10) : 0;
-    const sign = raw < 0 ? `-=${Math.abs(raw)}px` : `+=${raw}px`;
-    const start = `top ${startPct}%${sign}`;
+    const start = `top ${startPct}%`;
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -67,7 +66,6 @@ const SplitText = ({
         toggleActions: "play none none none",
         once: true,
       },
-      smoothChildTiming: true,
       onComplete: () => {
         animationCompletedRef.current = true;
         gsap.set(targets, {
@@ -94,18 +92,7 @@ const SplitText = ({
       gsap.killTweensOf(targets);
       splitter.revert();
     };
-  }, [
-    text,
-    delay,
-    duration,
-    ease,
-    splitType,
-    from,
-    to,
-    threshold,
-    rootMargin,
-    onLetterAnimationComplete,
-  ]);
+  }, [text]);
 
   return (
     <p
