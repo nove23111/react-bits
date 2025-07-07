@@ -1,10 +1,4 @@
-import {
-  useRef,
-  useEffect,
-  useState,
-  useMemo,
-  useId
-} from "react";
+import { useRef, useEffect, useState, useMemo, useId } from "react";
 import "./CurvedLoop.css";
 
 const CurvedLoop = ({
@@ -14,6 +8,7 @@ const CurvedLoop = ({
   curveAmount = 400,
   direction = "left",
   interactive = true,
+  pauseOnHover = false,
 }) => {
   const text = useMemo(() => {
     const hasTrailing = /\s|\u00A0$/.test(marqueeText);
@@ -27,6 +22,7 @@ const CurvedLoop = ({
   const pathRef = useRef(null);
   const [pathLength, setPathLength] = useState(0);
   const [spacing, setSpacing] = useState(0);
+  const [paused, setPaused] = useState(false);
   const uid = useId();
   const pathId = `curve-${uid}`;
   const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
@@ -49,25 +45,25 @@ const CurvedLoop = ({
     if (!spacing) return;
     let frame = 0;
     const step = () => {
-      tspansRef.current.forEach((t) => {
-        if (!t) return;
-        let x = parseFloat(t.getAttribute("x") || "0");
-        if (!dragRef.current) {
+      if (!paused && !dragRef.current) {
+        tspansRef.current.forEach((t) => {
+          if (!t) return;
+          let x = parseFloat(t.getAttribute("x") || "0");
           const delta =
             dirRef.current === "right" ? Math.abs(speed) : -Math.abs(speed);
           x += delta;
-        }
-        const maxX = (tspansRef.current.length - 1) * spacing;
-        if (x < -spacing) x = maxX;
-        if (x > maxX) x = -spacing;
-        t.setAttribute("x", x.toString());
-      });
+
+          const maxX = (tspansRef.current.length - 1) * spacing;
+          if (x < -spacing) x = maxX;
+          if (x > maxX) x = -spacing;
+          t.setAttribute("x", x.toString());
+        });
+      }
       frame = requestAnimationFrame(step);
     };
     step();
     return () => cancelAnimationFrame(frame);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spacing, speed]);
+  }, [spacing, speed, paused]);
 
   const repeats =
     pathLength && spacing ? Math.ceil(pathLength / spacing) + 2 : 0;
@@ -78,7 +74,7 @@ const CurvedLoop = ({
     dragRef.current = true;
     lastXRef.current = e.clientX;
     velRef.current = 0;
-    (e.target).setPointerCapture(e.pointerId);
+    e.target.setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e) => {
@@ -103,6 +99,15 @@ const CurvedLoop = ({
     dirRef.current = velRef.current > 0 ? "right" : "left";
   };
 
+  const handleMouseEnter = () => {
+    if (!interactive && pauseOnHover) setPaused(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!interactive && pauseOnHover) setPaused(false);
+    endDrag();
+  };
+
   const cursorStyle = interactive
     ? dragRef.current
       ? "grabbing"
@@ -116,9 +121,15 @@ const CurvedLoop = ({
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
-      onPointerLeave={endDrag}
+      onPointerLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <svg className="curved-loop-svg" viewBox="0 0 1440 120">
+      <svg
+        className="curved-loop-svg"
+        viewBox="0 0 1440 120"
+        aria-hidden="true"
+      >
         <text
           ref={measureRef}
           xmlSpace="preserve"
@@ -153,6 +164,10 @@ const CurvedLoop = ({
           </text>
         )}
       </svg>
+
+      <p className="sr-only" aria-hidden="false">
+        {marqueeText}
+      </p>
     </div>
   );
 };
