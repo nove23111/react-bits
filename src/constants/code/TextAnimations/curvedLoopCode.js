@@ -33,19 +33,6 @@ export const curvedLoop = {
   pauseOnHover={true}
 />`,
 
-  description: `
-A customizable SVG-based curved text marquee animation.
-
-✨ **Features**:
-- Looping animated text along a curved SVG path
-- Adjustable speed, direction, and curve shape
-- Interactive drag-to-scroll option
-- Pause on hover (non-interactive mode)
-- Screen reader-friendly with aria support
-- Responsive SVG layout
-
-Great for headers, hero sections, or interactive text art.`,
-
   code,
   css,
   tailwind,
