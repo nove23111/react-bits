@@ -16,21 +16,12 @@ const GooeyNav = ({
   const textRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
   const noise = (n = 1) => n / 2 - Math.random() * n;
-  const getXY = (
-    distance,
-    pointIndex,
-    totalPoints
-  ) => {
+  const getXY = (distance, pointIndex, totalPoints) => {
     const angle =
       ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180);
     return [distance * Math.cos(angle), distance * Math.sin(angle)];
   };
-  const createParticle = (
-    i,
-    t,
-    d,
-    r
-  ) => {
+  const createParticle = (i, t, d, r) => {
     let rotate = noise(r / 10);
     return {
       start: getXY(d[0], particleCount - i, particleCount),
@@ -110,34 +101,25 @@ const GooeyNav = ({
       makeParticles(filterRef.current);
     }
   };
-  const handleKeyDown = (
-    e,
-    index
-  ) => {
+  const handleKeyDown = (e, index) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       const liEl = e.currentTarget.parentElement;
       if (liEl) {
-        handleClick(
-          { currentTarget: liEl },
-          index
-        );
+        handleClick({ currentTarget: liEl }, index);
       }
     }
   };
   useEffect(() => {
     if (!navRef.current || !containerRef.current) return;
-    const activeLi = navRef.current.querySelectorAll("li")[
-      activeIndex
-    ];
+    const activeLi = navRef.current.querySelectorAll("li")[activeIndex];
     if (activeLi) {
       updateEffectPosition(activeLi);
       textRef.current?.classList.add("active");
     }
     const resizeObserver = new ResizeObserver(() => {
-      const currentActiveLi = navRef.current?.querySelectorAll("li")[
-        activeIndex
-      ];
+      const currentActiveLi =
+        navRef.current?.querySelectorAll("li")[activeIndex];
       if (currentActiveLi) {
         updateEffectPosition(currentActiveLi);
       }
@@ -303,14 +285,15 @@ const GooeyNav = ({
             {items.map((item, index) => (
               <li
                 key={index}
-                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white ${activeIndex === index ? "active" : ""
-                  }`}
-                onClick={(e) => handleClick(e, index)}
+                className={`py-[0.6em] px-[1em] rounded-full relative transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white font-bold ${
+                  activeIndex === index ? "active" : ""
+                }`}
               >
                 <a
                   href={item.href}
+                  onClick={(e) => handleClick(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="outline-none"
+                  className="outline-none w-full h-full block cursor-pointer"
                 >
                   {item.label}
                 </a>

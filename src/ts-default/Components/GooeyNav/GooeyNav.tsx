@@ -119,9 +119,12 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     textRef.current.innerText = element.innerText;
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>, index: number) => {
-    const liEl = e.currentTarget;
-    if (activeIndex === index) return;
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    index: number
+  ) => {
+    const liEl = e.currentTarget.parentElement as HTMLLIElement;
+    if (activeIndex === index || !liEl) return;
 
     setActiveIndex(index);
     updateEffectPosition(liEl);
@@ -133,7 +136,6 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
 
     if (textRef.current) {
       textRef.current.classList.remove("active");
-
       void textRef.current.offsetWidth;
       textRef.current.classList.add("active");
     }
@@ -149,13 +151,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   ) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      const liEl = e.currentTarget.parentElement;
-      if (liEl) {
-        handleClick(
-          { currentTarget: liEl } as React.MouseEvent<HTMLLIElement>,
-          index
-        );
-      }
+      handleClick(e, index);
     }
   };
 
@@ -189,10 +185,16 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           {items.map((item, index) => (
             <li
               key={index}
-              className={activeIndex === index ? "active" : ""}
-              onClick={(e) => handleClick(e, index)}
+              className={`py-[0.6em] px-[1em] rounded-full relative transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white font-bold ${
+                activeIndex === index ? "active" : ""
+              }`}
             >
-              <a href={item.href} onKeyDown={(e) => handleKeyDown(e, index)}>
+              <a
+                href={item.href}
+                onClick={(e) => handleClick(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className="outline-none w-full h-full block cursor-pointer"
+              >
                 {item.label}
               </a>
             </li>
