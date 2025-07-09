@@ -1,5 +1,5 @@
 // Highlighted sidebar items
-export const NEW = ['Silk', 'Scramble Text', 'Dot Grid', 'Beams', 'Chroma Grid', 'Glare Hover', 'Profile Card', 'Card Swap', 'Model Viewer', 'Fluid Glass', 'Cubes', 'Masonry', 'Text Trail', 'Curved Loop'];
+export const NEW = ['Silk', 'Scramble Text', 'Dot Grid', 'Beams', 'Chroma Grid', 'Glare Hover', 'Profile Card', 'Card Swap', 'Model Viewer', 'Fluid Glass', 'Cubes', 'Masonry', 'Text Trail', 'Curved Loop', "Isometric Maze"];
 export const UPDATED = ['Split Text', 'Star Border'];
 
 // Used for main sidebar navigation
@@ -109,7 +109,8 @@ export const CATEGORIES = [
       'Squares',
       'Letter Glitch',
       'Particles',
-      'Waves'
+      'Waves',
+      "Isometric Maze"
     ],
   }
 ];

@@ -95,7 +95,8 @@ const backgrounds = {
   'dither': () => import("../demo/Backgrounds/DitherDemo"),
   'lightning': () => import("../demo/Backgrounds/LightningDemo"),
   'dot-grid': () => import("../demo/Backgrounds/DotGridDemo"),
-  'beams': () => import("../demo/Backgrounds/BeamsDemo")
+  'beams': () => import("../demo/Backgrounds/BeamsDemo"),
+  "isometric-maze": () => import("../demo/Backgrounds/IsometricMazeDemo")
 };
 
 export const componentMap = {
