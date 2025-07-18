@@ -5,6 +5,7 @@ import DotGrid from "../../../content/Backgrounds/DotGrid/DotGrid";
 import LetterGlitch from "../../../content/Backgrounds/LetterGlitch/LetterGlitch";
 import Squares from "../../../content/Backgrounds/Squares/Squares";
 import { Box } from "@chakra-ui/react";
+import { motion } from "framer-motion"; // 🆕 Import motion
 
 const ResponsiveSplitText = ({ isMobile, text, ...rest }) =>
   isMobile ? (
@@ -57,26 +58,33 @@ const Hero = () => {
           text="Ninety-plus snippets, ready to be dropped into your React projects"
         />
 
-        <Link to={"/text-animations/split-text"} className="landing-button">
-          <span>Browse Components</span>
-          <div className="button-arrow-circle">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="#ffffff"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 12L10 8L6 4"
-                stroke="#4c1d95"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </Link>
+        {/* 🆕 Motion-wrapped Button */}
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <Link to={"/text-animations/split-text"} className="landing-button">
+            <span>Browse Components</span>
+            <div className="button-arrow-circle">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="#ffffff"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 12L10 8L6 4"
+                  stroke="#4c1d95"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </Link>
+        </motion.div>
       </div>
 
       {!isMobile && (
