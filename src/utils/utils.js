@@ -1,3 +1,5 @@
+import { isLocalStorageAvailable } from './browserUtils';
+
 export const getLanguage = (key) => {
   const languages = {
     code: 'jsx',
@@ -22,11 +24,15 @@ const formatNumber = (num) => {
 export const getStarsCount = async () => {
   try {
     const response = await fetch('https://api.github.com/repos/DavidHDev/react-bits');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
     return String(formatNumber(data.stargazers_count)).toUpperCase();
   } catch (error) {
-    console.error('Error fetching stargazers count:', error);
-    return null;
+    throw new Error('Error fetching stargazers count:', error);
   }
 };
 
@@ -36,8 +42,11 @@ export const decodeLabel = (label) => label
   .join(' ');
 
 export const forceChakraDarkTheme = () => {
+  const hasStorage = isLocalStorageAvailable();
+
+  if (!hasStorage) return;
+
   localStorage.setItem('chakra-ui-color-mode', 'dark');
-  console.info('Successfully set dark color mode.');
 };
 
 export const randomHex = () => `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')}`;
