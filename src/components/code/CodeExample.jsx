@@ -1,5 +1,5 @@
 import { getLanguage } from "../../utils/utils";
-import { useState } from "react"; // << ADICIONADO
+import { useState } from "react"; 
 import CodeHighlighter from "./CodeHighlighter";
 import CodeOptions, {
   CSSTab,
