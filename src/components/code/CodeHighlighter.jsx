@@ -5,9 +5,8 @@ import { synthwave84 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { FiCopy, FiCheckSquare } from "react-icons/fi";
 import { RiEmotionSadLine } from 'react-icons/ri';
 
-const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLines = 25 }) => {
+const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLines = 25, expanded, onToggleExpand }) => {
   const [copied, setCopied] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
   const handleCopy = async () => {
     try {
@@ -72,7 +71,7 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
             _hover={{ backgroundColor: '#111' }}
             _active={{ backgroundColor: '#111' }}
             zIndex={2}
-            onClick={() => setExpanded(prev => !prev)}
+            onClick={onToggleExpand}
           >
             {expanded ? 'Collapse Snippet' : 'See Full Snippet'}
           </Button>
