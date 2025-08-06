@@ -1,0 +1,713 @@
+# React Bits
+
+> The largest & most creative library of animated React components.
+
+React Bits is an open-source collection of carefully designed UI components that aim to enhance your React web applications. This is not your typical component library - you won't find generic buttons, inputs, or common UI elements here. These components are designed to help you stand out and make a statement visually by adding creativity to your projects.
+
+## Mission & Principles
+
+The goal of React Bits is to provide flexible, visually stunning, and free components that take web projects to the next level, guided by these principles:
+
+- **Free For All**: You own the code - it's free to use in your projects with full visibility
+- **Prop-First Approach**: Easy customization through thoughtfully exposed props without diving into code
+- **Fully Modular**: Install only what you need - React Bits is not a dependency
+- **Free Choice**: JavaScript or TypeScript, plain CSS or Tailwind - all options available
+
+## Documentation
+
+- [Main Documentation](https://reactbits.dev/): Complete component library with live demos and code examples
+- [GitHub Repository](https://github.com/davidhdev/react-bits): Source code and contribution guidelines
+- [Contributing Guide](https://github.com/davidhdev/react-bits/blob/main/CONTRIBUTING.md): Guidelines for contributing
+
+## Complete Component Library
+
+### Get Started
+- [Introduction](https://reactbits.dev/get-started/introduction): Overview and principles
+- [Installation](https://reactbits.dev/get-started/installation): Setup instructions
+
+### Text Animations (23 components)
+
+#### SplitText
+Splits text into individual characters, words, or lines and animates them sequentially with customizable delays and easing. Perfect for hero sections and attention-grabbing headlines. Uses GSAP for smooth animations with ScrollTrigger support.
+- **Key Props**: text, splitType (chars/words/lines), delay, duration, ease, from/to animation states
+- **Use Cases**: Landing page headers, section reveals, dramatic text entrances
+
+#### BlurText
+Creates a smooth blur-to-focus text animation effect. Text starts blurred and gradually comes into sharp focus, creating an elegant reveal effect.
+- **Key Props**: text, blur (initial blur amount), duration, delay, className
+- **Use Cases**: Subtle text reveals, loading states, focus transitions
+
+#### CircularText
+Arranges text in a circular pattern with optional rotation animation. Each character is positioned along a circle's circumference with individual rotation control.
+- **Key Props**: text, radius, fontSize, rotation speed, direction (clockwise/counter)
+- **Use Cases**: Badges, stamps, decorative text elements, logos
+
+#### TextType (New)
+Classic typewriter effect with cursor animation. Text appears character by character as if being typed in real-time with customizable typing speed and cursor blink.
+- **Key Props**: text, typingSpeed, deletingSpeed, loop, cursor visibility, pause duration
+- **Use Cases**: Terminal interfaces, code demonstrations, dramatic reveals
+
+#### ShinyText
+Animated shimmer effect that passes across text, creating a glossy, metallic appearance. The shine moves from left to right with customizable speed and intensity.
+- **Key Props**: text, shimmerColor, animationSpeed, shimmerWidth, className
+- **Use Cases**: Premium branding, call-to-action buttons, highlighting important text
+
+#### TextPressure
+Interactive text that responds to mouse pressure or proximity. Characters scale and transform based on cursor distance, creating a tactile, responsive feel.
+- **Key Props**: text, maxScale, pressureRadius, springConfig, className
+- **Use Cases**: Interactive headers, playful interfaces, engagement elements
+
+#### CurvedLoop (New)
+Animates text along a curved path in a continuous loop. Text flows along customizable bezier curves creating smooth, flowing motion.
+- **Key Props**: text, pathRadius, speed, direction, curvature, fontSize
+- **Use Cases**: Decorative headers, banner text, creative layouts
+
+#### FuzzyText
+Creates a fuzzy, out-of-focus effect with animated clarity transitions. Text appears to vibrate or buzz with adjustable intensity.
+- **Key Props**: text, fuzzyAmount, animationSpeed, hoverEffect, className
+- **Use Cases**: Glitch effects, retro designs, attention-grabbing elements
+
+#### GradientText
+Animated gradient that flows across text. Supports multiple color stops with smooth transitions and directional control.
+- **Key Props**: text, colors array, animationSpeed, angle, backgroundSize
+- **Use Cases**: Modern headers, vibrant CTAs, brand elements
+
+#### TextTrail
+Creates a trail effect as the cursor moves over text. Characters follow the mouse movement with spring physics creating an elastic, playful interaction.
+- **Key Props**: text, trailLength, stiffness, damping, mass, className
+- **Use Cases**: Interactive titles, playful interfaces, engagement features
+
+#### FallingText
+Characters fall from above with gravity simulation. Each character drops independently with bounce effects and customizable physics.
+- **Key Props**: text, fallDistance, stagger, bounceAmount, gravity, duration
+- **Use Cases**: Game interfaces, playful reveals, creative transitions
+
+#### TextCursor
+Text follows cursor movement smoothly across the screen. Creates a magnetic attraction effect between text and mouse position.
+- **Key Props**: text, smoothness, offset, scale on hover, className
+- **Use Cases**: Interactive navigation, creative cursors, engagement elements
+
+#### DecryptedText
+Simulates text decryption with random character cycling before revealing actual text. Creates a hacker/matrix-like effect.
+- **Key Props**: text, decryptSpeed, characters set, iterations, interval
+- **Use Cases**: Cyberpunk themes, loading sequences, dramatic reveals
+
+#### TrueFocus
+Text clarity changes based on viewport focus and scroll position. Creates depth-of-field effect with text.
+- **Key Props**: text, blurAmount, focusRange, transitionSpeed, className
+- **Use Cases**: Storytelling, reading experiences, focus guidance
+
+#### ScrollFloat
+Text elements float and move based on scroll position with parallax effects. Creates a sense of depth and movement.
+- **Key Props**: text, floatSpeed, direction, amplitude, enableRotation
+- **Use Cases**: Parallax sections, dynamic layouts, scroll storytelling
+
+#### ScrollReveal
+Reveals text progressively as user scrolls. Characters, words, or lines appear with customizable animations triggered by scroll position.
+- **Key Props**: text, threshold, animation type, stagger, duration, from/to states
+- **Use Cases**: Article content, scroll-based narratives, progressive disclosure
+
+#### ASCIIText
+Converts text into ASCII art characters with animation support. Creates retro terminal-style text effects.
+- **Key Props**: text, font style, animateIn, characterSet, size
+- **Use Cases**: Retro designs, terminal UIs, creative typography
+
+#### ScrambleText
+Scrambles text with random characters before resolving to final text. Similar to decryption but with more chaotic transitions.
+- **Key Props**: text, scrambleDuration, characters, revealDelay, className
+- **Use Cases**: Glitch effects, mysterious reveals, dynamic content updates
+
+#### RotatingText
+Cycles through multiple text strings with rotation animations. Text rotates in 3D space or flips between options.
+- **Key Props**: texts array, interval, animation style, pause on hover
+- **Use Cases**: Feature lists, testimonial rotations, dynamic headlines
+
+#### GlitchText
+Digital glitch effect with RGB splitting, displacement, and noise. Creates distorted, corrupted text appearance.
+- **Key Props**: text, glitchIntensity, colorSplit, noise, duration
+- **Use Cases**: Error states, cyberpunk aesthetics, attention grabbers
+
+#### ScrollVelocity
+Text animation speed responds to scroll velocity. Faster scrolling creates more dramatic effects.
+- **Key Props**: text, baseSpeed, velocityMultiplier, direction, smoothing
+- **Use Cases**: Dynamic headers, scroll-responsive elements, kinetic typography
+
+#### VariableProximity
+Text properties change based on mouse proximity. Characters grow, rotate, or change color based on cursor distance.
+- **Key Props**: text, effectRadius, maxScale, rotation, colorShift
+- **Use Cases**: Interactive displays, museum exhibits, experimental interfaces
+
+#### CountUp
+Animated number counter that increments from start to end value. Supports decimals, formatting, and easing functions.
+- **Key Props**: end value, duration, decimals, separator, prefix/suffix, easing
+- **Use Cases**: Statistics displays, dashboards, achievement animations
+
+### Animations (21 components)
+
+#### AnimatedContent
+Versatile content animator with multiple preset animations (fade, slide, scale, rotate). Wraps any content and applies smooth entrance/exit animations with customizable timing.
+- **Key Props**: animation type, duration, delay, easing, trigger (on mount/scroll/hover)
+- **Use Cases**: Page transitions, card reveals, section animations
+
+#### FadeContent
+Simple but effective fade in/out animation for any content. Supports directional fades and can be triggered by scroll, hover, or programmatically.
+- **Key Props**: fadeFrom (opacity), direction, duration, delay, trigger
+- **Use Cases**: Image galleries, content reveals, smooth transitions
+
+#### PixelTransition
+Creates a pixelated transition effect where content breaks into pixels that animate independently. Pixels can scatter, dissolve, or reorganize.
+- **Key Props**: pixelSize, animation pattern, duration, scatterDistance, colors
+- **Use Cases**: Image transitions, loading effects, creative scene changes
+
+#### GlareHover
+Adds a realistic glare/shine effect on hover that follows mouse movement. Creates the illusion of light reflecting off a glossy surface.
+- **Key Props**: glareColor, glareSize, intensity, angle, borderRadius
+- **Use Cases**: Card effects, product showcases, premium UI elements
+
+#### TargetCursor (New)
+Replaces default cursor with animated targeting reticle. Features smooth tracking, click animations, and customizable crosshair designs.
+- **Key Props**: size, color, style (circle/square/cross), animateOnClick, trail
+- **Use Cases**: Gaming interfaces, interactive experiences, creative portfolios
+
+#### MagnetLines
+Creates magnetic field visualization with animated lines that respond to cursor movement. Lines bend and attract toward the mouse position.
+- **Key Props**: lineCount, lineColor, strength, maxDistance, lineWidth
+- **Use Cases**: Interactive backgrounds, data visualizations, artistic effects
+
+#### ClickSpark
+Generates particle sparks at click location with customizable colors and physics. Particles burst outward with realistic motion.
+- **Key Props**: particleCount, colors, size, speed, gravity, fadeOut
+- **Use Cases**: Celebration effects, interactive feedback, playful interfaces
+
+#### Magnet
+Makes elements magnetically attracted to cursor. Elements follow mouse with spring physics creating smooth, natural movement.
+- **Key Props**: strength, distance, smoothness, scale on hover, rotation
+- **Use Cases**: Interactive buttons, floating elements, navigation items
+
+#### StickerPeel (New)
+Simulates peeling sticker effect with realistic corner lift on hover. Creates 3D illusion with shadows and perspective transforms.
+- **Key Props**: peelCorner, peelAmount, shadowIntensity, duration, sticky sound
+- **Use Cases**: Product stickers, badges, playful UI elements
+
+#### PixelTrail
+Cursor trail effect using pixelated blocks. Pixels fade and fall with gravity creating a digital rain effect.
+- **Key Props**: pixelSize, trailLength, colors, gravity, fadeSpeed
+- **Use Cases**: Retro designs, digital art, creative cursors
+
+#### Cubes (New)
+3D animated cubes using Three.js with rotation, scaling, and morphing effects. Supports multiple cubes with synchronized animations.
+- **Key Props**: cubeCount, size, rotationSpeed, colors, pattern, lighting
+- **Use Cases**: Loading animations, backgrounds, 3D showcases
+
+#### MetallicPaint
+Creates liquid metallic paint effect with realistic flow and reflection. Paint spreads and merges with surface tension simulation.
+- **Key Props**: viscosity, metallic, colors, spreadSpeed, reflection
+- **Use Cases**: Artistic effects, premium branding, creative reveals
+
+#### Noise
+Animated noise/grain overlay with adjustable intensity. Can simulate film grain, TV static, or subtle texture.
+- **Key Props**: intensity, size, speed, blend mode, animated, opacity
+- **Use Cases**: Vintage effects, backgrounds, texture overlays
+
+#### ShapeBlur
+Morphing shapes with blur effects that transition between forms. Shapes can be geometric or organic with smooth transformations.
+- **Key Props**: shapes array, blurAmount, morphSpeed, colors, size
+- **Use Cases**: Abstract backgrounds, loading states, artistic elements
+
+#### Crosshair
+Custom crosshair cursor with multiple styles and animations. Features targeting animations and click feedback.
+- **Key Props**: style, size, color, gap, thickness, rotation, dot
+- **Use Cases**: FPS games, precision tools, interactive maps
+
+#### ImageTrail
+Creates trail of images following cursor movement. Images fade and scale creating a ghosting effect.
+- **Key Props**: images array, trailLength, fadeSpeed, scale, rotation, spacing
+- **Use Cases**: Product showcases, galleries, portfolio effects
+
+#### Ribbons
+Flowing ribbon animations using physics simulation. Ribbons follow cursor or animate independently with wind effects.
+- **Key Props**: ribbonCount, width, length, colors, windStrength, gravity
+- **Use Cases**: Celebrations, backgrounds, decorative elements
+
+#### SplashCursor
+Liquid splash effect at cursor position. Creates ripples and droplets with realistic fluid dynamics.
+- **Key Props**: splashSize, dropletCount, colors, viscosity, surface tension
+- **Use Cases**: Water themes, playful interactions, creative effects
+
+#### MetaBalls
+Organic blob shapes that merge when close together. Uses metaball algorithm for smooth, liquid-like connections.
+- **Key Props**: ballCount, size, speed, threshold, colors, gooeyness
+- **Use Cases**: Lava lamp effects, organic animations, fluid interfaces
+
+#### BlobCursor
+Cursor becomes an animated blob with organic movement. Blob morphs and jiggles with inertia-based physics.
+- **Key Props**: size, elasticity, color, trail, morphSpeed, viscosity
+- **Use Cases**: Playful websites, creative portfolios, experimental UIs
+
+#### StarBorder
+Animated border composed of rotating stars or sparkles. Stars twinkle and move along the border path.
+- **Key Props**: starCount, size, speed, colors, twinkle, spacing, path
+- **Use Cases**: Magical effects, highlighting, decorative frames
+
+### Components (31 components)
+
+#### AnimatedList
+List component where items animate in sequentially as they enter viewport. Supports various animation styles and stagger effects.
+- **Key Props**: items, animation type, stagger delay, duration, threshold
+- **Use Cases**: Feature lists, testimonials, navigation menus
+
+#### ScrollStack (New)
+Cards that stack on top of each other and reveal through scrolling. Creates a smooth unstacking effect with parallax.
+- **Key Props**: cards array, offset, scale factor, rotation, sticky position
+- **Use Cases**: Product showcases, storytelling, image galleries
+
+#### MagicBento (New)
+Bento grid layout with magical hover effects. Tiles expand, glow, and transform on interaction with smooth animations.
+- **Key Props**: tiles, gap, hover scale, glow effect, animation duration
+- **Use Cases**: Dashboards, portfolio grids, feature showcases
+
+#### CircularGallery
+Images arranged in a circle that rotates on interaction. Supports auto-rotation and individual item animations.
+- **Key Props**: images, radius, autoRotate, speed, perspective, tilt
+- **Use Cases**: Product displays, team showcases, creative galleries
+
+#### Stack
+Stacked cards that can be swiped or clicked through. Includes spring physics and gesture controls.
+- **Key Props**: cards, offset, scale, rotation, swipe threshold, spring config
+- **Use Cases**: Tinder-like interfaces, flashcards, product browsing
+
+#### FluidGlass
+Glassmorphism effect with animated liquid distortion. Creates realistic glass refraction with dynamic backgrounds.
+- **Key Props**: blur amount, transparency, tint color, distortion, reflection
+- **Use Cases**: Modern cards, overlays, premium UI elements
+
+#### TiltedCard
+3D card that tilts based on mouse position. Features realistic perspective, shadows, and glare effects.
+- **Key Props**: max tilt, perspective, scale, glare, shadow, transition speed
+- **Use Cases**: Product cards, showcases, interactive elements
+
+#### Masonry
+Pinterest-style masonry grid with smooth animations. Items flow into optimal positions with stagger effects.
+- **Key Props**: columns, gap, breakpoints, animation, item renderer
+- **Use Cases**: Image galleries, blog layouts, portfolio grids
+
+#### GlassSurface (New)
+Advanced glassmorphism with surface distortion and refraction. Simulates realistic glass material with WebGL.
+- **Key Props**: thickness, roughness, transmission, ior, chromatic aberration
+- **Use Cases**: Hero sections, overlays, premium designs
+
+#### ChromaGrid
+Grid with chromatic aberration and color shifting effects. Creates psychedelic, rainbow-like distortions on hover.
+- **Key Props**: grid size, cell size, shift amount, colors, animation speed
+- **Use Cases**: Creative portfolios, artistic layouts, experimental UIs
+
+#### Folder
+Interactive folder component that opens/closes with realistic animation. Includes paper sliding and tab effects.
+- **Key Props**: title, content, color, open state, animation style, tab position
+- **Use Cases**: File browsers, documentation, organizational UIs
+
+#### ModelViewer
+3D model viewer with orbit controls using Three.js. Supports GLB/GLTF models with lighting and animations.
+- **Key Props**: model url, auto rotate, camera position, lighting, animations
+- **Use Cases**: Product visualization, 3D portfolios, interactive demos
+
+#### Lanyard
+Event badge/lanyard card with tilt and swing physics. Simulates realistic lanyard movement and rotation.
+- **Key Props**: name, title, logo, swing amount, rope length, wind effect
+- **Use Cases**: Event websites, team pages, conference apps
+
+#### ProfileCard
+Animated profile card with hover effects and social links. Features image parallax and content reveals.
+- **Key Props**: avatar, name, bio, social links, animation style, color scheme
+- **Use Cases**: Team sections, user profiles, contact cards
+
+#### Dock
+macOS-style dock with magnification effect. Icons grow based on cursor proximity with smooth transitions.
+- **Key Props**: items, magnification, icon size, spacing, position, auto hide
+- **Use Cases**: Navigation bars, app launchers, tool palettes
+
+#### GooeyNav
+Navigation with gooey/blob morphing effect between items. Creates organic transitions using SVG filters.
+- **Key Props**: items, blob color, stickiness, animation speed, orientation
+- **Use Cases**: Creative navigation, mobile menus, experimental UIs
+
+#### PixelCard
+Card with pixelated reveal effect. Content appears through expanding pixels creating a digital aesthetic.
+- **Key Props**: pixel size, animation pattern, duration, colors, content
+- **Use Cases**: Retro designs, gaming interfaces, digital art
+
+#### Carousel
+Smooth carousel with multiple view modes and transitions. Supports touch gestures and keyboard navigation.
+- **Key Props**: items, items per view, gap, loop, autoplay, transition type
+- **Use Cases**: Image sliders, testimonials, product galleries
+
+#### SpotlightCard
+Card with moving spotlight effect that follows cursor. Creates dramatic lighting with customizable beam.
+- **Key Props**: spotlight size, intensity, color, blur, follow speed, gradient
+- **Use Cases**: Feature highlights, CTAs, premium content
+
+#### FlyingPosters
+Posters that fly in 3D space with physics simulation. Creates dynamic, floating gallery effect.
+- **Key Props**: posters, gravity, wind, rotation, bounds, collision detection
+- **Use Cases**: Creative galleries, hero sections, artistic displays
+
+#### CardSwap
+Cards that swap positions with smooth animations. Supports grid and stack layouts with gesture controls.
+- **Key Props**: cards, layout, swap animation, duration, easing, trigger
+- **Use Cases**: Memory games, comparisons, interactive galleries
+
+#### InfiniteScroll
+Infinite scrolling container with seamless content loading. Includes loading states and intersection observer.
+- **Key Props**: items, load more callback, threshold, loader, has more
+- **Use Cases**: Feeds, galleries, content streams
+
+#### GlassIcons
+Icon set with glassmorphism effects. Icons feature blur, transparency, and subtle animations.
+- **Key Props**: icon, size, blur, tint, border, glow, animation on hover
+- **Use Cases**: Modern UIs, navigation, action buttons
+
+#### DecayCard
+Card that appears to decay or dissolve over time. Creates particle dispersion effect with customizable decay pattern.
+- **Key Props**: decay rate, particle size, colors, direction, regenerate
+- **Use Cases**: Temporary content, countdowns, dramatic reveals
+
+#### FlowingMenu
+Menu items that flow like liquid between states. Uses spring physics for smooth, organic transitions.
+- **Key Props**: items, flow speed, viscosity, surface tension, orientation
+- **Use Cases**: Mobile navigation, creative menus, experimental UIs
+
+#### ElasticSlider
+Slider with elastic band effect. Handle stretches and snaps back with realistic physics.
+- **Key Props**: min/max, value, elasticity, damping, track style, handle size
+- **Use Cases**: Audio controls, settings, interactive inputs
+
+#### Counter
+Animated number counter with multiple counting modes. Supports formatting, decimals, and custom animations.
+- **Key Props**: from/to, duration, decimals, separator, format, easing, suffix
+- **Use Cases**: Stats, achievements, loading percentages
+
+#### InfiniteMenu
+Horizontally scrolling menu that loops infinitely. Items flow continuously with customizable speed.
+- **Key Props**: items, speed, gap, pause on hover, direction, duplicate count
+- **Use Cases**: Brand logos, navigation, ticker displays
+
+#### RollingGallery
+Gallery where images roll in like slot machine reels. Creates engaging reveal effect with timing control.
+- **Key Props**: images, roll duration, stagger, direction, loop, trigger
+- **Use Cases**: Portfolio reveals, winner announcements, creative galleries
+
+#### Stepper
+Multi-step process indicator with animations. Shows progress through connected steps with various styles.
+- **Key Props**: steps, current step, orientation, connector style, animations
+- **Use Cases**: Checkout flows, onboarding, form wizards
+
+#### BounceCards
+Cards that bounce and jiggle on interaction. Uses spring physics for playful, energetic animations.
+- **Key Props**: cards, bounce height, elasticity, gravity, trigger, duration
+- **Use Cases**: Playful UIs, notifications, attention grabbers
+
+### Backgrounds (24 components)
+
+#### DarkVeil (New)
+Dynamic dark overlay that responds to content. Creates atmospheric depth with animated shadows and gradients.
+- **Key Props**: darkness, gradient angle, animation speed, pulse effect, vignette
+- **Use Cases**: Hero sections, dramatic backgrounds, content focus
+
+#### Silk
+Smooth, flowing silk fabric simulation using WebGL shaders. Creates realistic cloth movement with wind effects.
+- **Key Props**: color, wind strength, wave frequency, material shine, fold depth
+- **Use Cases**: Luxury brands, elegant backgrounds, smooth transitions
+
+#### LightRays (New)
+Animated light rays breaking through clouds or objects. Creates volumetric lighting effect with customizable beams.
+- **Key Props**: ray count, intensity, angle, color, animation speed, bloom
+- **Use Cases**: Spiritual themes, hero sections, atmospheric effects
+
+#### Aurora
+Realistic northern lights simulation with flowing colors. Uses WebGL for smooth gradient animations and particle effects.
+- **Key Props**: colors, intensity, wave speed, particle count, blur amount
+- **Use Cases**: Nature themes, ambient backgrounds, creative headers
+
+#### Particles
+Customizable particle system with physics. Particles can attract, repel, or flow with various behaviors.
+- **Key Props**: count, size, speed, connections, mouse interaction, colors
+- **Use Cases**: Tech backgrounds, network visualizations, ambient effects
+
+#### Beams
+Animated laser beams crossing the screen. Beams can track mouse, intersect, and create light patterns.
+- **Key Props**: beam count, width, speed, color, glow intensity, intersection effects
+- **Use Cases**: Sci-fi themes, loading screens, futuristic UIs
+
+#### Lightning
+Realistic lightning bolt generation with thunder effects. Bolts branch naturally with customizable frequency.
+- **Key Props**: frequency, branches, color, glow, duration, thunder delay
+- **Use Cases**: Storm effects, power themes, dramatic moments
+
+#### Galaxy (New)
+Animated galaxy with stars, nebulae, and cosmic dust. Creates depth with parallax layers and twinkling stars.
+- **Key Props**: star count, nebula colors, rotation speed, depth layers, twinkle
+- **Use Cases**: Space themes, creative backgrounds, immersive experiences
+
+#### Dither
+Retro dithering pattern effect with color reduction. Creates vintage computer graphics aesthetic.
+- **Key Props**: pattern type, color palette, pixel size, animation, blend mode
+- **Use Cases**: Retro designs, pixel art, nostalgic themes
+
+#### FaultyTerminal (New)
+Glitching terminal screen effect with scanlines and interference. Simulates CRT monitor with authentic artifacts.
+- **Key Props**: scan lines, glitch frequency, text color, flicker, noise, curvature
+- **Use Cases**: Hacker themes, retro computing, error states
+
+#### RippleGrid (New)
+Grid that ripples from interaction points. Creates wave propagation effect through grid cells.
+- **Key Props**: grid size, ripple speed, amplitude, decay rate, color shift
+- **Use Cases**: Interactive backgrounds, data visualizations, creative effects
+
+#### DotGrid
+Animated dot grid with various patterns and behaviors. Dots can pulse, wave, or respond to mouse.
+- **Key Props**: dot size, spacing, animation pattern, colors, mouse response
+- **Use Cases**: Minimal backgrounds, tech themes, subtle animations
+
+#### Threads
+Interweaving thread animations creating fabric-like patterns. Threads flow and tangle dynamically.
+- **Key Props**: thread count, thickness, colors, weave pattern, animation speed
+- **Use Cases**: Textile themes, organic backgrounds, artistic effects
+
+#### Hyperspeed
+Star field warp effect simulating faster-than-light travel. Stars streak past with motion blur.
+- **Key Props**: star count, speed, streak length, colors, FOV, center point
+- **Use Cases**: Sci-fi themes, loading screens, transitions
+
+#### Iridescence
+Shimmering rainbow effect that shifts with viewing angle. Creates oil-slick or soap-bubble appearance.
+- **Key Props**: color shift speed, intensity, pattern, blend mode, animation
+- **Use Cases**: Premium effects, artistic backgrounds, holographic themes
+
+#### Waves
+Ocean wave simulation with realistic motion. Multiple wave layers create depth and movement.
+- **Key Props**: wave height, frequency, speed, colors, foam, perspective
+- **Use Cases**: Ocean themes, calm backgrounds, meditation apps
+
+#### GridDistortion
+Grid that warps and distorts based on mouse or time. Creates psychedelic, reality-bending effects.
+- **Key Props**: grid size, distortion amount, animation type, colors, frequency
+- **Use Cases**: Creative portfolios, artistic sites, experimental UIs
+
+#### Ballpit
+Physics-based ball pit simulation. Balls bounce, collide, and respond to gravity and mouse.
+- **Key Props**: ball count, sizes, colors, gravity, bounciness, container bounds
+- **Use Cases**: Playful sites, children's content, interactive backgrounds
+
+#### Orb
+Floating energy orb with glow and particle effects. Orb pulsates and emits light dynamically.
+- **Key Props**: size, glow intensity, particle emission, colors, float pattern
+- **Use Cases**: Mystical themes, loading indicators, focal points
+
+#### LetterGlitch
+Background filled with glitching letters and symbols. Creates matrix-like digital rain effect.
+- **Key Props**: characters, fall speed, glitch rate, colors, density, font
+- **Use Cases**: Cyberpunk themes, tech backgrounds, hacker aesthetics
+
+#### GridMotion
+Perspective grid with flowing motion. Creates sense of movement and depth with animated lines.
+- **Key Props**: grid size, perspective, flow speed, colors, line width, direction
+- **Use Cases**: Retro wave, motion graphics, dynamic backgrounds
+
+#### Squares
+Animated square pattern with various behaviors. Squares can rotate, scale, or change colors in patterns.
+- **Key Props**: square size, gap, animation pattern, colors, rotation, timing
+- **Use Cases**: Geometric designs, minimal backgrounds, loading screens
+
+#### LiquidChrome
+Metallic liquid effect with reflections and flow. Creates mercury-like substance with realistic physics.
+- **Key Props**: viscosity, reflection, colors, flow speed, surface tension
+- **Use Cases**: Luxury brands, futuristic themes, premium effects
+
+#### Balatro
+Psychedelic playing card inspired patterns. Creates casino-like atmosphere with animated card motifs.
+- **Key Props**: pattern type, colors, animation speed, card symbols, neon glow
+- **Use Cases**: Gaming sites, casino themes, playful backgrounds
+
+## Installation Methods
+
+### Method 1: Manual Installation
+
+1. **Pick a component**: Browse components and find one you like
+2. **Install dependencies**: Install any required external libraries (e.g., `npm install gsap`)
+3. **Copy the code**: Use the Code tab with technology selector (JS/TS, CSS/Tailwind)
+4. **Use the component**: Import and use with available props
+
+### Method 2: CLI Installation
+
+React Bits uses [jsrepo](https://jsrepo.dev) for CLI installation.
+
+**One-time Installation:**
+```bash
+npx jsrepo add https://reactbits.dev/<PREFERENCE>/TextAnimations/SplitText
+```
+
+**Project-wide Setup:**
+```bash
+# Initialize configuration
+npx jsrepo init https://reactbits.dev/<PREFERENCE>
+
+# Browse and select components
+npx jsrepo add
+
+# Or install specific component
+npx jsrepo add TextAnimations/SplitText
+```
+
+**Preference Options:**
+- `default`: JavaScript + Plain CSS
+- `tailwind`: JavaScript + Tailwind CSS
+- `ts/default`: TypeScript + Plain CSS
+- `ts/tailwind`: TypeScript + Tailwind CSS
+
+## Performance Guidelines
+
+- **Less Is More**: Use 2-3 components max per page to avoid performance impact
+- **Mobile Optimization**: Consider disabling effects on mobile devices
+- **Test Thoroughly**: Test on multiple devices before going live
+
+## Project Structure
+
+- `/src/content/`: React component source files (JSX)
+- `/src/ts-default/`: TypeScript + CSS variants
+- `/src/ts-tailwind/`: TypeScript + Tailwind CSS variants
+- `/src/tailwind/`: JavaScript + Tailwind CSS variants
+- `/src/demo/`: Demo implementations for all components
+- `/src/docs/`: Documentation source files
+- `/src/constants/code/`: Component code examples
+
+## Technical Implementation
+
+- Built with React using modern hooks and patterns
+- Supports both CSS and Tailwind CSS styling
+- Many animations use CSS transforms for performance
+- Some components utilize WebGL/Canvas for advanced effects
+- All components are responsive and customizable via props
+- Minimal external dependencies per component
+
+## License
+
+MIT + Commons Clause License - Components are free to use in personal and commercial projects.
+
+## Contributing
+
+Contributions welcome for bug fixes and component enhancements. New components from the community are currently not accepted. All contributions must maintain the 4-variant structure and pass local testing.
+
+## Dependencies
+
+The project uses modern React ecosystem tools and libraries:
+
+### Core Dependencies
+- **React**: v19.0.0 - Latest React with concurrent features
+- **React DOM**: v19.0.0
+- **React Router DOM**: v6.26.0 - For routing and navigation
+
+### Animation & 3D Libraries
+- **GSAP**: v3.13.0 - Professional-grade animation library
+- **Framer Motion**: v12.6.0 - Production-ready motion library for React
+- **Three.js**: v0.167.1 - 3D graphics library
+- **@react-three/fiber**: v9.1.2 - React renderer for Three.js
+- **@react-three/drei**: v10.1.2 - Useful helpers for react-three-fiber
+- **Matter.js**: v0.20.0 - 2D physics engine
+
+### UI Libraries
+- **Chakra UI**: v3.20.0 - Modular component library
+- **Tailwind CSS**: v4.0.3 - Utility-first CSS framework
+- **Sonner**: v1.7.1 - Toast notifications
+- **React Icons**: v5.5.0 - Popular icon libraries
+
+### Additional Libraries
+- **Lenis**: v1.3.5 - Smooth scroll library
+- **React Confetti**: v6.2.2 - Confetti animations
+- **React Use Gesture**: v9.1.3 - Gesture detection
+
+### Development Tools
+- **Vite**: v5.3.4 - Fast build tool
+- **TypeScript**: v5.7.3 - Type safety
+- **ESLint**: Code quality
+- **jsrepo**: v1.30.1 - Component registry system
+
+## Example Component: SplitText
+
+One of the most popular text animation components with the following props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| text | string | "" | The text content to animate |
+| className | string | "" | Additional class names for styling |
+| delay | number | 100 | Delay between animations (ms) |
+| duration | number | 0.6 | Animation duration (seconds) |
+| ease | string | "power3.out" | GSAP easing function |
+| splitType | string | "chars" | Split type: "chars", "words", "lines" |
+| from | object | { opacity: 0, y: 40 } | Initial GSAP properties |
+| to | object | { opacity: 1, y: 0 } | Target GSAP properties |
+| threshold | number | 0.1 | Intersection threshold (0-1) |
+| rootMargin | string | "-100px" | ScrollTrigger root margin |
+| textAlign | string | "center" | Text alignment |
+| onLetterAnimationComplete | function | undefined | Completion callback |
+
+## Component Creation Scripts
+
+The project includes helper scripts for component development:
+
+```bash
+# Generate a new component with all 4 variants
+npm run new:component
+
+# Build the component registry
+npm run build:registry
+
+# Development server
+npm run dev
+
+# Production build
+npm run build
+```
+
+## Browser Support
+
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Mobile responsive
+- WebGL support required for 3D components
+- CSS Grid and Flexbox support required
+
+## Performance Considerations
+
+- Components use React.memo for optimization where appropriate
+- Animations leverage GPU acceleration via CSS transforms
+- Lazy loading and code splitting for optimal bundle size
+- Intersection Observer for scroll-triggered animations
+- RequestAnimationFrame for smooth animations
+
+## License Details
+
+MIT + Commons Clause License (Copyright 2025 David Haz)
+
+**Permitted:**
+- ✅ Use in commercial applications, websites, or products
+- ✅ Copy, modify, and distribute as part of your application
+- ✅ Use for personal and commercial projects
+
+**Not Permitted:**
+- ❌ Selling the components themselves
+- ❌ Sublicensing the components
+- ❌ Redistributing as a component library or ported version
+
+## Community & Support
+
+- **GitHub Issues**: Report bugs and request features
+- **Contributions**: Bug fixes and enhancements welcome
+- **Official Ports**: Vue.js version available at vue-bits.dev
+- **Maintainer**: David Haz (@DavidHDev)
+
+## Stats
+
+Total Components: 99 (and growing weekly)
+- Text Animations: 23 components
+- Animations: 21 components  
+- Components: 31 components
+- Backgrounds: 24 components
