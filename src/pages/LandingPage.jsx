@@ -8,6 +8,7 @@ import Footer from "../components/landing/Footer/Footer";
 import Hero from "../components/landing/Hero/Hero";
 import heroImage from "../assets/common/hero.webp";
 
+import { Helmet } from 'react-helmet';
 const LandingPage = () => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -22,6 +23,25 @@ const LandingPage = () => {
 
   return (
     <section className="landing-wrapper">
+    <Helmet>
+      <title>Landing Page — React Bits</title>
+      <meta name="description" content="Highly customizable animated components that make your React projects truly stand out" />
+      <link rel="canonical" href="https://reactbits.dev/" />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage", 
+            "name": "Landing Page — React Bits",
+            "description": "Highly customizable animated components that make your React projects truly stand out",
+            "url": "https://reactbits.dev/",
+            "inLanguage": "en"
+          }, null, 2)
+        }}
+      />
+    </Helmet>
+    
       <title>React Bits - Animated UI Components For React</title>
 
       <Announcement />

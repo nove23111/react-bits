@@ -7,6 +7,7 @@ import { useTransition } from '../hooks/useTransition';
 import BackToTopButton from '../components/common/Misc/BackToTopButton';
 import { SkeletonLoader, GetStartedLoader } from '../components/common/Misc/SkeletonLoader';
 
+import { Helmet } from 'react-helmet';
 const CategoryPage = () => {
   const { category, subcategory } = useParams();
   const { transitionPhase, getPreloadedComponent } = useTransition();
@@ -28,10 +29,30 @@ const CategoryPage = () => {
 
   return (
     <Box className={`category-page ${isLoading ? 'loading' : ''}`} ref={scrollRef}>
+    <Helmet>
+      <title>Split Text Animation — React Bits</title>
+      <meta name="description" content="Highly customizable animated components for React projects such as text animations, 3D, and more" />
+      <link rel="canonical" href="https://reactbits.dev/text-animations/split-text" />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage", 
+            "name": "Split Text Animation — React Bits",
+            "description": "Highly customizable animated components for React projects such as text animations, 3D, and more",
+            "url": "https://reactbits.dev/text-animations/split-text",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://reactbits.dev/" }
+          }, null, 2)
+        }}
+      />
+    </Helmet>
+    
       <title>{`React Bits - ${decodedLabel}`}</title>
 
       <Box className="page-transition-fade" style={{ opacity }}>
-        <h2 className={`sub-category ${isGetStartedRoute ? 'docs-category-title' : ''}`}>{decodedLabel}</h2>
+        <h1 className={`sub-category ${isGetStartedRoute ? 'docs-category-title' : ''}`}>{decodedLabel}</h1>
 
         {isLoading
           ? <Loader />

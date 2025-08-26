@@ -4,6 +4,7 @@ import { Box, Text } from "@chakra-ui/react";
 import FadeContent from "../content/Animations/FadeContent/FadeContent";
 import Footer from "../components/landing/Footer/Footer";
 
+import { Helmet } from 'react-helmet';
 import '../css/showcase.css';
 
 const ShowcasePage = () => {

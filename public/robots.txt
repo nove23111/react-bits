@@ -1,0 +1,7 @@
+# robots.txt for reactbits.dev
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+Sitemap: https://reactbits.dev/sitemap.xml
