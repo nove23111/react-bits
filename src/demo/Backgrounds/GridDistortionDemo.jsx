@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CodeTab, PreviewTab, CliTab, TabbedLayout } from "../../components/common/TabbedLayout";
+import { CodeTab, PreviewTab, CliTab, TabsLayout } from "../../components/common/TabsLayout";
 import { Box } from "@chakra-ui/react";
 
 import CodeExample from "../../components/code/CodeExample";
@@ -62,7 +62,7 @@ const GridDistortionDemo = () => {
   ];
 
   return (
-    <TabbedLayout>
+    <TabsLayout>
       <PreviewTab>
         <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden" ref={containerRef}>
           <GridDistortion
@@ -75,8 +75,6 @@ const GridDistortionDemo = () => {
             className="grid-distortion"
           />
 
-          {/* <Text pointerEvents="none" position="absolute" textAlign='center' fontSize="6rem" fontWeight={900} userSelect="none" mixBlendMode="overlay">Distortion.</Text> */}
-          {/* For Demo Purposes Only */}
           <BackgroundContent
             pillText="New Background"
             headline="Don't just sit there, move your cursor!"
@@ -122,7 +120,7 @@ const GridDistortionDemo = () => {
       <CliTab>
         <CliInstallation {...gridDistortion} />
       </CliTab>
-    </TabbedLayout >
+    </TabsLayout >
   );
 };
 

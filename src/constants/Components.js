@@ -26,6 +26,7 @@ const animations = {
   'cubes': () => import("../demo/Animations/CubesDemo"),
   'target-cursor': () => import("../demo/Animations/TargetCursorDemo"),
   'sticker-peel': () => import("../demo/Animations/StickerPeelDemo"),
+  'electric-border': () => import("../demo/Animations/ElectricBorderDemo")
 };
 
 const textAnimations = {
@@ -52,6 +53,7 @@ const textAnimations = {
   'text-trail': () => import("../demo/TextAnimations/TextTrailDemo"),
   'curved-loop': () => import("../demo/TextAnimations/CurvedLoopDemo"),
   'text-type': () => import("../demo/TextAnimations/TextTypeDemo"),
+  'logo-loop': () => import("../demo/Animations/LogoLoopDemo"),
 };
 
 const components = {
@@ -86,6 +88,9 @@ const components = {
   'magic-bento': () => import("../demo/Components/MagicBentoDemo"),
   'scroll-stack': () => import("../demo/Components/ScrollStackDemo"),
   'glass-surface': () => import("../demo/Components/GlassSurfaceDemo"),
+  'pill-nav': () => import("../demo/Components/PillNavDemo.jsx"),
+  'card-nav': () => import("../demo/Components/CardNavDemo"),
+  'bubble-menu': () => import("../demo/Components/BubbleMenuDemo"),
 };
 
 const backgrounds = {
@@ -113,6 +118,10 @@ const backgrounds = {
   'galaxy': () => import("../demo/Backgrounds/GalaxyDemo"),
   'light-rays': () => import("../demo/Backgrounds/LightRaysDemo"),
   'faulty-terminal': () => import("../demo/Backgrounds/FaultyTerminalDemo"),
+  'plasma': () => import("../demo/Backgrounds/PlasmaDemo"),
+  'prism': () => import("../demo/Backgrounds/PrismDemo"),
+  'gradient-blinds': () => import("../demo/Backgrounds/GradientBlindsDemo"),
+  'prismatic-burst': () => import("../demo/Backgrounds/PrismaticBurstDemo.jsx"),
 };
 
 export const componentMap = {

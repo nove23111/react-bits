@@ -35,6 +35,16 @@ const ShowcasePage = () => {
       name: 'Jimmy',
       url: 'https://about.jimmy-blog.top/',
       using: '<Squares />'
+    },
+    {
+      name: 'Deepraj Bera',
+      url: 'https://www.architech-dev.tech/',
+      using: '<CardSwap />'
+    },
+    {
+      name: 'Matthew Porteous',
+      url: 'https://www.matthewporteous.com/',
+      using: '<AnimatedContent />'
     }
   ];
 
@@ -75,8 +85,6 @@ const ShowcasePage = () => {
               </Box>
             )}
 
-            <div className="grid-item"></div>
-            <div className="grid-item"></div>
             <div className="grid-item"></div>
             <div className="grid-item"></div>
           </div>

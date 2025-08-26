@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { CliTab, CodeTab, PreviewTab, TabbedLayout } from "../../components/common/TabbedLayout";
+import { CliTab, CodeTab, PreviewTab, TabsLayout } from "../../components/common/TabsLayout";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import useForceRerender from "../../hooks/useForceRerender";
@@ -27,6 +27,7 @@ const SplitTextDemo = () => {
   const [key, forceRerender] = useForceRerender();
 
   const propData = [
+    { name: "tag", type: "string", default: '"p"', description: 'HTML tag to render: "h1", "h2", "h3", "h4", "h5", "h6", "p",' },
     { name: "text", type: "string", default: '""', description: "The text content to animate." },
     { name: "className", type: "string", default: '""', description: "Additional class names to style the component." },
     { name: "delay", type: "number", default: "100", description: "Delay between animations for each letter (in ms)." },
@@ -42,7 +43,7 @@ const SplitTextDemo = () => {
   ];
 
   return (
-    <TabbedLayout>
+    <TabsLayout>
       <PreviewTab>
         <Box
           position="relative"
@@ -167,7 +168,7 @@ const SplitTextDemo = () => {
       <CliTab>
         <CliInstallation {...splitText} />
       </CliTab>
-    </TabbedLayout>
+    </TabsLayout>
   );
 };
 

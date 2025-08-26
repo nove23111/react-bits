@@ -1,5 +1,5 @@
 // Highlighted sidebar items
-export const NEW = ['MCP', 'Faulty Terminal', 'Light Rays', 'Sticker Peel', 'Text Type', 'Galaxy', 'Glass Surface', 'Cubes', 'Curved Loop', 'Magic Bento', 'Ripple Grid', 'Scroll Stack', 'Dark Veil', 'Target Cursor'];
+export const NEW = ['Prismatic Burst', 'Gradient Blinds', 'Bubble Menu', 'Electric Border', 'Plasma', 'Prism', 'Logo Loop', 'Card Nav', 'Pill Nav', 'Target Cursor'];
 export const UPDATED = [];
 
 // Used for main sidebar navigation
@@ -45,8 +45,10 @@ export const CATEGORIES = [
     subcategories: [
       'Animated Content',
       'Fade Content',
+      'Electric Border',
       'Pixel Transition',
       'Glare Hover',
+      'Logo Loop',
       'Target Cursor',
       'Magnet Lines',
       'Click Spark',
@@ -71,10 +73,13 @@ export const CATEGORIES = [
     subcategories: [
       'Animated List',
       'Scroll Stack',
+      'Bubble Menu',
       'Magic Bento',
       'Circular Gallery',
+      'Card Nav',
       'Stack',
       'Fluid Glass',
+      'Pill Nav',
       'Tilted Card',
       'Masonry',
       'Glass Surface',
@@ -105,13 +110,17 @@ export const CATEGORIES = [
   {
     name: 'Backgrounds',
     subcategories: [
+      'Prism',
       'Dark Veil',
       'Silk',
       'Light Rays',
       'Aurora',
+      'Plasma',
       'Particles',
+      'Gradient Blinds',
       'Beams',
       'Lightning',
+      'Prismatic Burst',
       'Galaxy',
       'Dither',
       'Faulty Terminal',

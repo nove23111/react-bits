@@ -4,10 +4,10 @@ const Testimonials = () => {
   const tweets = [
     {
       id: 1,
-      avatar: 'https://pbs.twimg.com/profile_images/1923072273809801216/B2K1_X63_400x400.jpg',
-      text: 'Saw a lot of UI components & libraries but reactbits.dev has it all',
-      handle: '@itsRajnandinit',
-      url: 'https://x.com/itsRajnandinit/status/1890326577809924497'
+      avatar: 'https://pbs.twimg.com/profile_images/1817890513225121792/i8vgLj8Q_400x400.jpg',
+      text: 'Just used React Bits for my landing page. This is amazing, they open sourced so many animations that would have taken so long to build and tweak even with AI.',
+      handle: '@Antashshrivast2',
+      url: 'https://x.com/Antashshrivast2/status/1957423687986033095'
     },
     {
       id: 2,
@@ -53,10 +53,10 @@ const Testimonials = () => {
     },
     {
       id: 8,
-      avatar: 'https://pbs.twimg.com/profile_images/1885430699567513600/JP1m8cHY_400x400.jpg',
-      text: 'This React library is absolutely amazing!!! React Bits is packed with animated components that make building creative and interactive websites so much easier.',
-      handle: '@Traccey001',
-      url: 'https://x.com/Traccey001/status/1875450691805966422'
+      avatar: 'https://pbs.twimg.com/profile_images/1920165535351742464/CJU2uWMU_400x400.jpg',
+      text: 'Was scrolling X, I saw a post regarding UI library and got to know about React Bits and its just wow, the components are incredibly well designed! Really loved the overall feel and quality.',
+      handle: '@irohandev',
+      url: 'https://x.com/irohandev/status/1934877463064268822'
     },
     {
       id: 9,
