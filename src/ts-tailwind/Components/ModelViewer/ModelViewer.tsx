@@ -61,6 +61,19 @@ export interface ViewerProps {
   autoRotate?: boolean;
   autoRotateSpeed?: number;
   onModelLoaded?: () => void;
+  // New functionality props
+  enableWireframe?: boolean;
+  enableBoundingBox?: boolean;
+  enableStats?: boolean;
+  onInteractionStart?: () => void;
+  onInteractionEnd?: () => void;
+  enableFullscreen?: boolean;
+  customMaterials?: { [key: string]: any };
+  enableAnimations?: boolean;
+  animationSpeed?: number;
+  enablePostProcessing?: boolean;
+  bloomIntensity?: number;
+  className?: string;
 }
 
 const isTouch =
@@ -186,16 +199,50 @@ const ModelInner: FC<ModelInnerProps> = ({
     g.position.set(-sphere.center.x, -sphere.center.y, -sphere.center.z);
     g.scale.setScalar(s);
 
-    g.traverse((o: any) => {
-      if (o.isMesh) {
-        o.castShadow = true;
-        o.receiveShadow = true;
-        if (fadeIn) {
-          o.material.transparent = true;
-          o.material.opacity = 0;
+    g.traverse((o: THREE.Object3D) => {
+      if ('isMesh' in o && o.isMesh) {
+        const mesh = o as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        
+        // Apply custom materials if provided
+        if (customMaterials && mesh.name && customMaterials[mesh.name]) {
+          mesh.material = customMaterials[mesh.name];
+        }
+        
+        // Apply wireframe mode
+        if (enableWireframe && mesh.material) {
+          const material = mesh.material as THREE.Material;
+          if ('wireframe' in material) {
+            (material as THREE.MeshStandardMaterial).wireframe = true;
+          }
+        }
+        
+        if (fadeIn && mesh.material) {
+          const material = mesh.material as THREE.Material;
+          material.transparent = true;
+          if ('opacity' in material) {
+            (material as THREE.MeshStandardMaterial).opacity = 0;
+          }
         }
       }
     });
+
+    // Setup animations if enabled
+    if (enableAnimations && content && 'animations' in content && (content as any).animations?.length > 0) {
+      mixerRef.current = new THREE.AnimationMixer(content);
+      (content as any).animations.forEach((clip: THREE.AnimationClip) => {
+        const action = mixerRef.current!.clipAction(clip);
+        action.timeScale = animationSpeed;
+        action.play();
+      });
+    }
+
+    // Setup bounding box if enabled
+    if (enableBoundingBox) {
+      boundingBoxRef.current = new THREE.BoxHelper(g, 0xffff00);
+      outer.current.add(boundingBoxRef.current);
+    }
 
     g.getWorldPosition(pivotW.current);
     pivot.copy(pivotW.current);
@@ -215,14 +262,19 @@ const ModelInner: FC<ModelInnerProps> = ({
       persp.updateProjectionMatrix();
     }
 
-    /* optional fade-in */
+
     if (fadeIn) {
       let t = 0;
       const id = setInterval(() => {
         t += 0.05;
         const v = Math.min(t, 1);
-        g.traverse((o: any) => {
-          if (o.isMesh) o.material.opacity = v;
+        g.traverse((o: THREE.Object3D) => {
+          if ('isMesh' in o && o.isMesh) {
+            const mesh = o as THREE.Mesh;
+            if (mesh.material && 'opacity' in mesh.material) {
+              (mesh.material as THREE.MeshStandardMaterial).opacity = v;
+            }
+          }
         });
         invalidate();
         if (v === 1) {
@@ -245,6 +297,7 @@ const ModelInner: FC<ModelInnerProps> = ({
       drag = true;
       lx = e.clientX;
       ly = e.clientY;
+      onInteractionStart?.();
       window.addEventListener("pointerup", up);
     };
     const move = (e: PointerEvent) => {
@@ -258,7 +311,12 @@ const ModelInner: FC<ModelInnerProps> = ({
       vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED };
       invalidate();
     };
-    const up = () => (drag = false);
+    const up = () => {
+      if (drag) {
+        drag = false;
+        onInteractionEnd?.();
+      }
+    };
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);
     return () => {
@@ -378,6 +436,17 @@ const ModelInner: FC<ModelInnerProps> = ({
 
   useFrame((_, dt) => {
     let need = false;
+    
+    // Update animations
+    if (mixerRef.current) {
+      mixerRef.current.update(dt);
+      need = true;
+    }
+    
+    // Update bounding box
+    if (boundingBoxRef.current) {
+      boundingBoxRef.current.update();
+    }
     cPar.current.x += (tPar.current.x - cPar.current.x) * PARALLAX_EASE;
     cPar.current.y += (tPar.current.y - cPar.current.y) * PARALLAX_EASE;
     const phx = cHov.current.x,
@@ -453,6 +522,19 @@ const ModelViewer: FC<ViewerProps> = ({
   autoRotate = false,
   autoRotateSpeed = 0.35,
   onModelLoaded,
+  // New functionality
+  enableWireframe = false,
+  enableBoundingBox = false,
+  enableStats = false,
+  onInteractionStart = null,
+  onInteractionEnd = null,
+  enableFullscreen = false,
+  customMaterials = {},
+  enableAnimations = false,
+  animationSpeed = 1.0,
+  enablePostProcessing = false,
+  bloomIntensity = 0.5,
+  className = "",
 }) => {
   useEffect(() => void useGLTF.preload(url), [url]);
   const pivot = useRef(new THREE.Vector3()).current;
@@ -460,6 +542,8 @@ const ModelViewer: FC<ViewerProps> = ({
   const rendererRef = useRef<THREE.WebGLRenderer>(null);
   const sceneRef = useRef<THREE.Scene>(null);
   const cameraRef = useRef<THREE.Camera>(null);
+  const boundingBoxRef = useRef<THREE.BoxHelper | null>(null);
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
 
   const initYaw = deg2rad(defaultRotationX);
   const initPitch = deg2rad(defaultRotationY);
@@ -475,13 +559,15 @@ const ModelViewer: FC<ViewerProps> = ({
     if (!g || !s || !c) return;
     g.shadowMap.enabled = false;
     const tmp: { l: THREE.Light; cast: boolean }[] = [];
-    s.traverse((o: any) => {
-      if (o.isLight && "castShadow" in o) {
-        tmp.push({ l: o, cast: o.castShadow });
-        o.castShadow = false;
+    s.traverse((o: THREE.Object3D) => {
+      if ('isLight' in o && o.isLight && "castShadow" in o) {
+        const light = o as THREE.Light;
+        tmp.push({ l: light, cast: light.castShadow });
+        light.castShadow = false;
       }
     });
     if (contactRef.current) contactRef.current.visible = false;
+    if (boundingBoxRef.current) boundingBoxRef.current.visible = false;
     g.render(s, c);
     const urlPNG = g.domElement.toDataURL("image/png");
     const a = document.createElement("a");
@@ -491,6 +577,29 @@ const ModelViewer: FC<ViewerProps> = ({
     g.shadowMap.enabled = true;
     tmp.forEach(({ l, cast }) => (l.castShadow = cast));
     if (contactRef.current) contactRef.current.visible = true;
+    if (boundingBoxRef.current) boundingBoxRef.current.visible = true;
+    invalidate();
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  const toggleWireframe = () => {
+    if (!sceneRef.current) return;
+    sceneRef.current.traverse((o: THREE.Object3D) => {
+      if ('isMesh' in o && o.isMesh) {
+        const mesh = o as THREE.Mesh;
+        if (mesh.material && 'wireframe' in mesh.material) {
+          (mesh.material as THREE.MeshStandardMaterial).wireframe = 
+            !(mesh.material as THREE.MeshStandardMaterial).wireframe;
+        }
+      }
+    });
     invalidate();
   };
 
@@ -501,15 +610,48 @@ const ModelViewer: FC<ViewerProps> = ({
         height,
         touchAction: "pan-y pinch-zoom",
       }}
-      className="relative"
+      className={`relative ${className}`}
     >
-      {showScreenshotButton && (
-        <button
-          onClick={capture}
-          className="absolute top-4 right-4 z-10 cursor-pointer px-4 py-2 border border-white rounded-xl bg-transparent text-white hover:bg-white hover:text-black transition-colors"
-        >
-          Take Screenshot
-        </button>
+      <div className="absolute top-4 right-4 z-10 flex gap-2">
+        {showScreenshotButton && (
+          <button
+            onClick={capture}
+            aria-label="Take screenshot of 3D model"
+            className="cursor-pointer px-4 py-2 border border-white rounded-xl bg-transparent text-white hover:bg-white hover:text-black transition-colors"
+          >
+            📷
+          </button>
+        )}
+        
+        {enableWireframe && (
+          <button
+            onClick={toggleWireframe}
+            aria-label="Toggle wireframe mode"
+            className="cursor-pointer px-4 py-2 border border-white rounded-xl bg-transparent text-white hover:bg-white hover:text-black transition-colors"
+          >
+            🔲
+          </button>
+        )}
+        
+        {enableFullscreen && (
+          <button
+            onClick={toggleFullscreen}
+            aria-label="Toggle fullscreen"
+            className="cursor-pointer px-4 py-2 border border-white rounded-xl bg-transparent text-white hover:bg-white hover:text-black transition-colors"
+          >
+            ⛶
+          </button>
+        )}
+      </div>
+      
+      {enableStats && (
+        <div className="absolute top-4 left-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded text-sm">
+          <div>Model: {url.split('/').pop()}</div>
+          <div>Format: {url.split('.').pop()?.toUpperCase()}</div>
+          {enableAnimations && mixerRef.current && (
+            <div>Animations: Active</div>
+          )}
+        </div>
       )}
 
       <Canvas

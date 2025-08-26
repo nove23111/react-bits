@@ -52,13 +52,17 @@ const createParticleElement = (
 ) => {
   const el = document.createElement("div");
   el.className = "particle";
+  const isMobile = window.innerWidth <= 768;
+  const particleSize = isMobile ? '2px' : '4px';
+  const shadowSize = isMobile ? '3px' : '6px';
+  
   el.style.cssText = `
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: ${particleSize};
+    height: ${particleSize};
     border-radius: 50%;
     background: rgba(${color}, 1);
-    box-shadow: 0 0 6px rgba(${color}, 0.6);
+    box-shadow: 0 0 ${shadowSize} rgba(${color}, 0.6);
     pointer-events: none;
     z-index: 100;
     left: ${x}px;
@@ -359,8 +363,8 @@ const GlobalSpotlight = ({
     spotlight.className = "global-spotlight";
     spotlight.style.cssText = `
       position: fixed;
-      width: 800px;
-      height: 800px;
+      width: clamp(400px, 50vw, 800px);
+      height: clamp(400px, 50vw, 800px);
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(circle,

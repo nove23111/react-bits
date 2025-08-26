@@ -32,7 +32,7 @@ const ElasticSlider: React.FC<ElasticSliderProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-4 w-48 ${className}`}
+      className={`flex flex-col items-center justify-center gap-4 w-40 sm:w-48 ${className}`}
     >
       <Slider
         defaultValue={defaultValue}

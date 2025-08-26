@@ -813,8 +813,22 @@ class InfiniteGridMenu {
     this.animate(this._deltaTime);
     this.render();
 
-    requestAnimationFrame((t) => this.run(t));
+    this.animationId = requestAnimationFrame((t) => this.run(t));
   }
+
+  public destroy(): void {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+    if (this.autoRotateInterval) {
+      clearInterval(this.autoRotateInterval);
+      this.autoRotateInterval = null;
+    }
+  }
+
+  private animationId: number | null = null;
+  private autoRotateInterval: number | null = null;
 
   private init(onInit?: InitCallback): void {
     const gl = this.canvas.getContext("webgl2", {
@@ -1280,7 +1294,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     if (activeItem.link.startsWith("http")) {
       window.open(activeItem.link, "_blank");
     } else {
-      console.log("Internal route:", activeItem.link);
+
     }
   };
 
@@ -1300,6 +1314,15 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
 
           <div
             onClick={handleButtonClick}
+            role="button"
+            tabIndex={0}
+            aria-label={activeItem?.label ? `Navigate to ${activeItem.label}` : "Navigate"}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleButtonClick();
+              }
+            }}
             className={`action-button ${isMoving ? "inactive" : "active"}`}
           >
             <p className="action-button-icon">&#x2197;</p>

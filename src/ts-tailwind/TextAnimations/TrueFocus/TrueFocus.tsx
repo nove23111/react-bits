@@ -9,6 +9,11 @@ interface TrueFocusProps {
     glowColor?: string;
     animationDuration?: number;
     pauseBetweenAnimations?: number;
+    enableSoundEffects?: boolean;
+    soundVolume?: number;
+    onWordFocus?: (word: string, index: number) => void;
+    customFocusIndicator?: 'corners' | 'underline' | 'highlight' | 'glow';
+    enableTypewriter?: boolean;
 }
 
 interface FocusRect {
@@ -26,13 +31,66 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     glowColor = "rgba(0, 255, 0, 0.6)",
     animationDuration = 0.5,
     pauseBetweenAnimations = 1,
+    enableSoundEffects = false,
+    soundVolume = 0.3,
+    onWordFocus,
+    customFocusIndicator = 'corners',
+    enableTypewriter = false,
 }) => {
     const words = sentence.split(" ");
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);
+    const [typewriterText, setTypewriterText] = useState<string>("");
     const containerRef = useRef<HTMLDivElement | null>(null);
     const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
     const [focusRect, setFocusRect] = useState<FocusRect>({ x: 0, y: 0, width: 0, height: 0 });
+    const audioContextRef = useRef<AudioContext | null>(null);
+
+    const playFocusSound = () => {
+        if (!enableSoundEffects) return;
+        
+        try {
+            if (!audioContextRef.current) {
+                audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            }
+            
+            const ctx = audioContextRef.current;
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0, ctx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(soundVolume, ctx.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+            
+            oscillator.start(ctx.currentTime);
+            oscillator.stop(ctx.currentTime + 0.1);
+        } catch (error) {
+            console.warn('Audio not supported:', error);
+        }
+    };
+
+    const updateTypewriter = (targetWord: string) => {
+        if (!enableTypewriter) return;
+        
+        let currentText = "";
+        let charIndex = 0;
+        
+        const typeInterval = setInterval(() => {
+            if (charIndex < targetWord.length) {
+                currentText += targetWord[charIndex];
+                setTypewriterText(currentText);
+                charIndex++;
+            } else {
+                clearInterval(typeInterval);
+            }
+        }, 50);
+    };
 
     useEffect(() => {
         if (!manualMode) {
@@ -57,6 +115,16 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
             width: activeRect.width,
             height: activeRect.height,
         });
+
+        playFocusSound();
+        
+        if (onWordFocus) {
+            onWordFocus(words[currentIndex], currentIndex);
+        }
+        
+        if (enableTypewriter) {
+            updateTypewriter(words[currentIndex]);
+        }
     }, [currentIndex, words.length]);
 
     const handleMouseEnter = (index: number) => {
@@ -120,28 +188,28 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
                 } as React.CSSProperties}
             >
                 <span
-                    className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] left-[-10px] border-r-0 border-b-0"
+                    className="absolute w-3 h-3 sm:w-4 sm:h-4 border-2 sm:border-[3px] rounded-[2px] sm:rounded-[3px] top-[-8px] sm:top-[-10px] left-[-8px] sm:left-[-10px] border-r-0 border-b-0"
                     style={{
                         borderColor: "var(--border-color)",
                         filter: "drop-shadow(0 0 4px var(--border-color))",
                     }}
                 ></span>
                 <span
-                    className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
+                    className="absolute w-3 h-3 sm:w-4 sm:h-4 border-2 sm:border-[3px] rounded-[2px] sm:rounded-[3px] top-[-8px] sm:top-[-10px] right-[-8px] sm:right-[-10px] border-l-0 border-b-0"
                     style={{
                         borderColor: "var(--border-color)",
                         filter: "drop-shadow(0 0 4px var(--border-color))",
                     }}
                 ></span>
                 <span
-                    className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
+                    className="absolute w-3 h-3 sm:w-4 sm:h-4 border-2 sm:border-[3px] rounded-[2px] sm:rounded-[3px] bottom-[-8px] sm:bottom-[-10px] left-[-8px] sm:left-[-10px] border-r-0 border-t-0"
                     style={{
                         borderColor: "var(--border-color)",
                         filter: "drop-shadow(0 0 4px var(--border-color))",
                     }}
                 ></span>
                 <span
-                    className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
+                    className="absolute w-3 h-3 sm:w-4 sm:h-4 border-2 sm:border-[3px] rounded-[2px] sm:rounded-[3px] bottom-[-8px] sm:bottom-[-10px] right-[-8px] sm:right-[-10px] border-l-0 border-t-0"
                     style={{
                         borderColor: "var(--border-color)",
                         filter: "drop-shadow(0 0 4px var(--border-color))",

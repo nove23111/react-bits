@@ -77,8 +77,8 @@ const createParticleElement = (
   el.className = "particle";
   el.style.cssText = `
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: clamp(2px, 0.5vw, 4px);
+    height: clamp(2px, 0.5vw, 4px);
     border-radius: 50%;
     background: rgba(${color}, 1);
     box-shadow: 0 0 6px rgba(${color}, 0.6);
@@ -398,8 +398,8 @@ const GlobalSpotlight: React.FC<{
     spotlight.className = "global-spotlight";
     spotlight.style.cssText = `
       position: fixed;
-      width: 800px;
-      height: 800px;
+      width: clamp(400px, 80vw, 800px);
+      height: clamp(400px, 80vw, 800px);
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(circle,

@@ -1275,7 +1275,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     if (activeItem.link.startsWith("http")) {
       window.open(activeItem.link, "_blank");
     } else {
-      console.log("Internal route:", activeItem.link);
+
     }
   };
 
@@ -1334,6 +1334,15 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
 
           <div
             onClick={handleButtonClick}
+            role="button"
+            tabIndex={0}
+            aria-label={activeItem?.label ? `Navigate to ${activeItem.label}` : "Navigate"}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleButtonClick();
+              }
+            }}
             className={`
           absolute
           left-1/2

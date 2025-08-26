@@ -257,7 +257,9 @@ function createShader(gl, type, source) {
     return shader;
   }
 
-  console.error(gl.getShaderInfoLog(shader));
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(gl.getShaderInfoLog(shader));
+  }
   gl.deleteShader(shader);
   return null;
 }
@@ -287,7 +289,9 @@ function createProgram(gl, shaderSources, transformFeedbackVaryings, attribLocat
     return program;
   }
 
-  console.error(gl.getProgramInfoLog(program));
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(gl.getProgramInfoLog(program));
+  }
   gl.deleteProgram(program);
   return null;
 }
@@ -321,7 +325,7 @@ function makeVertexArray(gl, bufLocNumElmPairs, indices) {
 }
 
 function resizeCanvasToDisplaySize(canvas) {
-  const dpr = Math.min(2, window.devicePixelRatio);
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
   const displayWidth = Math.round(canvas.clientWidth * dpr);
   const displayHeight = Math.round(canvas.clientHeight * dpr);
   const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight;
@@ -550,7 +554,51 @@ class InfiniteGridMenu {
     this.#animate(this.#deltaTime);
     this.#render();
 
-    requestAnimationFrame((t) => this.run(t));
+    this.animationId = requestAnimationFrame((t) => this.run(t));
+  }
+
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+    if (this.autoRotateInterval) {
+      clearInterval(this.autoRotateInterval);
+      this.autoRotateInterval = null;
+    }
+  }
+
+  enableAutoRotate(speed = 0.5) {
+    this.autoRotateInterval = setInterval(() => {
+      if (!this.control.isPointerDown) {
+        const rotationAmount = speed * 0.01;
+        const currentOrientation = quat.clone(this.control.orientation);
+        const rotationQuat = quat.fromEuler(quat.create(), 0, rotationAmount, 0);
+        quat.multiply(this.control.orientation, rotationQuat, currentOrientation);
+      }
+    }, 16);
+  }
+
+  navigateLeft() {
+    this.#simulateRotation(0.1, 0);
+  }
+
+  navigateRight() {
+    this.#simulateRotation(-0.1, 0);
+  }
+
+  navigateUp() {
+    this.#simulateRotation(0, 0.1);
+  }
+
+  navigateDown() {
+    this.#simulateRotation(0, -0.1);
+  }
+
+  #simulateRotation(x, y) {
+    const rotationQuat = quat.fromEuler(quat.create(), y, x, 0);
+    quat.multiply(this.control.orientation, rotationQuat, this.control.orientation);
+    quat.normalize(this.control.orientation, this.control.orientation);
   }
 
   #init(onInit) {
@@ -833,10 +881,18 @@ const defaultItems = [
   },
 ];
 
-export default function InfiniteMenu({ items = [] }) {
+export default function InfiniteMenu({ 
+  items = [], 
+  onItemSelect = null,
+  enableKeyboardNavigation = true,
+  autoRotate = false,
+  autoRotateSpeed = 0.5,
+  enableHapticFeedback = true
+}) {
   const canvasRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
+  const sketchRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -844,7 +900,18 @@ export default function InfiniteMenu({ items = [] }) {
 
     const handleActiveItem = (index) => {
       const itemIndex = index % items.length;
-      setActiveItem(items[itemIndex]);
+      const item = items[itemIndex];
+      setActiveItem(item);
+      
+      // Haptic feedback
+      if (enableHapticFeedback && navigator.vibrate) {
+        navigator.vibrate(10);
+      }
+      
+      // Callback for item selection
+      if (onItemSelect) {
+        onItemSelect(item, itemIndex);
+      }
     };
 
     if (canvas) {
@@ -853,8 +920,16 @@ export default function InfiniteMenu({ items = [] }) {
         items.length ? items : defaultItems,
         handleActiveItem,
         setIsMoving,
-        (sk) => sk.run()
+        (sk) => {
+          sketchRef.current = sk;
+          sk.run();
+        }
       );
+      
+      // Auto-rotate functionality
+      if (autoRotate) {
+        sketch.enableAutoRotate(autoRotateSpeed);
+      }
     }
 
     const handleResize = () => {
@@ -866,17 +941,59 @@ export default function InfiniteMenu({ items = [] }) {
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Keyboard navigation
+    const handleKeyDown = (e) => {
+      if (!enableKeyboardNavigation || !sketch) return;
+      
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          sketch.navigateLeft();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          sketch.navigateRight();
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          sketch.navigateUp();
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          sketch.navigateDown();
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          if (activeItem) {
+            handleButtonClick();
+          }
+          break;
+      }
+    };
+
+    if (enableKeyboardNavigation) {
+      canvas.addEventListener('keydown', handleKeyDown);
+      canvas.setAttribute('tabindex', '0');
+    }
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (enableKeyboardNavigation && canvas) {
+        canvas.removeEventListener('keydown', handleKeyDown);
+      }
+      if (sketch) {
+        sketch.destroy();
+      }
     };
-  }, [items]);
+  }, [items, autoRotate, autoRotateSpeed, enableKeyboardNavigation, enableHapticFeedback]);
 
   const handleButtonClick = () => {
     if (!activeItem?.link) return;
     if (activeItem.link.startsWith('http')) {
       window.open(activeItem.link, '_blank');
     } else {
-      console.log('Internal route:', activeItem.link);
+
     }
   };
 
@@ -885,8 +1002,15 @@ export default function InfiniteMenu({ items = [] }) {
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
-        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
+        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing focus:ring-2 focus:ring-blue-500"
+        role="application"
+        aria-label="Interactive 3D menu - use arrow keys to navigate, Enter to select"
+        aria-describedby="menu-instructions"
       />
+      
+      <div id="menu-instructions" className="sr-only">
+        Use arrow keys to navigate through menu items. Press Enter or Space to select the active item.
+      </div>
 
       {activeItem && (
         <>
@@ -895,14 +1019,16 @@ export default function InfiniteMenu({ items = [] }) {
           select-none
           absolute
           font-black
-          [font-size:4rem]
-          left-[1.6em]
+          text-[clamp(2rem,8vw,4rem)]
+          left-[clamp(0.5rem,5vw,1.6em)]
           top-1/2
           transform
           translate-x-[20%]
           -translate-y-1/2
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+          max-w-[60vw]
+          leading-tight
           ${isMoving
                 ? 'opacity-0 pointer-events-none duration-[100ms]'
                 : 'opacity-100 pointer-events-auto duration-[500ms]'
@@ -916,12 +1042,13 @@ export default function InfiniteMenu({ items = [] }) {
             className={`
           select-none
           absolute
-          max-w-[10ch]
-          text-[1.5rem]
+          max-w-[clamp(8ch,20vw,10ch)]
+          text-[clamp(1rem,3vw,1.5rem)]
           top-1/2
           right-[1%]
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+          leading-relaxed
           ${isMoving
                 ? 'opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2'
                 : 'opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2'
@@ -937,24 +1064,25 @@ export default function InfiniteMenu({ items = [] }) {
           absolute
           left-1/2
           z-10
-          w-[60px]
-          h-[60px]
+          w-[clamp(50px,12vw,60px)]
+          h-[clamp(50px,12vw,60px)]
           grid
           place-items-center
           bg-[#00ffff]
-          border-[5px]
+          border-[clamp(3px,1vw,5px)]
           border-black
           rounded-full
           cursor-pointer
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+          touch-manipulation
           ${isMoving
                 ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2'
-                : 'bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
+                : 'bottom-[clamp(2rem,8vw,3.8em)] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
               }
         `}
           >
-            <p className="select-none relative text-[#060010] top-[2px] text-[26px]">
+            <p className="select-none relative text-[#060010] top-[2px] text-[clamp(20px,5vw,26px)]">
               &#x2197;
             </p>
           </div>

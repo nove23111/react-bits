@@ -224,12 +224,15 @@ void main() {
       ];
 
       renderer.render({ scene: mesh });
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
 
-    requestAnimationFrame(render);
+    let animationId = requestAnimationFrame(render);
 
     return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       window.removeEventListener("resize", resize);
       if (mouseInteraction && containerRef.current) {
         containerRef.current.removeEventListener("mousemove", handleMouseMove);

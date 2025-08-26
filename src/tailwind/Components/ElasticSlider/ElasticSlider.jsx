@@ -17,10 +17,16 @@ export default function ElasticSlider({
   isStepped = false,
   stepSize = 1,
   leftIcon = <>-</>,
-  rightIcon = <>+</>
+  rightIcon = <>+</>,
+  onChange,
+  onChangeEnd,
+  showValue = true,
+  valueFormatter = (value) => Math.round(value),
+  enableKeyboard = true,
+  ariaLabel = "Slider"
 }) {
   return (
-    <div className={`flex flex-col items-center justify-center gap-4 w-48 ${className}`}>
+    <div className={`flex flex-col items-center justify-center gap-4 w-40 sm:w-48 ${className}`}>
       <Slider
         defaultValue={defaultValue}
         startingValue={startingValue}
@@ -29,6 +35,12 @@ export default function ElasticSlider({
         stepSize={stepSize}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
+        onChange={onChange}
+        onChangeEnd={onChangeEnd}
+        showValue={showValue}
+        valueFormatter={valueFormatter}
+        enableKeyboard={enableKeyboard}
+        ariaLabel={ariaLabel}
       />
     </div>
   );
@@ -42,8 +54,15 @@ function Slider({
   stepSize,
   leftIcon,
   rightIcon,
+  onChange,
+  onChangeEnd,
+  showValue,
+  valueFormatter,
+  enableKeyboard,
+  ariaLabel,
 }) {
   const [value, setValue] = useState(defaultValue);
+  const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef(null);
   const [region, setRegion] = useState("middle");
   const clientX = useMotionValue(0);
@@ -53,6 +72,55 @@ function Slider({
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
+
+  const updateValue = (newValue) => {
+    if (isStepped) {
+      newValue = Math.round(newValue / stepSize) * stepSize;
+    }
+    newValue = Math.min(Math.max(newValue, startingValue), maxValue);
+    
+    if (newValue !== value) {
+      setValue(newValue);
+      if (onChange) {
+        onChange(newValue);
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (!enableKeyboard) return;
+    
+    let newValue = value;
+    const step = isStepped ? stepSize : 1;
+    
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowUp':
+        e.preventDefault();
+        newValue = value + step;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        e.preventDefault();
+        newValue = value - step;
+        break;
+      case 'Home':
+        e.preventDefault();
+        newValue = startingValue;
+        break;
+      case 'End':
+        e.preventDefault();
+        newValue = maxValue;
+        break;
+      default:
+        return;
+    }
+    
+    updateValue(newValue);
+    if (onChangeEnd) {
+      onChangeEnd(newValue);
+    }
+  };
 
   useMotionValueEvent(clientX, "change", (latest) => {
     if (sliderRef.current) {
@@ -78,24 +146,24 @@ function Slider({
     if (e.buttons > 0 && sliderRef.current) {
       const { left, width } = sliderRef.current.getBoundingClientRect();
       let newValue = startingValue + ((e.clientX - left) / width) * (maxValue - startingValue);
-
-      if (isStepped) {
-        newValue = Math.round(newValue / stepSize) * stepSize;
-      }
-
-      newValue = Math.min(Math.max(newValue, startingValue), maxValue);
-      setValue(newValue);
+      
+      updateValue(newValue);
       clientX.jump(e.clientX);
     }
   };
 
   const handlePointerDown = (e) => {
+    setIsDragging(true);
     handlePointerMove(e);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const handlePointerUp = () => {
+    setIsDragging(false);
     animate(overflow, 0, { type: "spring", bounce: 0.5 });
+    if (onChangeEnd) {
+      onChangeEnd(value);
+    }
   };
 
   const getRangePercentage = () => {
@@ -137,6 +205,14 @@ function Slider({
           onPointerMove={handlePointerMove}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
+          onKeyDown={handleKeyDown}
+          tabIndex={enableKeyboard ? 0 : -1}
+          role="slider"
+          aria-label={ariaLabel}
+          aria-valuemin={startingValue}
+          aria-valuemax={maxValue}
+          aria-valuenow={value}
+          aria-valuetext={valueFormatter(value)}
         >
           <motion.div
             style={{
@@ -182,9 +258,11 @@ function Slider({
           {rightIcon}
         </motion.div>
       </motion.div>
-      <p className="absolute text-gray-400 transform -translate-y-4 text-xs font-medium tracking-wide">
-        {Math.round(value)}
-      </p>
+      {showValue && (
+        <p className="absolute text-gray-400 transform -translate-y-4 text-xs font-medium tracking-wide">
+          {valueFormatter(value)}
+        </p>
+      )}
     </>
   );
 }

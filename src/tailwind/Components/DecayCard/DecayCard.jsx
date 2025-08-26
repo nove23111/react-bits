@@ -87,12 +87,15 @@ const DecayCard = ({
 
       cachedCursor.current = { ...cursor.current };
 
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
 
-    render();
+    let animationId = requestAnimationFrame(render);
 
     return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
     };

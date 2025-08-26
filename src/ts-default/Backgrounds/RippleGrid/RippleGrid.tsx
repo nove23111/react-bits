@@ -240,13 +240,16 @@ void main() {
       ];
 
       renderer.render({ scene: mesh });
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
 
-    requestAnimationFrame(render);
+    let animationId: number = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener("resize", resize);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       if (mouseInteraction && containerRef.current) {
         containerRef.current.removeEventListener("mousemove", handleMouseMove);
         containerRef.current.removeEventListener(

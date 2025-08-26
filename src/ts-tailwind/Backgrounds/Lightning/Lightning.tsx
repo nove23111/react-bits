@@ -6,6 +6,18 @@ interface LightningProps {
   speed?: number;
   intensity?: number;
   size?: number;
+  // New props
+  enableBranching?: boolean;
+  branchingIntensity?: number;
+  enablePulse?: boolean;
+  pulseSpeed?: number;
+  enableColorShift?: boolean;
+  colorShiftSpeed?: number;
+  enableInteractivity?: boolean;
+  onLightningStrike?: () => void;
+  enableSoundReactive?: boolean;
+  audioFrequencyData?: Uint8Array;
+  className?: string;
 }
 
 const Lightning: React.FC<LightningProps> = ({
@@ -14,8 +26,22 @@ const Lightning: React.FC<LightningProps> = ({
   speed = 1,
   intensity = 1,
   size = 1,
+  // idea
+  enableBranching = false,
+  branchingIntensity = 0.5,
+  enablePulse = false,
+  pulseSpeed = 2.0,
+  enableColorShift = false,
+  colorShiftSpeed = 0.5,
+  enableInteractivity = false,
+  onLightningStrike = null,
+  enableSoundReactive = false,
+  audioFrequencyData = null,
+  className = "",
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mousePositionRef = useRef({ x: 0, y: 0 });
+  const lastStrikeTimeRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -50,6 +76,15 @@ const Lightning: React.FC<LightningProps> = ({
       uniform float uSpeed;
       uniform float uIntensity;
       uniform float uSize;
+      uniform bool uEnableBranching;
+      uniform float uBranchingIntensity;
+      uniform bool uEnablePulse;
+      uniform float uPulseSpeed;
+      uniform bool uEnableColorShift;
+      uniform float uColorShiftSpeed;
+      uniform vec2 uMousePosition;
+      uniform bool uEnableInteractivity;
+      uniform float uAudioIntensity;
       
       #define OCTAVE_COUNT 10
 
@@ -107,11 +142,57 @@ const Lightning: React.FC<LightningProps> = ({
           uv.x *= iResolution.x / iResolution.y;
           uv.x += uXOffset;
           
-          uv += 2.0 * fbm(uv * uSize + 0.8 * iTime * uSpeed) - 1.0;
+          // Interactive mouse influence
+          if (uEnableInteractivity) {
+              vec2 mouseUv = (uMousePosition / iResolution.xy) * 2.0 - 1.0;
+              mouseUv.x *= iResolution.x / iResolution.y;
+              float mouseDist = length(uv - mouseUv);
+              uv += (uv - mouseUv) * 0.1 * exp(-mouseDist * 2.0);
+          }
+          
+          float baseSize = uSize;
+          float baseIntensity = uIntensity;
+          
+          // Pulse effect
+          if (uEnablePulse) {
+              float pulse = 0.5 + 0.5 * sin(iTime * uPulseSpeed);
+              baseIntensity *= (0.7 + 0.6 * pulse);
+              baseSize *= (0.8 + 0.4 * pulse);
+          }
+          
+          // Audio reactive
+          if (uAudioIntensity > 0.0) {
+              baseIntensity *= (1.0 + uAudioIntensity * 2.0);
+              baseSize *= (1.0 + uAudioIntensity * 0.5);
+          }
+          
+          vec2 noiseUv = uv * baseSize + 0.8 * iTime * uSpeed;
+          
+          // Branching effect
+          if (uEnableBranching) {
+              float branchNoise = fbm(noiseUv * 2.0 + vec2(iTime * 0.3, 0.0));
+              noiseUv += branchNoise * uBranchingIntensity * 0.5;
+          }
+          
+          uv += 2.0 * fbm(noiseUv) - 1.0;
           
           float dist = abs(uv.x);
-          vec3 baseColor = hsv2rgb(vec3(uHue / 360.0, 0.7, 0.8));
-          vec3 col = baseColor * pow(mix(0.0, 0.07, hash11(iTime * uSpeed)) / dist, 1.0) * uIntensity;
+          
+          // Color shifting
+          float currentHue = uHue;
+          if (uEnableColorShift) {
+              currentHue += sin(iTime * uColorShiftSpeed) * 60.0;
+          }
+          
+          vec3 baseColor = hsv2rgb(vec3(currentHue / 360.0, 0.7, 0.8));
+          vec3 col = baseColor * pow(mix(0.0, 0.07, hash11(iTime * uSpeed)) / dist, 1.0) * baseIntensity;
+          
+          // Additional branching glow
+          if (uEnableBranching) {
+              float branchGlow = exp(-dist * 20.0) * uBranchingIntensity;
+              col += baseColor * branchGlow * 0.3;
+          }
+          
           col = pow(col, vec3(1.0));
           fragColor = vec4(col, 1.0);
       }
@@ -173,8 +254,42 @@ const Lightning: React.FC<LightningProps> = ({
     const uSpeedLocation = gl.getUniformLocation(program, "uSpeed");
     const uIntensityLocation = gl.getUniformLocation(program, "uIntensity");
     const uSizeLocation = gl.getUniformLocation(program, "uSize");
+    const uEnableBranchingLocation = gl.getUniformLocation(program, "uEnableBranching");
+    const uBranchingIntensityLocation = gl.getUniformLocation(program, "uBranchingIntensity");
+    const uEnablePulseLocation = gl.getUniformLocation(program, "uEnablePulse");
+    const uPulseSpeedLocation = gl.getUniformLocation(program, "uPulseSpeed");
+    const uEnableColorShiftLocation = gl.getUniformLocation(program, "uEnableColorShift");
+    const uColorShiftSpeedLocation = gl.getUniformLocation(program, "uColorShiftSpeed");
+    const uMousePositionLocation = gl.getUniformLocation(program, "uMousePosition");
+    const uEnableInteractivityLocation = gl.getUniformLocation(program, "uEnableInteractivity");
+    const uAudioIntensityLocation = gl.getUniformLocation(program, "uAudioIntensity");
+
+    // Mouse interaction handler
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!enableInteractivity) return;
+      const rect = canvas.getBoundingClientRect();
+      mousePositionRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    const handleClick = () => {
+      if (!enableInteractivity || !onLightningStrike) return;
+      const currentTime = performance.now();
+      if (currentTime - lastStrikeTimeRef.current > 500) { // Throttle strikes
+        onLightningStrike();
+        lastStrikeTimeRef.current = currentTime;
+      }
+    };
+
+    if (enableInteractivity) {
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('click', handleClick);
+    }
 
     const startTime = performance.now();
+    let animationId: number;
     const render = () => {
       resizeCanvas();
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -186,17 +301,50 @@ const Lightning: React.FC<LightningProps> = ({
       gl.uniform1f(uSpeedLocation, speed);
       gl.uniform1f(uIntensityLocation, intensity);
       gl.uniform1f(uSizeLocation, size);
+      
+      // New uniforms
+      gl.uniform1i(uEnableBranchingLocation, enableBranching ? 1 : 0);
+      gl.uniform1f(uBranchingIntensityLocation, branchingIntensity);
+      gl.uniform1i(uEnablePulseLocation, enablePulse ? 1 : 0);
+      gl.uniform1f(uPulseSpeedLocation, pulseSpeed);
+      gl.uniform1i(uEnableColorShiftLocation, enableColorShift ? 1 : 0);
+      gl.uniform1f(uColorShiftSpeedLocation, colorShiftSpeed);
+      gl.uniform2f(uMousePositionLocation, mousePositionRef.current.x, mousePositionRef.current.y);
+      gl.uniform1i(uEnableInteractivityLocation, enableInteractivity ? 1 : 0);
+      
+      // Audio reactive
+      let audioIntensity = 0;
+      if (enableSoundReactive && audioFrequencyData) {
+        const avgFrequency = Array.from(audioFrequencyData).reduce((a, b) => a + b, 0) / audioFrequencyData.length;
+        audioIntensity = avgFrequency / 255;
+      }
+      gl.uniform1f(uAudioIntensityLocation, audioIntensity);
+      
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
-    requestAnimationFrame(render);
+    animationId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      if (enableInteractivity) {
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('click', handleClick);
+      }
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
-  }, [hue, xOffset, speed, intensity, size]);
+  }, [hue, xOffset, speed, intensity, size, enableBranching, branchingIntensity, enablePulse, pulseSpeed, enableColorShift, colorShiftSpeed, enableInteractivity, enableSoundReactive]);
 
-  return <canvas ref={canvasRef} className="w-full h-full relative" />;
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className={`w-full h-full relative ${enableInteractivity ? 'cursor-pointer' : ''} ${className}`}
+      role="img"
+      aria-label="Interactive lightning background"
+    />
+  );
 };
 
 export default Lightning;

@@ -90,6 +90,9 @@ export const Plasma = ({
   scale = 1,
   opacity = 1,
   mouseInteractive = true,
+  enablePerformanceMode = false,
+  onLoad = null,
+  className = "",
 }) => {
   const containerRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -105,8 +108,8 @@ export const Plasma = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      antialias: !enablePerformanceMode,
+      dpr: enablePerformanceMode ? 1 : Math.min(window.devicePixelRatio || 1, 2),
     });
     const gl = renderer.gl;
     const canvas = gl.canvas;
@@ -180,6 +183,11 @@ export const Plasma = ({
     };
     raf = requestAnimationFrame(loop);
 
+    // Call onLoad callback when ready
+    if (onLoad) {
+      onLoad();
+    }
+
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
@@ -190,12 +198,19 @@ export const Plasma = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         containerRef.current?.removeChild(canvas);
       } catch {
-        console.warn("Canvas already removed from container");
+
       }
     };
-  }, [color, speed, direction, scale, opacity, mouseInteractive]);
+  }, [color, speed, direction, scale, opacity, mouseInteractive, enablePerformanceMode]);
 
-  return <div ref={containerRef} className="w-full h-full overflow-hidden relative" />;
+  return (
+    <div 
+      ref={containerRef} 
+      className={`w-full h-full overflow-hidden relative ${className}`}
+      role="img"
+      aria-label="Animated plasma background"
+    />
+  );
 };
 
 export default Plasma;

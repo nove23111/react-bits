@@ -92,7 +92,7 @@ const Crosshair: React.FC<CrosshairProps> = ({
         }
       );
 
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
 
       target.removeEventListener("mousemove", onMouseMove);
     };
@@ -157,8 +157,10 @@ const Crosshair: React.FC<CrosshairProps> = ({
         gsap.set(lineHorizontalRef.current, { y: renderedStyles.ty.previous });
       }
 
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
+
+    let animationId: number = requestAnimationFrame(render);
 
     const links: NodeListOf<HTMLAnchorElement> = containerRef?.current
       ? containerRef.current.querySelectorAll("a")
@@ -170,6 +172,9 @@ const Crosshair: React.FC<CrosshairProps> = ({
     });
 
     return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       target.removeEventListener("mousemove", handleMouseMove);
       target.removeEventListener("mousemove", onMouseMove);
       links.forEach((link) => {

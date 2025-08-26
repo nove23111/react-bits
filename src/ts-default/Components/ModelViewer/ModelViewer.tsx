@@ -186,13 +186,17 @@ const ModelInner: FC<ModelInnerProps> = ({
     g.position.set(-sphere.center.x, -sphere.center.y, -sphere.center.z);
     g.scale.setScalar(s);
 
-    g.traverse((o: any) => {
-      if (o.isMesh) {
-        o.castShadow = true;
-        o.receiveShadow = true;
-        if (fadeIn) {
-          o.material.transparent = true;
-          o.material.opacity = 0;
+    g.traverse((o: THREE.Object3D) => {
+      if ('isMesh' in o && o.isMesh) {
+        const mesh = o as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        if (fadeIn && mesh.material) {
+          const material = mesh.material as THREE.Material;
+          material.transparent = true;
+          if ('opacity' in material) {
+            (material as THREE.MeshStandardMaterial).opacity = 0;
+          }
         }
       }
     });
@@ -217,8 +221,13 @@ const ModelInner: FC<ModelInnerProps> = ({
       const id = setInterval(() => {
         t += 0.05;
         const v = Math.min(t, 1);
-        g.traverse((o: any) => {
-          if (o.isMesh) o.material.opacity = v;
+        g.traverse((o: THREE.Object3D) => {
+          if ('isMesh' in o && o.isMesh) {
+            const mesh = o as THREE.Mesh;
+            if (mesh.material && 'opacity' in mesh.material) {
+              (mesh.material as THREE.MeshStandardMaterial).opacity = v;
+            }
+          }
         });
         invalidate();
         if (v === 1) {
@@ -474,10 +483,11 @@ const ModelViewer: FC<ViewerProps> = ({
     if (!g || !s || !c) return;
     g.shadowMap.enabled = false;
     const tmp: { l: THREE.Light; cast: boolean }[] = [];
-    s.traverse((o: any) => {
-      if (o.isLight && "castShadow" in o) {
-        tmp.push({ l: o, cast: o.castShadow });
-        o.castShadow = false;
+    s.traverse((o: THREE.Object3D) => {
+      if ('isLight' in o && o.isLight && "castShadow" in o) {
+        const light = o as THREE.Light;
+        tmp.push({ l: light, cast: light.castShadow });
+        light.castShadow = false;
       }
     });
     if (contactRef.current) contactRef.current.visible = false;

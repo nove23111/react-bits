@@ -14,6 +14,18 @@ type Props = {
   gridRotation?: number;
   mouseInteraction?: boolean;
   mouseInteractionRadius?: number;
+  // New props
+  enableAutoRotation?: boolean;
+  autoRotationSpeed?: number;
+  enablePulse?: boolean;
+  pulseSpeed?: number;
+  enableColorShift?: boolean;
+  colorShiftSpeed?: number;
+  enablePerformanceMode?: boolean;
+  onRippleEffect?: (intensity: number) => void;
+  enableSoundReactive?: boolean;
+  audioFrequencyData?: Uint8Array;
+  className?: string;
 };
 
 const RippleGrid: React.FC<Props> = ({
@@ -29,6 +41,17 @@ const RippleGrid: React.FC<Props> = ({
   gridRotation = 0,
   mouseInteraction = true,
   mouseInteractionRadius = 1,
+  enableAutoRotation = false,
+  autoRotationSpeed = 0.5,
+  enablePulse = false,
+  pulseSpeed = 1.0,
+  enableColorShift = false,
+  colorShiftSpeed = 0.3,
+  enablePerformanceMode = false,
+  onRippleEffect = null,
+  enableSoundReactive = false,
+  audioFrequencyData = null,
+  className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePositionRef = useRef({ x: 0.5, y: 0.5 });
@@ -51,8 +74,9 @@ const RippleGrid: React.FC<Props> = ({
     };
 
     const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio, 2),
+      dpr: enablePerformanceMode ? 1 : Math.min(window.devicePixelRatio, 2),
       alpha: true,
+      antialias: !enablePerformanceMode,
     });
     const gl = renderer.gl;
     gl.enable(gl.BLEND);
@@ -86,6 +110,14 @@ uniform bool mouseInteraction;
 uniform vec2 mousePosition;
 uniform float mouseInfluence;
 uniform float mouseInteractionRadius;
+uniform bool enableAutoRotation;
+uniform float autoRotationSpeed;
+uniform bool enablePulse;
+uniform float pulseSpeed;
+uniform bool enableColorShift;
+uniform float colorShiftSpeed;
+uniform bool enableSoundReactive;
+uniform float audioIntensity;
 varying vec2 vUv;
 
 float pi = 3.141592;
@@ -100,13 +132,28 @@ void main() {
     vec2 uv = vUv * 2.0 - 1.0;
     uv.x *= iResolution.x / iResolution.y;
 
-    if (gridRotation != 0.0) {
-        uv = rotate(gridRotation * pi / 180.0) * uv;
+    float totalRotation = gridRotation;
+    if (enableAutoRotation) {
+        totalRotation += iTime * autoRotationSpeed * 10.0;
+    }
+    
+    if (totalRotation != 0.0) {
+        uv = rotate(totalRotation * pi / 180.0) * uv;
     }
 
     float dist = length(uv);
+    
+    float baseRippleIntensity = rippleIntensity;
+    if (enablePulse) {
+        baseRippleIntensity *= (1.0 + 0.5 * sin(iTime * pulseSpeed * 2.0));
+    }
+    
+    if (enableSoundReactive && audioIntensity > 0.0) {
+        baseRippleIntensity *= (1.0 + audioIntensity * 2.0);
+    }
+    
     float func = sin(pi * (iTime - dist));
-    vec2 rippleUv = uv + uv * func * rippleIntensity;
+    vec2 rippleUv = uv + uv * func * baseRippleIntensity;
 
     if (mouseInteraction && mouseInfluence > 0.0) {
         vec2 mouseUv = (mousePosition * 2.0 - 1.0);
@@ -153,6 +200,14 @@ void main() {
             uv.y * 0.5 + 0.5 * cos(iTime),
             pow(cos(iTime), 4.0)
         ) + 0.5;
+    } else if (enableColorShift) {
+        float hueShift = iTime * colorShiftSpeed;
+        vec3 baseColor = gridColor;
+        t = vec3(
+            baseColor.r * (0.5 + 0.5 * sin(hueShift)),
+            baseColor.g * (0.5 + 0.5 * sin(hueShift + 2.094)),
+            baseColor.b * (0.5 + 0.5 * sin(hueShift + 4.188))
+        );
     } else {
         t = gridColor;
     }
@@ -179,6 +234,14 @@ void main() {
       mousePosition: { value: [0.5, 0.5] },
       mouseInfluence: { value: 0 },
       mouseInteractionRadius: { value: mouseInteractionRadius },
+      enableAutoRotation: { value: enableAutoRotation },
+      autoRotationSpeed: { value: autoRotationSpeed },
+      enablePulse: { value: enablePulse },
+      pulseSpeed: { value: pulseSpeed },
+      enableColorShift: { value: enableColorShift },
+      colorShiftSpeed: { value: colorShiftSpeed },
+      enableSoundReactive: { value: enableSoundReactive },
+      audioIntensity: { value: 0 },
     };
 
     uniformsRef.current = uniforms;
@@ -238,13 +301,28 @@ void main() {
         mousePositionRef.current.y,
       ];
 
+      // Handle audio reactive functionality
+      if (enableSoundReactive && audioFrequencyData) {
+        const avgFrequency = Array.from(audioFrequencyData).reduce((a, b) => a + b, 0) / audioFrequencyData.length;
+        const normalizedIntensity = avgFrequency / 255;
+        uniforms.audioIntensity.value = normalizedIntensity;
+        
+        // Trigger ripple effect callback
+        if (onRippleEffect && normalizedIntensity > 0.1) {
+          onRippleEffect(normalizedIntensity);
+        }
+      }
+
       renderer.render({ scene: mesh });
-      requestAnimationFrame(render);
+      animationId = requestAnimationFrame(render);
     };
 
-    requestAnimationFrame(render);
+    let animationId: number = requestAnimationFrame(render);
 
     return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       window.removeEventListener("resize", resize);
       if (mouseInteraction && containerRef.current) {
         containerRef.current.removeEventListener("mousemove", handleMouseMove);
@@ -288,6 +366,13 @@ void main() {
     uniformsRef.current.gridRotation.value = gridRotation;
     uniformsRef.current.mouseInteraction.value = mouseInteraction;
     uniformsRef.current.mouseInteractionRadius.value = mouseInteractionRadius;
+    uniformsRef.current.enableAutoRotation.value = enableAutoRotation;
+    uniformsRef.current.autoRotationSpeed.value = autoRotationSpeed;
+    uniformsRef.current.enablePulse.value = enablePulse;
+    uniformsRef.current.pulseSpeed.value = pulseSpeed;
+    uniformsRef.current.enableColorShift.value = enableColorShift;
+    uniformsRef.current.colorShiftSpeed.value = colorShiftSpeed;
+    uniformsRef.current.enableSoundReactive.value = enableSoundReactive;
   }, [
     enableRainbow,
     gridColor,
@@ -301,12 +386,21 @@ void main() {
     gridRotation,
     mouseInteraction,
     mouseInteractionRadius,
+    enableAutoRotation,
+    autoRotationSpeed,
+    enablePulse,
+    pulseSpeed,
+    enableColorShift,
+    colorShiftSpeed,
+    enableSoundReactive,
   ]);
 
   return (
     <div
       ref={containerRef}
-      className="w-full h-full relative overflow-hidden [&_canvas]:block"
+      className={`w-full h-full relative overflow-hidden [&_canvas]:block ${className}`}
+      role="img"
+      aria-label="Interactive ripple grid background"
     />
   );
 };
