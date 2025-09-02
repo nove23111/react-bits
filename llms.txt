@@ -1,0 +1,197 @@
+# React Bits
+
+> React Bits is an open‑source collection of visually rich React UI pieces — Components, Animations, Backgrounds, and Text Effects — provided in four implementation variants: JavaScript + CSS, JavaScript + Tailwind, TypeScript + CSS, and TypeScript + Tailwind. Components are copy‑friendly and installable via CLI (jsrepo or shadcn) without adding a heavyweight library.
+
+Important notes for agents:
+
+- Components are organized by semantics first: UI Components, Animations, Backgrounds, TextAnimations.
+- Each component has up to 4 variants. When modifying or comparing, keep variants in sync across JS/TS and CSS/Tailwind.
+- Dependencies vary by component (e.g., gsap, motion, three, ogl). Always check dependency hints before usage.
+- Recommended usage: pick a single component per use case; heavy stacking of effects can impact UX/performance.
+
+## Docs
+
+- [Homepage](https://www.reactbits.dev): Gallery, getting started, and CLI usage.
+- [Introduction](https://www.reactbits.dev/get-started/introduction): Project mission and principles.
+- [Installation](https://www.reactbits.dev/get-started/installation): Manual copy and CLI commands (jsrepo, shadcn).
+- [MCP Setup](https://www.reactbits.dev/get-started/mcp): Add the React Bits MCP Server to AI assistants.
+
+## CLI
+
+- shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
+  - `<LANG>`: `JS` | `TS`; `<STYLE>`: `CSS` | `TW`
+  - Example: `npx shadcn@latest add https://reactbits.dev/r/SplitText-JS-CSS`
+- jsrepo: `npx jsrepo add https://reactbits.dev/<variant>/<Category>/<Component>`
+  - `<variant>`: `default` | `tailwind` | `ts/default` | `ts/tailwind`
+  - `<Category>`: `TextAnimations` | `Animations` | `Components` | `Backgrounds`
+  - Example: `npx jsrepo add https://reactbits.dev/default/TextAnimations/SplitText`
+
+Notes:
+
+- Component page URLs use kebab‑case paths like `/text-animations/split-text`.
+- CLI component identifiers use PascalCase, e.g. `SplitText`.
+
+## Text Animations
+
+- [Split Text](https://www.reactbits.dev/text-animations/split-text): Split text into characters/words and animate sequentially. CLI: shadcn `.../SplitText-<LANG>-<STYLE>`, jsrepo `.../TextAnimations/SplitText`.
+- [Blur Text](https://www.reactbits.dev/text-animations/blur-text): Soft-focus blur resolves to crisp text on reveal. CLI: `BlurText`.
+- [Circular Text](https://www.reactbits.dev/text-animations/circular-text): Arrange text around a circle with optional rotation. CLI: `CircularText`.
+- [Text Type](https://www.reactbits.dev/text-animations/text-type): Typewriter effect with blinking cursor and speed control. CLI: `TextType`.
+- [Shiny Text](https://www.reactbits.dev/text-animations/shiny-text): Shimmering highlight sweeps across text. CLI: `ShinyText`.
+- [Text Pressure](https://www.reactbits.dev/text-animations/text-pressure): Pointer‑proximity distortion/scale on text. CLI: `TextPressure`.
+- [Curved Loop](https://www.reactbits.dev/text-animations/curved-loop): Looping text along a curved path; draggable. CLI: `CurvedLoop`.
+- [Fuzzy Text](https://www.reactbits.dev/text-animations/fuzzy-text): Subtle vibrating fuzzy text with hover intensity. CLI: `FuzzyText`.
+- [Gradient Text](https://www.reactbits.dev/text-animations/gradient-text): Animated gradient sweep across live text. CLI: `GradientText`.
+- [Text Trail](https://www.reactbits.dev/text-animations/text-trail): Cursor‑following trail that stylizes the text. CLI: `TextTrail`.
+- [Falling Text](https://www.reactbits.dev/text-animations/falling-text): Physics‑inspired falling letters with bounce. CLI: `FallingText`.
+- [Text Cursor](https://www.reactbits.dev/text-animations/text-cursor): Text follows the cursor leaving trailing copies. CLI: `TextCursor`.
+- [Decrypted Text](https://www.reactbits.dev/text-animations/decrypted-text): Random glyphs scramble then resolve to the message. CLI: `DecryptedText`.
+- [True Focus](https://www.reactbits.dev/text-animations/true-focus): Cycles focus/blur across phrases to guide attention. CLI: `TrueFocus`.
+- [Scroll Float](https://www.reactbits.dev/text-animations/scroll-float): Gentle parallax float tied to scroll. CLI: `ScrollFloat`.
+- [Scroll Reveal](https://www.reactbits.dev/text-animations/scroll-reveal): Reveal text on scroll with opacity/blur easing. CLI: `ScrollReveal`.
+- [ASCII Text](https://www.reactbits.dev/text-animations/ascii-text): Animated ASCII rendering overlay for text. CLI: `ASCIIText`.
+- [Scramble Text](https://www.reactbits.dev/text-animations/scramble-text): Fast character scrambling that resolves to target text. CLI: `ScrambleText`.
+- [Rotating Text](https://www.reactbits.dev/text-animations/rotating-text): Rotates words/phrases in place with transitions. CLI: `RotatingText`.
+- [Glitch Text](https://www.reactbits.dev/text-animations/glitch-text): CRT‑style glitch and jitter effects on text. CLI: `GlitchText`.
+- [Scroll Velocity](https://www.reactbits.dev/text-animations/scroll-velocity): Speed‑aware transforms based on scroll velocity. CLI: `ScrollVelocity`.
+- [Variable Proximity](https://www.reactbits.dev/text-animations/variable-proximity): Variable font properties driven by pointer proximity. CLI: `VariableProximity`.
+- [Count Up](https://www.reactbits.dev/text-animations/count-up): Animated numeric counter with easing. CLI: `CountUp`.
+
+## Animations
+
+- [Animated Content](https://www.reactbits.dev/animations/animated-content): Wrapper to animate children on mount/scroll with direction/distance/easing. CLI: `AnimatedContent`.
+- [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple fade‑in/out content transitions with timing controls. CLI: `FadeContent`.
+- [Electric Border](https://www.reactbits.dev/animations/electric-border): Animated electric/glow border around any element. CLI: `ElectricBorder`.
+- [Pixel Transition](https://www.reactbits.dev/animations/pixel-transition): Pixelate in/out transition for content or images. CLI: `PixelTransition`.
+- [Glare Hover](https://www.reactbits.dev/animations/glare-hover): Interactive glare highlight that tracks pointer across surfaces. CLI: `GlareHover`.
+- [Logo Loop](https://www.reactbits.dev/animations/logo-loop): Infinite logo morph/loop animation. CLI: `LogoLoop`.
+- [Target Cursor](https://www.reactbits.dev/animations/target-cursor): Reticle/target cursor overlay with dynamics. CLI: `TargetCursor`.
+- [Magnet Lines](https://www.reactbits.dev/animations/magnet-lines): Lines bend/attract toward the cursor. CLI: `MagnetLines`.
+- [Gradual Blur](https://www.reactbits.dev/animations/gradual-blur): Progressive blur transition to focus/defocus content. CLI: `GradualBlur`.
+- [Click Spark](https://www.reactbits.dev/animations/click-spark): Particle spark burst on click interactions. CLI: `ClickSpark`.
+- [Magnet](https://www.reactbits.dev/animations/magnet): Elements attract to the pointer with springy motion. CLI: `Magnet`.
+- [Sticker Peel](https://www.reactbits.dev/animations/sticker-peel): Peel‑off sticker effect revealing content beneath. CLI: `StickerPeel`.
+- [Pixel Trail](https://www.reactbits.dev/animations/pixel-trail): Pixel particle trail follows cursor movement. CLI: `PixelTrail`.
+- [Cubes](https://www.reactbits.dev/animations/cubes): 3D cube field animation. CLI: `Cubes`.
+- [Metallic Paint](https://www.reactbits.dev/animations/metallic-paint): Wavy metallic shader effect with reflections. CLI: `MetallicPaint`.
+- [Noise](https://www.reactbits.dev/animations/noise): Procedural noise overlay for texture/motion. CLI: `Noise`.
+- [Shape Blur](https://www.reactbits.dev/animations/shape-blur): Clipped blur passing through geometric shapes. CLI: `ShapeBlur`.
+- [Crosshair](https://www.reactbits.dev/animations/crosshair): Crosshair UI that smoothly tracks pointer. CLI: `Crosshair`.
+- [Image Trail](https://www.reactbits.dev/animations/image-trail): Cascade of images following pointer trajectory. CLI: `ImageTrail`.
+- [Ribbons](https://www.reactbits.dev/animations/ribbons): Colorful flowing ribbons animation. CLI: `Ribbons`.
+- [Splash Cursor](https://www.reactbits.dev/animations/splash-cursor): Fluid simulation cursor that splashes and swirls. CLI: `SplashCursor`.
+- [Meta Balls](https://www.reactbits.dev/animations/meta-balls): Merging blob metaballs effect. CLI: `MetaBalls`.
+- [Blob Cursor](https://www.reactbits.dev/animations/blob-cursor): Organic blob cursor that lags toward pointer. CLI: `BlobCursor`.
+- [Star Border](https://www.reactbits.dev/animations/star-border): Animated starry border around containers. CLI: `StarBorder`.
+
+## Components
+
+- [Animated List](https://www.reactbits.dev/components/animated-list): Staggered item entrance for lists/grids. CLI: `AnimatedList`.
+- [Scroll Stack](https://www.reactbits.dev/components/scroll-stack): Overlapping panels that stack/unstack on scroll. CLI: `ScrollStack`.
+- [Bubble Menu](https://www.reactbits.dev/components/bubble-menu): Gooey bubble transition between menu items. CLI: `BubbleMenu`.
+- [Magic Bento](https://www.reactbits.dev/components/magic-bento): Animated bento grid with interactive tiles. CLI: `MagicBento`.
+- [Circular Gallery](https://www.reactbits.dev/components/circular-gallery): Radial image carousel/gallery. CLI: `CircularGallery`.
+- [Card Nav](https://www.reactbits.dev/components/card-nav): Card‑based navigation between views. CLI: `CardNav`.
+- [Stack](https://www.reactbits.dev/components/stack): Stack of cards/items with animated focus transitions. CLI: `Stack`.
+- [Fluid Glass](https://www.reactbits.dev/components/fluid-glass): Glassmorphism container with fluid distortions. CLI: `FluidGlass`.
+- [Pill Nav](https://www.reactbits.dev/components/pill-nav): Segmented control/pill‑style navigation. CLI: `PillNav`.
+- [Tilted Card](https://www.reactbits.dev/components/tilted-card): 3D tilt/parallax card on hover. CLI: `TiltedCard`.
+- [Masonry](https://www.reactbits.dev/components/masonry): Responsive masonry grid layout. CLI: `Masonry`.
+- [Glass Surface](https://www.reactbits.dev/components/glass-surface): Reflective glass surface effect wrapper. CLI: `GlassSurface`.
+- [Dome Gallery](https://www.reactbits.dev/components/dome-gallery): 3D dome/arc gallery layout. CLI: `DomeGallery`.
+- [Chroma Grid](https://www.reactbits.dev/components/chroma-grid): Animated color grid with interactive cells. CLI: `ChromaGrid`.
+- [Folder](https://www.reactbits.dev/components/folder): Folder UI with open/close animation. CLI: `Folder`.
+- [Model Viewer](https://www.reactbits.dev/components/model-viewer): Lightweight 3D model viewer. CLI: `ModelViewer`.
+- [Lanyard](https://www.reactbits.dev/components/lanyard): 3D lanyard/badge with GLB asset. CLI: `Lanyard`.
+- [Profile Card](https://www.reactbits.dev/components/profile-card): Interactive profile card layout. CLI: `ProfileCard`.
+- [Dock](https://www.reactbits.dev/components/dock): Mac‑style dock with magnification. CLI: `Dock`.
+- [Gooey Nav](https://www.reactbits.dev/components/gooey-nav): Gooey morphing navigation bar. CLI: `GooeyNav`.
+- [Pixel Card](https://www.reactbits.dev/components/pixel-card): Pixelated reveal/hover card. CLI: `PixelCard`.
+- [Carousel](https://www.reactbits.dev/components/carousel): Carousel/slider component. CLI: `Carousel`.
+- [Spotlight Card](https://www.reactbits.dev/components/spotlight-card): Spotlight illumination that follows cursor over a card. CLI: `SpotlightCard`.
+- [Flying Posters](https://www.reactbits.dev/components/flying-posters): 3D scattered poster cards with motion. CLI: `FlyingPosters`.
+- [Card Swap](https://www.reactbits.dev/components/card-swap): Swap/flip transition between cards. CLI: `CardSwap`.
+- [Infinite Scroll](https://www.reactbits.dev/components/infinite-scroll): Infinite list loader pattern. CLI: `InfiniteScroll`.
+- [Glass Icons](https://www.reactbits.dev/components/glass-icons): Icon set styled with frosted glass blur. CLI: `GlassIcons`.
+- [Decay Card](https://www.reactbits.dev/components/decay-card): Disintegrating/decay hover effect on cards. CLI: `DecayCard`.
+- [Flowing Menu](https://www.reactbits.dev/components/flowing-menu): Liquid flowing active indicator between tabs/menu items. CLI: `FlowingMenu`.
+- [Elastic Slider](https://www.reactbits.dev/components/elastic-slider): Slider handle stretches elastically then snaps with spring. CLI: `ElasticSlider`.
+- [Counter](https://www.reactbits.dev/components/counter): Animated numeric counter utility. CLI: `Counter`.
+- [Infinite Menu](https://www.reactbits.dev/components/infinite-menu): Seamlessly looping horizontal menu. CLI: `InfiniteMenu`.
+- [Rolling Gallery](https://www.reactbits.dev/components/rolling-gallery): Rolling 3D gallery with drag/auto‑play. CLI: `RollingGallery`.
+- [Stepper](https://www.reactbits.dev/components/stepper): Multi‑step progress indicator. CLI: `Stepper`.
+- [Bounce Cards](https://www.reactbits.dev/components/bounce-cards): Cards that bounce in on mount. CLI: `BounceCards`.
+
+## Backgrounds
+
+- [Prism](https://www.reactbits.dev/backgrounds/prism): Prismatic refractive planes with rotation/size controls. CLI: `Prism`.
+- [Dark Veil](https://www.reactbits.dev/backgrounds/dark-veil): Subtle animated dark veil with depth. CLI: `DarkVeil`.
+- [Silk](https://www.reactbits.dev/backgrounds/silk): Smooth cloth‑like waves with lighting. CLI: `Silk`.
+- [Light Rays](https://www.reactbits.dev/backgrounds/light-rays): Volumetric light beams/rays. CLI: `LightRays`.
+- [Pixel Blast](https://www.reactbits.dev/backgrounds/pixel-blast): Exploding pixel particles; optional liquid post. CLI: `PixelBlast`.
+- [Aurora](https://www.reactbits.dev/backgrounds/aurora): Flowing aurora gradient bands. CLI: `Aurora`.
+- [Plasma](https://www.reactbits.dev/backgrounds/plasma): Organic swirling plasma gradients. CLI: `Plasma`.
+- [Particles](https://www.reactbits.dev/backgrounds/particles): Configurable particle field. CLI: `Particles`.
+- [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Striped gradient blinds animation. CLI: `GradientBlinds`.
+- [Beams](https://www.reactbits.dev/backgrounds/beams): Crossing ribbon beams animation. CLI: `Beams`.
+- [Lightning](https://www.reactbits.dev/backgrounds/lightning): Stylized lightning arcs. CLI: `Lightning`.
+- [Prismatic Burst](https://www.reactbits.dev/backgrounds/prismatic-burst): Radial prismatic pulses/bursts. CLI: `PrismaticBurst`.
+- [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Starfield galaxy background. CLI: `Galaxy`.
+- [Dither](https://www.reactbits.dev/backgrounds/dither): Dithered wave/pixel pattern. CLI: `Dither`.
+- [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): CRT/terminal glitch effect. CLI: `FaultyTerminal`.
+- [Ripple Grid](https://www.reactbits.dev/backgrounds/ripple-grid): Rippling grid distortion. CLI: `RippleGrid`.
+- [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid pattern. CLI: `DotGrid`.
+- [Threads](https://www.reactbits.dev/backgrounds/threads): Thread‑like flowing lines. CLI: `Threads`.
+- [Hyperspeed](https://www.reactbits.dev/backgrounds/hyperspeed): Warp‑speed star streaks. CLI: `Hyperspeed`.
+- [Iridescence](https://www.reactbits.dev/backgrounds/iridescence): Iridescent color‑shifting sheen. CLI: `Iridescence`.
+- [Waves](https://www.reactbits.dev/backgrounds/waves): Rippled wave surface. CLI: `Waves`.
+- [Grid Distortion](https://www.reactbits.dev/backgrounds/grid-distortion): Dynamic grid warp. CLI: `GridDistortion`.
+- [Ballpit](https://www.reactbits.dev/backgrounds/ballpit): Physics ball‑pit of bouncing spheres. CLI: `Ballpit`.
+- [Orb](https://www.reactbits.dev/backgrounds/orb): Shaded orb with lighting. CLI: `Orb`.
+- [Letter Glitch](https://www.reactbits.dev/backgrounds/letter-glitch): Letter‑glitch shader effect. CLI: `LetterGlitch`.
+- [Grid Motion](https://www.reactbits.dev/backgrounds/grid-motion): Moving/warping grid background. CLI: `GridMotion`.
+- [Squares](https://www.reactbits.dev/backgrounds/squares): Shifting squares mosaic. CLI: `Squares`.
+- [Liquid Chrome](https://www.reactbits.dev/backgrounds/liquid-chrome): Metallic liquid chrome surface. CLI: `LiquidChrome`.
+- [Balatro](https://www.reactbits.dev/backgrounds/balatro): Balatro‑style shader background. CLI: `Balatro`.
+
+## Variants
+
+- [JavaScript + CSS (default)](src/content): Plain CSS styling; copyable into any React app.
+- [JavaScript + Tailwind](src/tailwind): Tailwind‑first implementations of the same components.
+- [TypeScript + CSS](src/ts-default): Typed variants with plain CSS.
+- [TypeScript + Tailwind](src/ts-tailwind): Typed Tailwind variants.
+
+## Programmatic Index
+
+- [registry.json](registry.json): Machine‑readable catalog of all components, variants, files, and dependencies (shadcn registry schema).
+- [generateShadcnRegistry](scripts/generateShadcnRegistry.js): Script creating shadcn‑compatible registry entries.
+- [generateComponent](scripts/generateComponent.js): Scaffolder for new component variants.
+
+## Key Dependencies
+
+- [GSAP](https://gsap.com/docs/v3/): Animation engine used by many motion components.
+- [Motion (Framer)](https://www.framer.com/motion/): Declarative motion primitives for enter/exit/stagger.
+- [three.js](https://threejs.org/docs/): 3D engine for backgrounds and interactive visuals.
+- [react‑three‑fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction): React renderer for three.js.
+- [drei](https://github.com/pmndrs/drei): Useful helpers for react‑three‑fiber scenes.
+- [ogl](https://github.com/oframe/ogl): Lightweight WebGL; shader‑driven backgrounds.
+- [Lenis](https://lenis.studiofreight.com/): Smooth scrolling, often used with scroll effects.
+- [matter‑js](https://brm.io/matter-js/), [Rapier](https://rapier.rs/docs/): Physics engines for simulation components.
+
+## MCP
+
+- [MCP Setup](https://www.reactbits.dev/get-started/mcp): How AI agents can browse/search React Bits.
+- [MCP SSE endpoint](https://react-bits-mcp.davidhzdev.workers.dev/sse): Event stream endpoint.
+- [MCP JSON‑RPC endpoint](https://react-bits-mcp.davidhzdev.workers.dev/mcp): Alternative endpoint.
+- [Model Context Protocol](https://modelcontextprotocol.io/): Protocol reference.
+
+## Development
+
+- [CONTRIBUTING.md](CONTRIBUTING.md): Workflow and quality gates; keep all 4 variants updated for component changes.
+- [package.json](package.json): Scripts for building variants and registries (jsrepo, shadcn, vite).
+- [LICENSE](LICENSE.md): License information.
+
+## Optional
+
+- [Demos](src/demo): Showcase usages and playgrounds for many components.
+- [Public build outputs](public): Prebuilt sources used by the online registry/gallery.
