@@ -12,6 +12,7 @@ export const NEW = [
   'Staggered Menu',
   'Liquid Ether',
   'Shuffle',
+  'Floating Dock',
   'Laser Flow'
 ];
 export const UPDATED = [];
