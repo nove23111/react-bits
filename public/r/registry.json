@@ -2288,6 +2288,70 @@
       ]
     },
     {
+      "name": "FloatingDock-JS-CSS",
+      "type": "registry:block",
+      "title": "FloatingDock",
+      "description": "Floating Dock component (JS variant) sourced from Aceternity UI reference.",
+      "files": [
+        {
+          "path": "public/default/src/content/Components/FloatingDock/FloatingDock.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ]
+    },
+    {
+      "name": "FloatingDock-JS-TW",
+      "type": "registry:block",
+      "title": "FloatingDock",
+      "description": "Floating Dock component (JS variant) sourced from Aceternity UI reference.",
+      "files": [
+        {
+          "path": "public/tailwind/src/tailwind/Components/FloatingDock/FloatingDock.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ]
+    },
+    {
+      "name": "FloatingDock-TS-CSS",
+      "type": "registry:block",
+      "title": "FloatingDock",
+      "description": "Floating Dock component (JS variant) sourced from Aceternity UI reference.",
+      "files": [
+        {
+          "path": "public/ts/default/src/ts-default/Components/FloatingDock/FloatingDock.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ]
+    },
+    {
+      "name": "FloatingDock-TS-TW",
+      "type": "registry:block",
+      "title": "FloatingDock",
+      "description": "Floating Dock component (JS variant) sourced from Aceternity UI reference.",
+      "files": [
+        {
+          "path": "public/ts/tailwind/src/ts-tailwind/Components/FloatingDock/FloatingDock.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ]
+    },
+    {
       "name": "FlowingMenu-JS-CSS",
       "type": "registry:block",
       "title": "FlowingMenu",

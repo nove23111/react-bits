@@ -99,6 +99,7 @@ Notes:
 - [Dock](https://www.reactbits.dev/components/dock): macOS style magnifying dock with proximity scaling of icons. CLI: `Dock`.
 - [Dome Gallery](https://www.reactbits.dev/components/dome-gallery): Immersive 3D dome gallery projecting images on a hemispheric surface. CLI: `DomeGallery`.
 - [Elastic Slider](https://www.reactbits.dev/components/elastic-slider): Slider handle stretches elastically then snaps with spring physics. CLI: `ElasticSlider`.
+- [Floating Dock](https://www.reactbits.dev/components/floating-dock): Floating Dock component (JS variant) sourced from Aceternity UI reference. CLI: `FloatingDock`.
 - [Flowing Menu](https://www.reactbits.dev/components/flowing-menu): Liquid flowing active indicator glides between menu items. CLI: `FlowingMenu`.
 - [Fluid Glass](https://www.reactbits.dev/components/fluid-glass): Glassmorphism container with animated liquid distortion refraction. CLI: `FluidGlass`.
 - [Flying Posters](https://www.reactbits.dev/components/flying-posters): 3D posters rotate on scroll infinitely. CLI: `FlyingPosters`.
