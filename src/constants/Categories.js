@@ -104,6 +104,7 @@ export const CATEGORIES = [
       'Lanyard',
       'Profile Card',
       'Dock',
+  'Floating Dock',
       'Gooey Nav',
       'Pixel Card',
       'Carousel',
