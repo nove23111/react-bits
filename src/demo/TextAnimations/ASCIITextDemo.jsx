@@ -13,7 +13,7 @@ import PreviewInput from '../../components/common/Preview/PreviewInput';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import useForceRerender from '../../hooks/useForceRerender';
 
-import ASCIIText from '../../content/TextAnimations/ASCIIText/ASCIIText';
+import AsciiText from '../../content/TextAnimations/AsciiText/AsciiText';
 import { asciiText } from '../../constants/code/TextAnimations/asciiTextCode';
 
 const propData = [
@@ -61,7 +61,7 @@ const propData = [
   }
 ];
 
-const ASCIITextDemo = () => {
+const AsciiTextDemo = () => {
   const [text, setText] = useState('Hey!');
   const [enableWaves, setEnableWaves] = useState(true);
   const [asciiFontSize, setAsciiFontSize] = useState(8);
@@ -77,7 +77,7 @@ const ASCIITextDemo = () => {
     <TabsLayout>
       <PreviewTab>
         <Box position="relative" className="demo-container" minH={400} maxH={400} overflow="hidden" mb={6}>
-          <ASCIIText
+          <AsciiText
             key={key}
             text={text}
             enableWaves={enableWaves}
@@ -130,4 +130,4 @@ const ASCIITextDemo = () => {
   );
 };
 
-export default ASCIITextDemo;
+export default AsciiTextDemo;

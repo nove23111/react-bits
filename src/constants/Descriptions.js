@@ -28,7 +28,7 @@ export const descriptions = {
   'Animations/LaserFlow': 'Dynamic laser light that flows onto a surface, customizable effect.',
 
   // Text Animations
-  'TextAnimations/ASCIIText': 'Renders text with an animated ASCII background for a retro feel.',
+  'TextAnimations/AsciiText': 'Renders text with an animated ASCII background for a retro feel.',
   'TextAnimations/BlurText': 'Text starts blurred then crisply resolves for a soft-focus reveal effect.',
   'TextAnimations/CircularText': 'Layouts characters around a circle with optional rotation animation.',
   'TextAnimations/CountUp': 'Animated number counter supporting formatting and decimals.',

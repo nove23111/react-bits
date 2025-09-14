@@ -31,7 +31,7 @@ Notes:
 
 ## Text Animations
 
-- [ASCII Text](https://www.reactbits.dev/text-animations/ascii-text): Renders text with an animated ASCII background for a retro feel. CLI: `ASCIIText`.
+- [Ascii Text](https://www.reactbits.dev/text-animations/ascii-text): Renders text with an animated ASCII background for a retro feel. CLI: `AsciiText`.
 - [Blur Text](https://www.reactbits.dev/text-animations/blur-text): Text starts blurred then crisply resolves for a soft-focus reveal effect. CLI: `BlurText`.
 - [Circular Text](https://www.reactbits.dev/text-animations/circular-text): Layouts characters around a circle with optional rotation animation. CLI: `CircularText`.
 - [Count Up](https://www.reactbits.dev/text-animations/count-up): Animated number counter supporting formatting and decimals. CLI: `CountUp`.
