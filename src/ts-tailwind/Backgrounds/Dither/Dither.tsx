@@ -187,9 +187,6 @@ interface DitheredWavesProps {
   disableAnimation: boolean;
   enableMouseInteraction: boolean;
   mouseRadius: number;
-  autoPauseOnScroll?: boolean;
-  scrollPauseThreshold?: number | null;
-  resumeOnScrollUp?: boolean;
 }
 
 function DitheredWaves({
@@ -201,21 +198,11 @@ function DitheredWaves({
   pixelSize,
   disableAnimation,
   enableMouseInteraction,
-  mouseRadius,
-  autoPauseOnScroll = true,
-  scrollPauseThreshold = null,
-  resumeOnScrollUp = true
+  mouseRadius
 }: DitheredWavesProps) {
   const mesh = useRef<THREE.Mesh>(null);
   const mouseRef = useRef(new THREE.Vector2());
   const { viewport, size, gl } = useThree();
-  
-  // Scroll-based animation pausing
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const appliedScrollThresholdRef = useRef<number | null>(null);
-  const permaPausedRef = useRef(false);
-  const frozenTimeRef = useRef(0);
 
   const waveUniformsRef = useRef<WaveUniforms>({
     time: new THREE.Uniform(0),
@@ -240,63 +227,11 @@ function DitheredWaves({
   }, [size, gl]);
 
   const prevColor = useRef([...waveColor]);
-  
-  // Scroll event handler
-  const handleScroll = useCallback(() => {
-    if (!autoPauseOnScroll) return;
-    
-    const y = window.scrollY || window.pageYOffset;
-    const limit = appliedScrollThresholdRef.current || Math.round(window.innerHeight * 1.2);
-    
-    if (!permaPausedRef.current && y > limit) {
-      setIsScrolling(true);
-      if (!resumeOnScrollUp) permaPausedRef.current = true;
-    } else if (resumeOnScrollUp && y <= limit && !permaPausedRef.current) {
-      setIsScrolling(false);
-    }
-    
-    // Clear existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-    
-    // Set timeout to resume animation after scroll ends
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 150);
-  }, [autoPauseOnScroll, resumeOnScrollUp]);
-
-  // Setup scroll listener
-  useEffect(() => {
-    if (!autoPauseOnScroll) return;
-    
-    if (!appliedScrollThresholdRef.current) {
-      appliedScrollThresholdRef.current = scrollPauseThreshold ?? Math.round(window.innerHeight * 1.2);
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [autoPauseOnScroll, scrollPauseThreshold, handleScroll]);
-
   useFrame(({ clock }) => {
     const u = waveUniformsRef.current;
 
-    // Pause animation during scroll to prevent flickering
-    const shouldPause = disableAnimation || (autoPauseOnScroll && isScrolling);
-    
-    if (!shouldPause) {
-      const elapsedTime = clock.getElapsedTime();
-      u.time.value = elapsedTime;
-      frozenTimeRef.current = elapsedTime;
-    } else {
-      u.time.value = frozenTimeRef.current;
+    if (!disableAnimation) {
+      u.time.value = clock.getElapsedTime();
     }
 
     if (u.waveSpeed.value !== waveSpeed) u.waveSpeed.value = waveSpeed;
@@ -380,12 +315,65 @@ export default function Dither({
   scrollPauseThreshold = null,
   resumeOnScrollUp = true
 }: DitherProps) {
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const appliedScrollThresholdRef = useRef<number | null>(null);
+  const permaPausedRef = useRef(false);
+
+  // Scroll event handler for Canvas-level pausing
+  const handleScroll = useCallback(() => {
+    if (!autoPauseOnScroll) return;
+    
+    const y = window.scrollY || window.pageYOffset;
+    const limit = appliedScrollThresholdRef.current || Math.round(window.innerHeight * 1.2);
+    
+    if (!permaPausedRef.current && y > limit) {
+      setIsScrolling(true);
+      if (!resumeOnScrollUp) permaPausedRef.current = true;
+    } else if (resumeOnScrollUp && y <= limit && !permaPausedRef.current) {
+      setIsScrolling(false);
+    }
+    
+    // Clear existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+    
+    // Set timeout to resume animation after scroll ends
+    scrollTimeoutRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 150);
+  }, [autoPauseOnScroll, resumeOnScrollUp]);
+
+  // Setup scroll listener
+  useEffect(() => {
+    if (!autoPauseOnScroll) return;
+    
+    if (!appliedScrollThresholdRef.current) {
+      appliedScrollThresholdRef.current = scrollPauseThreshold ?? Math.round(window.innerHeight * 1.2);
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [autoPauseOnScroll, scrollPauseThreshold, handleScroll]);
+
+  // Determine if Canvas should be paused
+  const shouldPauseCanvas = disableAnimation || (autoPauseOnScroll && isScrolling);
+
   return (
     <Canvas
       className="w-full h-full relative"
       camera={{ position: [0, 0, 6] }}
       dpr={window.devicePixelRatio}
       gl={{ antialias: true, preserveDrawingBuffer: true }}
+      frameloop={shouldPauseCanvas ? 'never' : 'always'}
     >
       <DitheredWaves
         waveSpeed={waveSpeed}
@@ -397,9 +385,6 @@ export default function Dither({
         disableAnimation={disableAnimation}
         enableMouseInteraction={enableMouseInteraction}
         mouseRadius={mouseRadius}
-        autoPauseOnScroll={autoPauseOnScroll}
-        scrollPauseThreshold={scrollPauseThreshold}
-        resumeOnScrollUp={resumeOnScrollUp}
       />
     </Canvas>
   );
