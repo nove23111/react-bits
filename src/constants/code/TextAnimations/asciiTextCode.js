@@ -1,4 +1,4 @@
-import code from '@content/TextAnimations/AsciiText/AsciiText.jsx?raw';
+import code from '@content/TextAnimations/ASCIIText/ASCIIText.jsx?raw';
 import tailwind from '@tailwind/TextAnimations/AsciiText/AsciiText.jsx?raw';
 import tsCode from '@ts-default/TextAnimations/AsciiText/AsciiText.tsx?raw';
 import tsTailwind from '@ts-tailwind/TextAnimations/AsciiText/AsciiText.tsx?raw';
