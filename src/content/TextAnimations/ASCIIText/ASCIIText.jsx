@@ -384,7 +384,7 @@ class CanvAscii {
   }
 }
 
-export default function AsciiText({
+export default function ASCIIText({
   text = 'David!',
   asciiFontSize = 8,
   textFontSize = 200,
