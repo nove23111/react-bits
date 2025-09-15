@@ -12,9 +12,9 @@ import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import logo from '../../assets/logos/react-bits-logo-small.svg';
 
+import LiquidEther from '@/content/Backgrounds/LiquidEther/LiquidEther';
 import { glassSurface } from '../../constants/code/Components/glassSurfaceCode';
 import GlassSurface from '../../content/Components/GlassSurface/GlassSurface';
-import DarkVeil from '../../content/Backgrounds/DarkVeil/DarkVeil';
 
 const GlassSurfaceDemo = () => {
   const [selectedExample, setSelectedExample] = useState('scroll');
@@ -327,10 +327,8 @@ const GlassSurfaceDemo = () => {
                 top={0}
                 left={0}
                 zIndex={0}
-                filter="grayscale(100%)"
-                mixBlendMode="screen"
               >
-                <DarkVeil speed={2} hueShift={180} noiseIntensity={0.05} />
+                <LiquidEther isBounce />
               </Box>
 
               <Box position="absolute" top="2em" left={0} width="100%" height="60px" zIndex={0} pointerEvents="none">
