@@ -136,7 +136,6 @@ const LaserFlowDemo = () => {
             fogScale={fogScale}
             fogFallSpeed={fogFallSpeed}
             decay={decay}
-            dpr={1}
             falloffStart={falloffStart}
             color={laserColor}
             key={key}
