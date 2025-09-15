@@ -132,13 +132,13 @@
       ]
     },
     {
-      "name": "AsciiText-JS-CSS",
+      "name": "ASCIIText-JS-CSS",
       "type": "registry:block",
-      "title": "AsciiText",
+      "title": "ASCIIText",
       "description": "Renders text with an animated ASCII background for a retro feel.",
       "files": [
         {
-          "path": "public/default/src/content/TextAnimations/AsciiText/AsciiText.jsx",
+          "path": "public/default/src/content/TextAnimations/ASCIIText/ASCIIText.jsx",
           "type": "registry:component"
         }
       ],
@@ -147,13 +147,13 @@
       ]
     },
     {
-      "name": "AsciiText-JS-TW",
+      "name": "ASCIIText-JS-TW",
       "type": "registry:block",
-      "title": "AsciiText",
+      "title": "ASCIIText",
       "description": "Renders text with an animated ASCII background for a retro feel.",
       "files": [
         {
-          "path": "public/tailwind/src/tailwind/TextAnimations/AsciiText/AsciiText.jsx",
+          "path": "public/tailwind/src/tailwind/TextAnimations/ASCIIText/ASCIIText.jsx",
           "type": "registry:component"
         }
       ],
@@ -162,13 +162,13 @@
       ]
     },
     {
-      "name": "AsciiText-TS-CSS",
+      "name": "ASCIIText-TS-CSS",
       "type": "registry:block",
-      "title": "AsciiText",
+      "title": "ASCIIText",
       "description": "Renders text with an animated ASCII background for a retro feel.",
       "files": [
         {
-          "path": "public/ts/default/src/ts-default/TextAnimations/AsciiText/AsciiText.tsx",
+          "path": "public/ts/default/src/ts-default/TextAnimations/ASCIIText/ASCIIText.tsx",
           "type": "registry:component"
         }
       ],
@@ -177,13 +177,13 @@
       ]
     },
     {
-      "name": "AsciiText-TS-TW",
+      "name": "ASCIIText-TS-TW",
       "type": "registry:block",
-      "title": "AsciiText",
+      "title": "ASCIIText",
       "description": "Renders text with an animated ASCII background for a retro feel.",
       "files": [
         {
-          "path": "public/ts/tailwind/src/ts-tailwind/TextAnimations/AsciiText/AsciiText.tsx",
+          "path": "public/ts/tailwind/src/ts-tailwind/TextAnimations/ASCIIText/ASCIIText.tsx",
           "type": "registry:component"
         }
       ],

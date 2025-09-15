@@ -61,7 +61,7 @@ const propData = [
   }
 ];
 
-const AsciiTextDemo = () => {
+const ASCIITextDemo = () => {
   const [text, setText] = useState('Hey!');
   const [enableWaves, setEnableWaves] = useState(true);
   const [asciiFontSize, setAsciiFontSize] = useState(8);
@@ -130,4 +130,4 @@ const AsciiTextDemo = () => {
   );
 };
 
-export default AsciiTextDemo;
+export default ASCIITextDemo;

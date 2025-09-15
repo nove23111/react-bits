@@ -8,11 +8,16 @@ const variantForJsrepo = (language, style) => {
 };
 const variantForShadcn = (language, style) => `${(language || 'JS').toUpperCase()}-${(style || 'CSS').toUpperCase()}`;
 
+const UPPERCASE_PARTS = new Set(['ascii']);
+
 const slugToComponentName = slug => {
   if (!slug) return '';
   return slug
     .split('-')
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .map(part => {
+      if (UPPERCASE_PARTS.has(part.toLowerCase())) return part.toUpperCase();
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
     .join('');
 };
 

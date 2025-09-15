@@ -458,7 +458,7 @@ class CanvAscii {
   }
 }
 
-interface AsciiTextProps {
+interface ASCIITextProps {
   text?: string;
   asciiFontSize?: number;
   textFontSize?: number;
@@ -467,14 +467,14 @@ interface AsciiTextProps {
   enableWaves?: boolean;
 }
 
-export default function AsciiText({
+export default function ASCIIText({
   text = 'David!',
   asciiFontSize = 8,
   textFontSize = 200,
   textColor = '#fdf9f3',
   planeBaseHeight = 8,
   enableWaves = true
-}: AsciiTextProps) {
+}: ASCIITextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const asciiRef = useRef<CanvAscii | null>(null);
 
