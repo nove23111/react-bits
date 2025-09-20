@@ -93,7 +93,7 @@ const AnimatedListDemo = () => {
             }}
           />
           <PreviewSwitch
-            title="Keboard Navigation"
+            title="Keyboard Navigation"
             isChecked={enableArrowNavigation}
             onChange={checked => {
               setEnableArrowNavigation(checked);
