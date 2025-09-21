@@ -16,33 +16,6 @@
   height: 100%;
   padding: 2rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  /* Advanced performance optimizations */
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: layout style paint;
-  isolation: isolate;
-  
-  /* Accessibility */
-  outline: none;
-  user-select: none;
-}
-
-/* Error state styling */
-.pro-loader-wrapper.error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: var(--border-radius);
-  color: #dc2626;
-}
-
-.error-message {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
 }
 
 /* Theme Variations */
@@ -530,140 +503,27 @@
 .pro-loader-wrapper.small .loader-text { font-size: 12px; }
 .pro-loader-wrapper.large .loader-text { font-size: 16px; }
 
-/* Responsive design and accessibility */
+/* Responsive Design */
 @media (max-width: 768px) {
   .pro-loader-wrapper {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
-  .pro-loader-wrapper.small { padding: 1rem; }
-  .pro-loader-wrapper.large { padding: 2rem; }
+  .skeleton-line, .shimmer-line {
+    height: 14px;
+  }
+  
+  .progress-track {
+    height: 6px;
+  }
 }
 
-/* Enhanced reduced motion support */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-  .pro-loader-wrapper *,
-  .pro-loader-wrapper *::before,
-  .pro-loader-wrapper *::after {
+  .pro-loader-wrapper * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    animation-play-state: paused !important;
-  }
-  
-  /* Provide alternative static indicators */
-  .pro-loader.spinner .spinner-circle {
-    border: 3px solid var(--primary-color);
-    border-top-color: transparent;
-  }
-  
-  .pro-loader.dots .dot {
-    opacity: 0.7;
-  }
-  
-  .pro-loader.pulse .pulse-circle {
-    opacity: 0.8;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .pro-loader-wrapper {
-    --primary-color: currentColor;
-    --bg-primary: transparent;
-    --bg-secondary: transparent;
-  }
-  
-  .skeleton-line,
-  .progress-bar,
-  .spinner-circle,
-  .dot,
-  .pulse-circle {
-    border: 2px solid currentColor !important;
-    background: currentColor !important;
-  }
-}
-
-/* Focus management for accessibility */
-.pro-loader-wrapper:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* Performance states */
-.pro-loader-wrapper.paused *,
-.pro-loader-wrapper.paused *::before,
-.pro-loader-wrapper.paused *::after {
-  animation-play-state: paused !important;
-}
-
-.pro-loader-wrapper.low-performance {
-  --animation-duration: calc(var(--animation-duration) * 2);
-}
-
-.pro-loader-wrapper.low-performance * {
-  animation-timing-function: linear !important;
-}
-
-/* Battery optimization */
-.pro-loader-wrapper.battery-saver {
-  --glow-intensity: 0;
-  filter: none !important;
-}
-
-.pro-loader-wrapper.battery-saver * {
-  box-shadow: none !important;
-  text-shadow: none !important;
-}
-
-/* Connection optimization */
-.pro-loader-wrapper.slow-connection .skeleton-line {
-  animation: none;
-  background: var(--bg-primary);
-}
-
-.pro-loader-wrapper.slow-connection .spinner-circle {
-  animation: none;
-  border-left-color: var(--primary-color);
-}
-
-/* Advanced GPU acceleration hints */
-.skeleton-line,
-.progress-bar,
-.spinner-circle,
-.dot,
-.pulse-circle,
-.wave-bar,
-.bounce-ball,
-.gradient-circle,
-.ripple-circle {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Memory optimization for large lists */
-.pro-loader-wrapper.minimal-memory * {
-  will-change: auto;
-  transform: none;
-}
-
-/* Adaptive quality based on device capabilities */
-@media (max-resolution: 150dpi) {
-  .pro-loader-wrapper {
-    --glow-intensity: 0;
-  }
-  
-  .pro-loader-wrapper * {
-    filter: none !important;
-    box-shadow: none !important;
-  }
-}
-
-/* CPU optimization for older devices */
-@media (max-device-width: 768px) and (max-device-height: 1024px) {
-  .pro-loader-wrapper {
-    --animation-duration: calc(var(--animation-duration) * 1.5);
   }
 }
 

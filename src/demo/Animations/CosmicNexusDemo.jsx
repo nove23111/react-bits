@@ -9,7 +9,7 @@ import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 
-import { cosmicNexusCode } from '../../constants/code/Animations/SmartLoader';
+import { smartLoader } from '../../constants/code/Animations/smartLoaderCode';
 import ProfessionalLoader from '../../content/Animations/CosmicNexus/ProfessionalLoader';
 
 const CosmicNexusDemo = () => {
@@ -29,6 +29,8 @@ const CosmicNexusDemo = () => {
   const [variant, setVariant] = useState('default');
   const [autoProgress, setAutoProgress] = useState(false);
   const [duration, setDuration] = useState(3000);
+  const [ariaLabel, setAriaLabel] = useState('Loading content');
+  const [testId, setTestId] = useState('professional-loader');
 
   const propData = [
     {
@@ -132,6 +134,8 @@ const CosmicNexusDemo = () => {
             variant={variant}
             autoProgress={autoProgress}
             duration={duration}
+            ariaLabel={ariaLabel}
+            testId={testId}
             onComplete={() => console.log('Loading complete!')}
           />
         </Box>
@@ -355,7 +359,7 @@ const CosmicNexusDemo = () => {
       </PreviewTab>
 
       <CodeTab>
-        <CodeExample codeObject={cosmicNexusCode} />
+        <CodeExample codeObject={smartLoader} />
       </CodeTab>
     </TabsLayout>
   );
