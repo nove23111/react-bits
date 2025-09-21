@@ -25,10 +25,10 @@ const ProfessionalLoader = ({
   testId = 'professional-loader'
 }) => {
   // Input validation
-  const validTypes = ['skeleton', 'progress', 'pulse', 'shimmer', 'dots', 'spinner', 'wave', 'bounce', 'gradient', 'ripple'];
+  const validTypes = ['skeleton', 'progress', 'pulse', 'shimmer', 'dots', 'spinner', 'wave', 'bounce', 'gradient', 'ripple', 'orbit', 'matrix', 'dna'];
   const validSizes = ['small', 'medium', 'large'];
   const validThemes = ['light', 'dark', 'auto'];
-  const validVariants = ['default', 'minimal', 'elegant', 'modern'];
+  const validVariants = ['default', 'minimal', 'elegant', 'modern', 'glassmorphism', 'neon', 'retro', 'premium'];
 
   const safeType = validTypes.includes(type) ? type : 'skeleton';
   const safeSize = validSizes.includes(size) ? size : 'medium';
@@ -139,16 +139,40 @@ const ProfessionalLoader = ({
         
         switch (safeVariant) {
           case 'elegant':
-            // Smooth ease-in-out
+            // Smooth ease-in-out with gentle acceleration
             easeProgress = normalizedTime < 0.5 
               ? 2 * normalizedTime * normalizedTime 
               : 1 - Math.pow(-2 * normalizedTime + 2, 3) / 2;
             break;
           case 'modern':
-            // Bounce effect near end
+            // Bounce effect near end with spring physics
             easeProgress = normalizedTime < 0.8 
               ? normalizedTime * 1.25 
               : 1 + Math.sin((normalizedTime - 0.8) * Math.PI * 5) * 0.02;
+            break;
+          case 'glassmorphism':
+            // Smooth glass-like flow
+            easeProgress = 1 - Math.cos((normalizedTime * Math.PI) / 2);
+            break;
+          case 'neon':
+            // Pulsating neon effect with steps
+            const steps = Math.floor(normalizedTime * 10) / 10;
+            easeProgress = steps + (normalizedTime % 0.1) * 10 * 0.1;
+            break;
+          case 'retro':
+            // Stepped retro animation
+            easeProgress = Math.floor(normalizedTime * 8) / 8 + 
+                          (normalizedTime % 0.125) * 8 * 0.125;
+            break;
+          case 'premium':
+            // Luxury smooth curve with anticipation
+            easeProgress = normalizedTime < 0.1 
+              ? normalizedTime * 0.5 
+              : 0.05 + (normalizedTime - 0.1) * 1.055;
+            break;
+          case 'minimal':
+            // Linear progression
+            easeProgress = normalizedTime;
             break;
           default:
             // Ease-out cubic
@@ -293,10 +317,14 @@ const ProfessionalLoader = ({
   };
 
   const getVariantClass = () => {
-    switch (variant) {
+    switch (safeVariant) {
       case 'minimal': return 'variant-minimal';
       case 'elegant': return 'variant-elegant';
       case 'modern': return 'variant-modern';
+      case 'glassmorphism': return 'variant-glassmorphism';
+      case 'neon': return 'variant-neon';
+      case 'retro': return 'variant-retro';
+      case 'premium': return 'variant-premium';
       default: return 'variant-default';
     }
   };
@@ -477,6 +505,66 @@ const ProfessionalLoader = ({
     </div>
   );
 
+  const renderOrbit = () => (
+    <div className="pro-loader orbit">
+      <div className="orbit-system">
+        <div className="orbit-center" />
+        <div className="orbit-ring orbit-ring-1">
+          <div className="orbit-dot orbit-dot-1" />
+        </div>
+        <div className="orbit-ring orbit-ring-2">
+          <div className="orbit-dot orbit-dot-2" />
+        </div>
+        <div className="orbit-ring orbit-ring-3">
+          <div className="orbit-dot orbit-dot-3" />
+        </div>
+      </div>
+      {text && <p className="loader-text">{text}</p>}
+    </div>
+  );
+
+  const renderMatrix = () => (
+    <div className="pro-loader matrix">
+      <div className="matrix-container">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div 
+            key={i} 
+            className="matrix-column"
+            style={{ '--delay': `${i * 0.1}s` }}
+          >
+            {Array.from({ length: 6 }, (_, j) => (
+              <div 
+                key={j} 
+                className="matrix-char"
+                style={{ '--char-delay': `${j * 0.05}s` }}
+              >
+                {Math.random() > 0.5 ? '1' : '0'}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderDNA = () => (
+    <div className="pro-loader dna">
+      <div className="dna-helix">
+        {Array.from({ length: 12 }, (_, i) => (
+          <div 
+            key={i} 
+            className="dna-strand"
+            style={{ '--strand-delay': `${i * 0.1}s` }}
+          >
+            <div className="dna-base dna-base-left" />
+            <div className="dna-connection" />
+            <div className="dna-base dna-base-right" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const getLoader = () => {
     switch (safeType) {
       case 'skeleton': return renderSkeleton();
@@ -489,6 +577,9 @@ const ProfessionalLoader = ({
       case 'bounce': return renderBounce();
       case 'gradient': return renderGradient();
       case 'ripple': return renderRipple();
+      case 'orbit': return renderOrbit();
+      case 'matrix': return renderMatrix();
+      case 'dna': return renderDNA();
       default: return renderSkeleton();
     }
   };

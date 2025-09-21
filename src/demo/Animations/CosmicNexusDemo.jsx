@@ -13,7 +13,7 @@ import { smartLoader } from '../../constants/code/Animations/smartLoaderCode';
 import ProfessionalLoader from '../../content/Animations/CosmicNexus/ProfessionalLoader';
 
 const CosmicNexusDemo = () => {
-  const [type, setType] = useState('skeleton');
+  const [type, setType] = useState('matrix');
   const [size, setSize] = useState('medium');
   const [color, setColor] = useState('#3b82f6');
   const [speed, setSpeed] = useState(1);
@@ -37,7 +37,7 @@ const CosmicNexusDemo = () => {
       name: 'type',
       type: 'string',
       default: 'skeleton',
-      description: 'Type of loader: skeleton, progress, pulse, shimmer, dots, spinner, wave, bounce, gradient, ripple'
+      description: 'Type of loader: skeleton, progress, pulse, shimmer, dots, spinner, wave, bounce, gradient, ripple, orbit, matrix, dna'
     },
     {
       name: 'size',
@@ -118,6 +118,7 @@ const CosmicNexusDemo = () => {
       <PreviewTab>
         <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden" bg={theme === 'dark' ? 'gray.900' : 'white'} borderRadius="lg" border="1px solid" borderColor={theme === 'dark' ? 'gray.700' : 'gray.200'}>
           <ProfessionalLoader
+            key={`${type}-${variant}-${color}-${theme}`}
             type={type}
             size={size}
             color={color}
@@ -170,6 +171,9 @@ const CosmicNexusDemo = () => {
               <option value="bounce">Bounce</option>
               <option value="gradient">Gradient</option>
               <option value="ripple">Ripple</option>
+              <option value="orbit">Orbit</option>
+              <option value="matrix">Matrix</option>
+              <option value="dna">DNA</option>
             </select>
           </Box>
 
@@ -200,18 +204,24 @@ const CosmicNexusDemo = () => {
 
           <Box mb={3}>
             <Text fontSize="sm" fontWeight="medium" mb={2} color="gray.700">Color</Text>
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              style={{ 
-                width: '80px', 
-                height: '32px', 
-                border: '1px solid #d1d5db', 
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            />
+            <Box display="flex" alignItems="center" gap={2}>
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => {
+                  console.log('Color changed to:', e.target.value);
+                  setColor(e.target.value);
+                }}
+                style={{ 
+                  width: '50px', 
+                  height: '32px', 
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              />
+              <Text fontSize="xs" color="gray.600">{color}</Text>
+            </Box>
           </Box>
 
           <PreviewSlider
@@ -277,6 +287,10 @@ const CosmicNexusDemo = () => {
               <option value="minimal">Minimal</option>
               <option value="elegant">Elegant</option>
               <option value="modern">Modern</option>
+              <option value="glassmorphism">Glassmorphism</option>
+              <option value="neon">Neon</option>
+              <option value="retro">Retro</option>
+              <option value="premium">Premium</option>
             </select>
           </Box>
 
@@ -359,7 +373,207 @@ const CosmicNexusDemo = () => {
       </PreviewTab>
 
       <CodeTab>
-        <CodeExample codeObject={smartLoader} />
+
+        <CodeExample codeObject={{
+          usage: `import ProfessionalLoader from './ProfessionalLoader'
+
+// Basic ${type} loader
+<ProfessionalLoader type="${type}" />
+
+// Styled ${type} loader
+<ProfessionalLoader 
+  type="${type}"
+  variant="${variant}"
+  color="${color}"
+  theme="${theme}"
+${glowing ? '  glowing={true}' : ''}
+${!rounded ? '  rounded={false}' : ''}
+/>
+
+${type === 'progress' ? `// Progress with auto-animation
+<ProfessionalLoader 
+  type="progress" 
+  autoProgress={true}
+  duration={${duration}}
+  showPercentage={${showPercentage}}
+  onComplete={() => alert('Loading complete!')}
+/>` : type === 'skeleton' ? `// Multi-line skeleton
+<ProfessionalLoader 
+  type="skeleton" 
+  lines={${lines}}
+  speed={${speed}}
+  variant="${variant}"
+/>` : `// Custom ${type} loader
+<ProfessionalLoader 
+  type="${type}"
+  size="${size}"
+  speed={${speed}}
+  variant="${variant}"
+  animated={${animated}}
+/>`}
+
+// ${variant.charAt(0).toUpperCase() + variant.slice(1)} variant features
+<ProfessionalLoader 
+  variant="${variant}"
+  type="${type}"
+${variant === 'glassmorphism' ? '  theme="dark"  // Best with dark theme' : variant === 'neon' ? '  color="#00ffff"  // Bright colors work best' : variant === 'premium' ? '  color="#FFD700"  // Gold accent' : variant === 'retro' ? '  rounded={false}  // Sharp edges for retro feel' : ''}
+${variant === 'neon' || variant === 'premium' ? '  glowing={true}' : ''}
+/>`,
+          
+          code: `// JavaScript + CSS - ${type.charAt(0).toUpperCase() + type.slice(1)} ${variant !== 'default' ? `(${variant} variant)` : ''}
+import React from 'react';
+import './ProfessionalLoader.css';
+
+const ${type.charAt(0).toUpperCase() + type.slice(1)}Loader = () => {
+  return (
+    <ProfessionalLoader
+      type="${type}"${variant !== 'default' ? `
+      variant="${variant}"` : ''}${color !== '#3b82f6' ? `
+      color="${color}"` : ''}${size !== 'medium' ? `
+      size="${size}"` : ''}${speed !== 1 ? `
+      speed={${speed}}` : ''}${glowing ? `
+      glowing={true}` : ''}${theme !== 'dark' ? `
+      theme="${theme}"` : ''}
+    />
+  );
+};
+
+export default ${type.charAt(0).toUpperCase() + type.slice(1)}Loader;`,
+
+          css: `/* CSS for ${type} loader with ${variant} variant */
+.pro-loader-wrapper {
+  --primary-color: ${color};
+  --animation-duration: ${2 / speed}s;
+  --glow-intensity: ${glowing ? '1' : '0'};
+  --border-radius: ${rounded ? '8px' : '2px'};
+}
+
+${variant === 'glassmorphism' ? `/* Glassmorphism variant styles */
+.pro-loader-wrapper.variant-glassmorphism {
+  backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}` : variant === 'neon' ? `/* Neon variant styles */
+.pro-loader-wrapper.variant-neon {
+  background: #000;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}` : variant === 'premium' ? `/* Premium variant styles */
+.pro-loader-wrapper.variant-premium {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+}` : ''}
+
+${type === 'skeleton' ? `/* Skeleton loader styles */
+.skeleton-line {
+  height: 16px;
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-primary) 50%, var(--bg-secondary) 75%);
+  animation: skeleton-shimmer var(--animation-duration) ease-in-out infinite;
+}` : type === 'progress' ? `/* Progress loader styles */
+.progress-fill {
+  background: var(--primary-color);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}` : type === 'spinner' ? `/* Spinner loader styles */
+.spinner-circle {
+  border: 3px solid var(--bg-secondary);
+  border-top: 3px solid var(--primary-color);
+  animation: spin var(--animation-duration) linear infinite;
+}` : ''}`,
+
+          tailwind: `// JavaScript + Tailwind - ${type.charAt(0).toUpperCase() + type.slice(1)} ${variant !== 'default' ? `(${variant} variant)` : ''}
+import React from 'react';
+
+const ${type.charAt(0).toUpperCase() + type.slice(1)}Loader = () => {
+  return (
+    <div className={\`
+      flex items-center justify-center p-8
+      ${size === 'small' ? 'w-32 h-8' : size === 'large' ? 'w-96 h-16' : 'w-64 h-12'}
+      ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}
+      ${variant === 'glassmorphism' ? 'backdrop-blur-sm bg-white/10 border border-white/20 rounded-2xl' : 
+        variant === 'neon' ? 'bg-black border-2 shadow-lg shadow-blue-500/50' : 
+        variant === 'premium' ? 'bg-gradient-to-br from-yellow-50 to-transparent border border-yellow-200' : 
+        rounded ? 'rounded-lg' : 'rounded-sm'}
+    \`}>
+      ${type === 'skeleton' ? `{Array.from({ length: ${lines} }).map((_, i) => (
+        <div key={i} className="h-4 bg-gray-200 animate-pulse rounded mb-2" />
+      ))}` : type === 'progress' ? `<div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="h-2.5 rounded-full transition-all duration-300" 
+             style={{ width: '${progress}%', backgroundColor: '${color}' }} />
+      </div>` : type === 'spinner' ? `<div className="animate-spin rounded-full border-4 border-gray-200 border-t-current"
+           style={{ borderTopColor: '${color}', animationDuration: '${2/speed}s' }} />` : ''}
+    </div>
+  );
+};`,
+
+          tsCode: `// TypeScript + CSS - ${type.charAt(0).toUpperCase() + type.slice(1)} ${variant !== 'default' ? `(${variant} variant)` : ''}
+import React from 'react';
+import './ProfessionalLoader.css';
+
+interface ${type.charAt(0).toUpperCase() + type.slice(1)}LoaderProps {
+  variant?: '${variant}';
+  color?: string;
+  size?: '${size}';
+  speed?: number;
+  ${type === 'skeleton' ? 'lines?: number;' : type === 'progress' ? 'progress?: number; showPercentage?: boolean;' : ''}
+}
+
+const ${type.charAt(0).toUpperCase() + type.slice(1)}Loader: React.FC<${type.charAt(0).toUpperCase() + type.slice(1)}LoaderProps> = ({
+  variant = '${variant}',
+  color = '${color}',
+  size = '${size}',
+  speed = ${speed},
+  ${type === 'skeleton' ? `lines = ${lines},` : type === 'progress' ? `progress = ${progress}, showPercentage = ${showPercentage},` : ''}
+}) => {
+  return (
+    <ProfessionalLoader
+      type="${type}"
+      variant={variant}
+      color={color}
+      size={size}
+      speed={speed}
+      ${type === 'skeleton' ? 'lines={lines}' : type === 'progress' ? 'progress={progress} showPercentage={showPercentage}' : ''}
+    />
+  );
+};
+
+export default ${type.charAt(0).toUpperCase() + type.slice(1)}Loader;`,
+
+          tsTailwind: `// TypeScript + Tailwind - ${type.charAt(0).toUpperCase() + type.slice(1)} ${variant !== 'default' ? `(${variant} variant)` : ''}
+import React from 'react';
+
+interface ${type.charAt(0).toUpperCase() + type.slice(1)}LoaderProps {
+  variant?: '${variant}';
+  color?: string;
+  size?: '${size}';
+  ${type === 'skeleton' ? 'lines?: number;' : type === 'progress' ? 'progress?: number;' : ''}
+}
+
+const ${type.charAt(0).toUpperCase() + type.slice(1)}Loader: React.FC<${type.charAt(0).toUpperCase() + type.slice(1)}LoaderProps> = ({
+  variant = '${variant}',
+  color = '${color}',
+  size = '${size}',
+  ${type === 'skeleton' ? `lines = ${lines}` : type === 'progress' ? `progress = ${progress}` : ''}
+}) => {
+  const sizeClasses = size === 'small' ? 'w-32 h-8' : size === 'large' ? 'w-96 h-16' : 'w-64 h-12';
+  const variantClasses = variant === 'glassmorphism' ? 'backdrop-blur-sm bg-white/10' : 
+                        variant === 'neon' ? 'bg-black border-2' : 
+                        'bg-white';
+
+  return (
+    <div className={\`flex items-center justify-center p-8 \${sizeClasses} \${variantClasses}\`}>
+      ${type === 'skeleton' ? `{Array.from({ length: lines }).map((_, i) => (
+        <div key={i} className="h-4 bg-gray-200 animate-pulse rounded mb-2" />
+      ))}` : type === 'progress' ? `<div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="h-2.5 rounded-full" style={{ width: \`\${progress}%\`, backgroundColor: color }} />
+      </div>` : ''}
+    </div>
+  );
+};`
+        }} />
       </CodeTab>
     </TabsLayout>
   );
