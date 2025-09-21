@@ -2,6 +2,7 @@ import code from '@content/Animations/CosmicNexus/ProfessionalLoader.jsx?raw';
 import css from '@content/Animations/CosmicNexus/ProfessionalLoader.css?raw';
 import tailwind from '@tailwind/Animations/CosmicNexus/ProfessionalLoader.jsx?raw';
 import tsCode from '@ts-default/Animations/CosmicNexus/ProfessionalLoader.tsx?raw';
+import tsTailwind from '@ts-tailwind/Animations/CosmicNexus/ProfessionalLoader.tsx?raw';
 
 export const smartLoader = {
   usage: `import ProfessionalLoader from './ProfessionalLoader'
@@ -36,5 +37,6 @@ export const smartLoader = {
   code,
   css,
   tailwind,
-  tsCode
+  tsCode,
+  tsTailwind
 };
