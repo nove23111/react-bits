@@ -5,7 +5,9 @@
   --glow-intensity: 0;
   --border-radius: 8px;
   --bg-primary: rgba(59, 130, 246, 0.1);
+  --bg-primary: color-mix(in srgb, var(--primary-color) 10%, transparent);
   --bg-secondary: rgba(59, 130, 246, 0.05);
+  --bg-secondary: color-mix(in srgb, var(--primary-color) 5%, transparent);
   --text-primary: #374151;
   --text-secondary: #6b7280;
   
@@ -48,7 +50,9 @@
 /* Theme Variations */
 .pro-loader-wrapper.dark {
   --bg-primary: rgba(59, 130, 246, 0.2);
+  --bg-primary: color-mix(in srgb, var(--primary-color) 20%, transparent);
   --bg-secondary: rgba(59, 130, 246, 0.1);
+  --bg-secondary: color-mix(in srgb, var(--primary-color) 10%, transparent);
   --text-primary: #f3f4f6;
   --text-secondary: #d1d5db;
 }
@@ -57,20 +61,110 @@
 .pro-loader-wrapper.small { padding: 1rem; }
 .pro-loader-wrapper.large { padding: 3rem; }
 
-/* Variant Styles */
+/* Enhanced Variant Styles */
 .pro-loader-wrapper.variant-minimal {
   padding: 1rem;
+  background: transparent;
 }
 
 .pro-loader-wrapper.variant-elegant {
   background: linear-gradient(135deg, var(--bg-secondary), transparent);
   border-radius: var(--border-radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .pro-loader-wrapper.variant-modern {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: calc(var(--border-radius) * 2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pro-loader-wrapper.variant-glassmorphism {
+  backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.pro-loader-wrapper.variant-glassmorphism.dark {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pro-loader-wrapper.variant-neon {
+  background: #000;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  box-shadow: 
+    0 0 10px var(--primary-color),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% { 
+    box-shadow: 
+      0 0 10px var(--primary-color),
+      inset 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  100% { 
+    box-shadow: 
+      0 0 20px var(--primary-color),
+      0 0 40px var(--primary-color),
+      inset 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.pro-loader-wrapper.variant-retro {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  background-size: 400% 400%;
+  border: 3px solid #fff;
+  border-radius: 0;
+  box-shadow: 
+    0 0 0 3px #000,
+    8px 8px 0 #000;
+  animation: retroGradient 4s ease infinite;
+  font-family: 'Courier New', monospace;
+}
+
+@keyframes retroGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.pro-loader-wrapper.variant-premium {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(192, 192, 192, 0.1) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 
+    0 4px 20px rgba(255, 215, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.pro-loader-wrapper.variant-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  animation: premiumShine 3s ease-in-out infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@keyframes premiumShine {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* Skeleton Loader */
@@ -146,7 +240,7 @@
 }
 
 .progress-fill.complete {
-  background: #10b981;
+  background: var(--primary-color);
   animation: progress-success 0.6s ease-out;
 }
 
@@ -185,7 +279,7 @@
 }
 
 .progress-text.complete {
-  color: #10b981;
+  color: var(--primary-color);
   transform: scale(1.05);
 }
 
@@ -257,7 +351,7 @@
   background: linear-gradient(90deg,
     var(--bg-secondary) 0%,
     var(--bg-primary) 20%,
-    rgba(59, 130, 246, 0.3) 40%,
+    var(--bg-primary) 40%,
     var(--bg-primary) 60%,
     var(--bg-secondary) 100%
   );
@@ -449,7 +543,7 @@
 .gradient-circle {
   width: 60px;
   height: 60px;
-  background: conic-gradient(from 0deg, var(--primary-color), rgba(59, 130, 246, 0.3), var(--primary-color));
+  background: conic-gradient(from 0deg, var(--primary-color), var(--bg-primary), var(--primary-color));
   border-radius: 50%;
   margin: 0 auto 16px;
   position: relative;
@@ -665,6 +759,182 @@
   .pro-loader-wrapper {
     --animation-duration: calc(var(--animation-duration) * 1.5);
   }
+}
+
+/* Orbit Loader */
+.pro-loader.orbit {
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.orbit-system {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.orbit-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+.orbit-ring {
+  position: absolute;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-ring-1 {
+  width: 30px;
+  height: 30px;
+  animation: orbitRotate var(--animation-duration) linear infinite;
+}
+
+.orbit-ring-2 {
+  width: 50px;
+  height: 50px;
+  animation: orbitRotate calc(var(--animation-duration) * 1.5) linear infinite reverse;
+}
+
+.orbit-ring-3 {
+  width: 70px;
+  height: 70px;
+  animation: orbitRotate calc(var(--animation-duration) * 2) linear infinite;
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+@keyframes orbitRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Matrix Loader */
+.pro-loader.matrix {
+  width: 120px;
+  height: 80px;
+}
+
+.matrix-container {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.matrix-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 12px;
+  animation: matrixFall calc(var(--animation-duration) * 2) linear infinite;
+  animation-delay: var(--delay);
+}
+
+.matrix-char {
+  color: var(--primary-color);
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  animation: matrixChar calc(var(--animation-duration) * 0.5) ease-in-out infinite;
+  animation-delay: var(--char-delay);
+}
+
+@keyframes matrixFall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes matrixChar {
+  0%, 70% { opacity: 0; }
+  30%, 60% { opacity: 1; }
+}
+
+/* DNA Loader */
+.pro-loader.dna {
+  width: 60px;
+  height: 100px;
+}
+
+.dna-helix {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dna-strand {
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: dnaRotate calc(var(--animation-duration) * 2) linear infinite;
+  animation-delay: var(--strand-delay);
+}
+
+.dna-base {
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+.dna-base-left {
+  animation: dnaBaseLeft calc(var(--animation-duration) * 2) ease-in-out infinite;
+  animation-delay: var(--strand-delay);
+}
+
+.dna-base-right {
+  animation: dnaBaseRight calc(var(--animation-duration) * 2) ease-in-out infinite;
+  animation-delay: var(--strand-delay);
+}
+
+.dna-connection {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary-color), transparent, var(--primary-color));
+  margin: 0 2px;
+  opacity: 0.6;
+}
+
+@keyframes dnaRotate {
+  from { transform: rotateY(0deg) translateY(0px); }
+  to { transform: rotateY(360deg) translateY(-10px); }
+}
+
+@keyframes dnaBaseLeft {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes dnaBaseRight {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(-10px); }
 }
 
 /* High contrast mode */
