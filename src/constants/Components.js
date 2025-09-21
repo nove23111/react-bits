@@ -28,7 +28,9 @@ const animations = {
   'target-cursor': () => import('../demo/Animations/TargetCursorDemo'),
   'sticker-peel': () => import('../demo/Animations/StickerPeelDemo'),
   'electric-border': () => import('../demo/Animations/ElectricBorderDemo'),
-  'laser-flow': () => import('../demo/Animations/LaserFlowDemo')
+  'laser-flow': () => import('../demo/Animations/LaserFlowDemo'),
+  'logo-loop': () => import('../demo/Animations/LogoLoopDemo'),
+  'smart-loader': () => import('../demo/Animations/CosmicNexusDemo')
 };
 
 const textAnimations = {

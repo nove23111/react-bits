@@ -12,7 +12,8 @@ export const NEW = [
   'Staggered Menu',
   'Liquid Ether',
   'Shuffle',
-  'Laser Flow'
+  'Laser Flow',
+  'Smart Loader'
 ];
 export const UPDATED = [];
 
@@ -78,7 +79,8 @@ export const CATEGORIES = [
       'Splash Cursor',
       'Meta Balls',
       'Blob Cursor',
-      'Star Border'
+      'Star Border',
+      'Smart Loader'
     ]
   },
   {

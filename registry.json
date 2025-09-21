@@ -7404,6 +7404,26 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "CosmicNexus-JS-CSS",
+      "type": "registry:block",
+      "title": "CosmicNexus",
+      "description": "Epic 3D particle system with WebGL shaders, physics simulation, interactive mouse controls, and cosmic visual effects.",
+      "files": [
+        {
+          "path": "public/default/src/content/Animations/CosmicNexus/CosmicNexus.jsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/default/src/content/Animations/CosmicNexus/CosmicNexus.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three",
+        "gsap"
+      ]
     }
   ]
 }

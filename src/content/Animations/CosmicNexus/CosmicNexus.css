@@ -1,0 +1,24 @@
+.neural-brain {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.neural-brain__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.neural-brain__canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+
+

@@ -1,0 +1,262 @@
+/* Smart Loader - Practical Loading Components */
+.smart-loader-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.smart-loader-wrapper.adaptive {
+  min-height: 200px;
+}
+
+/* Skeleton Loader */
+.smart-loader.skeleton {
+  width: 100%;
+  max-width: 400px;
+}
+
+.skeleton-line {
+  height: 16px;
+  background: linear-gradient(90deg, 
+    rgba(var(--color-rgb, 59, 130, 246), 0.1) 25%, 
+    rgba(var(--color-rgb, 59, 130, 246), 0.3) 50%, 
+    rgba(var(--color-rgb, 59, 130, 246), 0.1) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.skeleton.small .skeleton-line { height: 12px; margin-bottom: 8px; }
+.skeleton.large .skeleton-line { height: 20px; margin-bottom: 16px; }
+
+.skeleton-line:last-child { width: 60%; }
+.skeleton-line:nth-child(2) { width: 80%; }
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Progress Loader */
+.smart-loader.progress {
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress.small .progress-track { height: 6px; }
+.progress.large .progress-track { height: 12px; }
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--color) 0%, rgba(var(--color-rgb), 0.8) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    transparent 100%
+  );
+  animation: progress-shine 2s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-text {
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 40px;
+}
+
+.progress-label {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Pulse Loader */
+.smart-loader.pulse {
+  text-align: center;
+}
+
+.pulse-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--color);
+  margin: 0 auto 16px;
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+.pulse.small .pulse-circle { width: 40px; height: 40px; }
+.pulse.large .pulse-circle { width: 80px; height: 80px; }
+
+@keyframes pulse-scale {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.2); 
+    opacity: 0.7; 
+  }
+}
+
+.pulse-text {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Shimmer Loader */
+.smart-loader.shimmer {
+  width: 100%;
+  max-width: 350px;
+}
+
+.shimmer-line {
+  height: 20px;
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.3) 40%,
+    rgba(255, 255, 255, 0.2) 60%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 10px;
+  margin-bottom: 16px;
+  animation: shimmer-wave 1.5s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.shimmer.small .shimmer-line { height: 16px; margin-bottom: 12px; }
+.shimmer.large .shimmer-line { height: 24px; margin-bottom: 20px; }
+
+@keyframes shimmer-wave {
+  0% { opacity: 0.3; transform: translateX(-10px); }
+  50% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0.3; transform: translateX(10px); }
+}
+
+/* Dots Loader */
+.smart-loader.dots {
+  text-align: center;
+}
+
+.dots-container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: dots-bounce 1.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.dots.small .dot { width: 8px; height: 8px; }
+.dots.large .dot { width: 16px; height: 16px; }
+
+@keyframes dots-bounce {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+
+.dots-text {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Spinner Loader */
+.smart-loader.spinner {
+  text-align: center;
+}
+
+.spinner-ring {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid var(--color);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spinner-rotate 1s linear infinite;
+}
+
+.spinner.small .spinner-ring { width: 30px; height: 30px; border-width: 3px; }
+.spinner.large .spinner-ring { width: 70px; height: 70px; border-width: 5px; }
+
+@keyframes spinner-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner-text {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .smart-loader-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .skeleton-line, .shimmer-line {
+    height: 14px;
+  }
+  
+  .progress-track {
+    height: 6px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .progress-label, .pulse-text, .dots-text, .spinner-text {
+    color: #94a3b8;
+  }
+  
+  .progress-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
