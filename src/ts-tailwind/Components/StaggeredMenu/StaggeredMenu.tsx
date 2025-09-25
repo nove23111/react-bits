@@ -22,6 +22,7 @@ export interface StaggeredMenuProps {
   menuButtonColor?: string;
   openMenuButtonColor?: string;
   accentColor?: string;
+  isFixed: boolean;
   changeMenuColorOnOpen?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
@@ -40,6 +41,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   openMenuButtonColor = '#fff',
   changeMenuColorOnOpen = true,
   accentColor = '#5227FF',
+  isFixed = false,
   onMenuOpen,
   onMenuClose
 }: StaggeredMenuProps) => {
@@ -343,7 +345,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
 
   return (
-    <div className="sm-scope w-full h-full">
+    <div
+      className={`sm-scope ${isFixed ? 'fixed top-0 left-0 z-50 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
+    >
       <div
         className={(className ? className + ' ' : '') + 'staggered-menu-wrapper relative w-full h-full z-40'}
         style={accentColor ? ({ ['--sm-accent' as any]: accentColor } as React.CSSProperties) : undefined}
