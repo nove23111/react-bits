@@ -30,7 +30,13 @@ export const generateCliCommands = (language, style, category, subcategory, depe
   const componentName = slugToComponentName(subcategory);
   const baseUrl = 'https://reactbits.dev';
 
-  const jsrepoUrl = `${baseUrl}/${jsrepoVariant}/${category}/${componentName}`;
+
+  const jsrepoCategory = category
+    .split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+
+  const jsrepoUrl = `${baseUrl}/${jsrepoVariant}/${jsrepoCategory}/${componentName}`;
   const shadcnUrl = `${baseUrl}/r/${componentName}-${shadcnVariant}`;
 
   const prefixCommands = {
@@ -50,11 +56,11 @@ export const generateCliCommands = (language, style, category, subcategory, depe
   const depsString = typeof dependencies === 'string' ? dependencies.trim() : '';
   const manual = depsString
     ? {
-        pnpm: `pnpm add ${depsString}`,
-        npm: `npm install ${depsString}`,
-        yarn: `yarn add ${depsString}`,
-        bun: `bun add ${depsString}`
-      }
+      pnpm: `pnpm add ${depsString}`,
+      npm: `npm install ${depsString}`,
+      yarn: `yarn add ${depsString}`,
+      bun: `bun add ${depsString}`
+    }
     : null;
 
   return { manual, jsrepo, shadcn };
