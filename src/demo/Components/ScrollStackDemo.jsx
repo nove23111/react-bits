@@ -124,6 +124,12 @@ const ScrollStackDemo = () => {
       description: 'Blur amount for items that are further back in the stack.'
     },
     {
+      name: 'useWindowScroll',
+      type: 'boolean',
+      default: 'false',
+      description: 'Whether to use window scroll for the stack.'
+    },
+    {
       name: 'onStackComplete',
       type: 'function',
       default: 'undefined',
