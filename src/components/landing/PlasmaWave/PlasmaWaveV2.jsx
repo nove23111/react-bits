@@ -109,7 +109,17 @@ export default function PlasmaWaveV2({
   autoPauseOnScroll = true,
   scrollPauseThreshold = null,
   resumeOnScrollUp = false,
-  dynamicDpr = false
+  dynamicDpr = false,
+  // style and performance tweaks
+  maxDpr = 1,
+  showOverlay = true,
+  overlayHeight = 200,
+  overlayFrom = '#060010',
+  overlayTo = 'transparent',
+  overlayZIndex = 1,
+  containerClassName,
+  containerStyle = {},
+  pointerEvents = 'none'
 }) {
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
@@ -141,7 +151,7 @@ export default function PlasmaWaveV2({
 
     const renderer = new Renderer({
       alpha: true,
-      dpr: Math.min(window.devicePixelRatio, 1),
+      dpr: Math.min(window.devicePixelRatio, maxDpr),
       antialias: false,
       depth: false,
       stencil: false,
@@ -236,7 +246,7 @@ export default function PlasmaWaveV2({
       runningRef.current = true;
       startTimeRef.current = performance.now() - program.uniforms.iTime.value * 1000;
       if (dynamicDpr) {
-        const target = Math.min(window.devicePixelRatio, 1);
+        const target = Math.min(window.devicePixelRatio, maxDpr);
         if (renderer.dpr !== target) renderer.dpr = target;
       }
       renderer.render({ scene, camera });
@@ -306,28 +316,32 @@ export default function PlasmaWaveV2({
   return (
     <div
       ref={containerRef}
+      className={containerClassName}
       style={{
         position: 'absolute',
         inset: 0,
         overflow: 'hidden',
         width: '100vw',
         height: '100vh',
-        pointerEvents: 'none',
-        willChange: 'opacity'
+        pointerEvents,
+        willChange: 'opacity',
+        ...containerStyle
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 200,
-          background: 'linear-gradient(to top, #060010, transparent)',
-          pointerEvents: 'none',
-          zIndex: 1
-        }}
-      />
+      {showOverlay && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: overlayHeight,
+            background: `linear-gradient(to top, ${overlayFrom}, ${overlayTo})`,
+            pointerEvents: 'none',
+            zIndex: overlayZIndex
+          }}
+        />
+      )}
     </div>
   );
 }
