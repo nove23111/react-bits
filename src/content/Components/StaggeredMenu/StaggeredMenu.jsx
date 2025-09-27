@@ -15,6 +15,7 @@ export const StaggeredMenu = ({
   openMenuButtonColor = '#fff',
   accentColor = '#5227FF',
   changeMenuColorOnOpen = true,
+  isFixed = false,
   onMenuOpen,
   onMenuClose
 }) => {
@@ -314,7 +315,7 @@ export const StaggeredMenu = ({
 
   return (
     <div
-      className={(className ? className + ' ' : '') + 'staggered-menu-wrapper'}
+      className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
       style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
       data-position={position}
       data-open={open || undefined}
