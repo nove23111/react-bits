@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef } from 'react';
 
 interface FuzzyTextProps {
@@ -29,6 +31,14 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Set canvas size to match parent
+    const setCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+    setCanvasSize();
+
     const init = async () => {
       if (document.fonts?.ready) {
         await document.fonts.ready;
@@ -54,58 +64,86 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         document.body.removeChild(temp);
       }
 
-      const text = React.Children.toArray(children).join('');
+      // Convert children to array and handle <br />
+      const childArray = React.Children.toArray(children);
+      let lines: string[] = [];
+      let currentLine = '';
+      childArray.forEach(child => {
+        if (typeof child === 'string') {
+          currentLine += child;
+        } else if (React.isValidElement(child) && child.type === 'br') {
+          lines.push(currentLine);
+          currentLine = '';
+        } else if (typeof child === 'number') {
+          currentLine += child.toString();
+        }
+      });
+      if (currentLine) lines.push(currentLine);
+      if (lines.length === 0) lines = [childArray.join('')];
 
+      // Measure each line
       const offscreen = document.createElement('canvas');
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
-
       offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = 'alphabetic';
-      const metrics = offCtx.measureText(text);
-
-      const actualLeft = metrics.actualBoundingBoxLeft ?? 0;
-      const actualRight = metrics.actualBoundingBoxRight ?? metrics.width;
-      const actualAscent = metrics.actualBoundingBoxAscent ?? numericFontSize;
-      const actualDescent = metrics.actualBoundingBoxDescent ?? numericFontSize * 0.2;
-
-      const textBoundingWidth = Math.ceil(actualLeft + actualRight);
-      const tightHeight = Math.ceil(actualAscent + actualDescent);
-
+      let maxWidth = 0;
+      let totalHeight = 0;
+      const lineMetrics = lines.map(line => {
+        const metrics = offCtx.measureText(line);
+        const actualLeft = metrics.actualBoundingBoxLeft ?? 0;
+        const actualRight = metrics.actualBoundingBoxRight ?? metrics.width;
+        const actualAscent = metrics.actualBoundingBoxAscent ?? numericFontSize;
+        const actualDescent = metrics.actualBoundingBoxDescent ?? numericFontSize * 0.2;
+        const width = Math.ceil(actualLeft + actualRight);
+        const height = Math.ceil(actualAscent + actualDescent);
+        maxWidth = Math.max(maxWidth, width);
+        totalHeight += height;
+        return { line, width, height, actualLeft, actualAscent };
+      });
       const extraWidthBuffer = 10;
-      const offscreenWidth = textBoundingWidth + extraWidthBuffer;
-
+      const offscreenWidth = maxWidth + extraWidthBuffer;
       offscreen.width = offscreenWidth;
-      offscreen.height = tightHeight;
+      offscreen.height = totalHeight;
+      // Draw each line
+      let y = 0;
+      lineMetrics.forEach(({ line, width, height, actualLeft, actualAscent }) => {
+        offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
+        offCtx.textBaseline = 'alphabetic';
+        offCtx.fillStyle = color;
+        offCtx.fillText(line, extraWidthBuffer / 2 - actualLeft, y + actualAscent);
+        y += height;
+      });
 
-      const xOffset = extraWidthBuffer / 2;
-      offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
-      offCtx.textBaseline = 'alphabetic';
-      offCtx.fillStyle = color;
-      offCtx.fillText(text, xOffset - actualLeft, actualAscent);
+      // Center the text in the visible canvas
+      const rect = canvas.getBoundingClientRect();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const xCenter = (canvasWidth - offscreenWidth) / 2;
+      const yCenter = (canvasHeight - totalHeight) / 2;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
+      ctx.translate(xCenter, yCenter);
 
-      const horizontalMargin = 50;
-      const verticalMargin = 0;
-      canvas.width = offscreenWidth + horizontalMargin * 2;
-      canvas.height = tightHeight + verticalMargin * 2;
-      ctx.translate(horizontalMargin, verticalMargin);
-
-      const interactiveLeft = horizontalMargin + xOffset;
-      const interactiveTop = verticalMargin;
-      const interactiveRight = interactiveLeft + textBoundingWidth;
-      const interactiveBottom = interactiveTop + tightHeight;
+      const interactiveLeft = xCenter + extraWidthBuffer / 2;
+      const interactiveTop = yCenter;
+      const interactiveRight = interactiveLeft + maxWidth;
+      const interactiveBottom = interactiveTop + totalHeight;
 
       let isHovering = false;
       const fuzzRange = 30;
 
       const run = () => {
         if (isCancelled) return;
-        ctx.clearRect(-fuzzRange, -fuzzRange, offscreenWidth + 2 * fuzzRange, tightHeight + 2 * fuzzRange);
+        ctx.clearRect(-fuzzRange, -fuzzRange, canvasWidth + 2 * fuzzRange, canvasHeight + 2 * fuzzRange);
         const intensity = isHovering ? hoverIntensity : baseIntensity;
-        for (let j = 0; j < tightHeight; j++) {
-          const dx = Math.floor(intensity * (Math.random() - 0.5) * fuzzRange);
-          ctx.drawImage(offscreen, 0, j, offscreenWidth, 1, dx, j, offscreenWidth, 1);
-        }
+        let y = 0;
+        lineMetrics.forEach(({ height }) => {
+          for (let j = 0; j < height; j++) {
+            const dx = Math.floor(intensity * (Math.random() - 0.5) * fuzzRange);
+            ctx.drawImage(offscreen, 0, y + j, offscreenWidth, 1, dx, y + j, offscreenWidth, 1);
+          }
+          y += height;
+        });
         animationFrameId = window.requestAnimationFrame(run);
       };
 
@@ -173,7 +211,12 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
     };
   }, [children, fontSize, fontWeight, fontFamily, color, enableHover, baseIntensity, hoverIntensity]);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ width: '100%', height: '100%', display: 'block' }}
+    />
+  );
 };
 
 export default FuzzyText;
