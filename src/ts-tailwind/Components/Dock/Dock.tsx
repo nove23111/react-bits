@@ -33,7 +33,7 @@ type DockItemProps = {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
-  mouseX: MotionValue;
+  mouseX: MotionValue<number>;
   spring: SpringOptions;
   distance: number;
   baseItemSize: number;
@@ -81,7 +81,11 @@ function DockItem({
       role="button"
       aria-haspopup="true"
     >
-      {Children.map(children, child => cloneElement(child as React.ReactElement, { isHovered }))}
+      {Children.map(children, child =>
+        React.isValidElement(child)
+          ? cloneElement(child as React.ReactElement<{ isHovered?: MotionValue<number> }>, { isHovered })
+          : child
+      )}
     </motion.div>
   );
 }
@@ -89,13 +93,14 @@ function DockItem({
 type DockLabelProps = {
   className?: string;
   children: React.ReactNode;
+  isHovered?: MotionValue<number>;
 };
 
-function DockLabel({ children, className = '', ...rest }: DockLabelProps) {
-  const { isHovered } = rest as { isHovered: MotionValue<number> };
+function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (!isHovered) return;
     const unsubscribe = isHovered.on('change', latest => {
       setIsVisible(latest === 1);
     });
@@ -124,6 +129,7 @@ function DockLabel({ children, className = '', ...rest }: DockLabelProps) {
 type DockIconProps = {
   className?: string;
   children: React.ReactNode;
+  isHovered?: MotionValue<number>;
 };
 
 function DockIcon({ children, className = '' }: DockIconProps) {
