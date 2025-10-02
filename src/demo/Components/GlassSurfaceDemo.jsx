@@ -320,14 +320,7 @@ const GlassSurfaceDemo = () => {
 
           {selectedExample === 'landingPage' && (
             <>
-              <Box
-                w="100%"
-                h="100%"
-                position="absolute"
-                top={0}
-                left={0}
-                zIndex={0}
-              >
+              <Box w="100%" h="100%" position="absolute" top={0} left={0} zIndex={0}>
                 <LiquidEther isBounce />
               </Box>
 
