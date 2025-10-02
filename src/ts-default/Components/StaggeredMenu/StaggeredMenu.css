@@ -5,6 +5,16 @@
   z-index: 40;
 }
 
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 40;
+  overflow: hidden;
+}
+
 .staggered-menu-header {
   position: absolute;
   top: 0;
