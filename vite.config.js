@@ -10,9 +10,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: {
-    hmr: true
+  build: {
+    outDir: 'dist', // 🔥 cần có dòng này để Vercel hiểu output
   },
+  server: { hmr: true },
   resolve: {
     alias: {
       '@': '/src',
