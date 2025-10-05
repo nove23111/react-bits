@@ -14,15 +14,15 @@ import { dotGrid } from '../../constants/code/Backgrounds/dotGridCode';
 import DotGrid from '../../content/Backgrounds/DotGrid/DotGrid';
 
 const DotGridDemo = () => {
-  const [dotSize, setDotSize] = useState(5);
-  const [gap, setGap] = useState(15);
-  const [baseColor, setBaseColor] = useState('#271E37');
-  const [activeColor, setActiveColor] = useState('#5227FF');
-  const [proximity, setProximity] = useState(120);
-  const [shockRadius, setShockRadius] = useState(250);
-  const [shockStrength, setShockStrength] = useState(5);
-  const [resistance, setResistance] = useState(750);
-  const [returnDuration, setReturnDuration] = useState(1.5);
+  const [dotSize] = useState(5);
+  const [gap] = useState(15);
+  const [baseColor] = useState('#271E37');
+  const [activeColor] = useState('#5227FF');
+  const [proximity] = useState(120);
+  const [shockRadius] = useState(250);
+  const [shockStrength] = useState(5);
+  const [resistance] = useState(750);
+  const [returnDuration] = useState(1.5);
 
   const propData = [
     {
@@ -104,99 +104,21 @@ const DotGridDemo = () => {
       description: 'Inline styles for the component.'
     }
   ];
-
+  
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden">
-          <DotGrid
-            dotSize={dotSize}
-            gap={gap}
-            baseColor={baseColor}
-            activeColor={activeColor}
-            proximity={proximity}
-            shockRadius={shockRadius}
-            shockStrength={shockStrength}
-            resistance={resistance}
-            returnDuration={returnDuration}
-          />
-
-          {/* For Demo Purposes Only */}
-          <BackgroundContent pillText="New Background" headline="Organized chaos with every cursor movement!" />
-        </Box>
-
-        <Customize>
-          <Flex alignItems="center" mb={4}>
-            <Text fontSize="sm" mr={2}>
-              Base Color
-            </Text>
-            <Input
-              type="color"
-              value={baseColor}
-              onChange={e => {
-                setBaseColor(e.target.value);
-              }}
-              width="50px"
-            />
-          </Flex>
-          <Flex alignItems="center" mb={4}>
-            <Text fontSize="sm" mr={2}>
-              Active Color
-            </Text>
-            <Input
-              type="color"
-              value={activeColor}
-              onChange={e => {
-                setActiveColor(e.target.value);
-              }}
-              width="50px"
-            />
-          </Flex>
-          <PreviewSlider title="Dot Size" min={2} max={50} step={1} value={dotSize} onChange={setDotSize} />
-          <PreviewSlider title="Gap" min={5} max={100} step={1} value={gap} onChange={setGap} />
-          <PreviewSlider title="Proximity" min={50} max={500} step={10} value={proximity} onChange={setProximity} />
-          <PreviewSlider
-            title="Shock Radius"
-            min={50}
-            max={500}
-            step={10}
-            value={shockRadius}
-            onChange={setShockRadius}
-          />
-          <PreviewSlider
-            title="Shock Strength"
-            min={1}
-            max={20}
-            step={1}
-            value={shockStrength}
-            onChange={setShockStrength}
-          />
-          <PreviewSlider
-            title="Resistance (Inertia)"
-            min={100}
-            max={2000}
-            step={50}
-            value={resistance}
-            onChange={setResistance}
-          />
-          <PreviewSlider
-            title="Return Duration (Inertia)"
-            min={0.1}
-            max={5}
-            step={0.1}
-            value={returnDuration}
-            onChange={setReturnDuration}
-          />
-        </Customize>
-
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
-
-      <CodeTab>
-        <CodeExample codeObject={dotGrid} />
-      </CodeTab>
-    </TabsLayout>
+    <Box position="relative" w="100%" h="100vh" overflow="hidden" bg="#0F0D13">
+      <DotGrid
+        dotSize={dotSize}
+        gap={gap}
+        baseColor={baseColor}
+        activeColor={activeColor}
+        proximity={proximity}
+        shockRadius={shockRadius}
+        shockStrength={shockStrength}
+        resistance={resistance}
+        returnDuration={returnDuration}
+      />
+    </Box>
   );
 };
 
