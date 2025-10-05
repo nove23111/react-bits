@@ -1,5 +1,5 @@
 import React from 'react';
-import DotGrid from './DotGrid';
+import DotGrid from './content/Backgrounds/DotGrid';
 
 export default function App() {
   return (
